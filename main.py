@@ -11,87 +11,6 @@ import os  # , errno
 #from math import pi
 from decimal import getcontext, Decimal
 
-
-def mode():
-    while True:
-        mode = int(input(
-            "Mode \n 1.Scan Team Matches \n 2.Excel Functions [Not Finished] \n 3.Search Team Season History \n 5.For Copyright License\n 6.Discord Link \n 8.Get Important Info For a Team \n 9.Change Log\n 0.Quit \n"))
-        if mode == 1:
-            print("Mode = Scan Team Matches")
-            time.sleep(0.3)
-            scanteammatches()
-        elif mode == 2:
-            print("Mode = Excels")
-            #sleeptimer = float(input("Set Sleep Time\n"))
-            print(
-                "1.Scan Teams \n2.Scan Matches [Don't use this]\n3.Write Team Important Data\n4.Don't Ues This\n5.Can Specific Match [PreSet World Championship]\n6.Get We Need")
-            time.sleep(0.3)
-            excelmode = int(input())
-
-            if excelmode == 1:
-                print("Mode = Scan Teams and Write to Excel")
-                time.sleep(0.3)
-                excelscanteams()
-            elif excelmode == 2:
-                print("Mode = Write Team Matches [Don't use this]")
-                time.sleep(0.3)
-                excelteammatches()
-            elif excelmode == 3:
-                print("Mode = Write Team Important Data in Excel")
-                time.sleep(0.3)
-                excelgetalldata()
-            elif excelmode == 4:
-                print("Mode = Scan Bugged Team [It will crash]")
-                time.sleep(0.3)
-                excelgetallbugs()
-            elif excelmode == 5:
-                print("Mode = Scan World Championship")
-                time.sleep(0.3)
-                excelscanworld()
-            elif excelmode == 6:
-                print("Mode = Scan We Need")
-                time.sleep(0.3)
-                excelgetweneed()
-
-        elif mode == 3:
-            print("Mode = Search Team History : Current Season")
-            time.sleep(0.3)
-            searchteamcurrentseason()
-        elif mode == 4:
-            print("Bubble!")
-            timeisout()
-            answer()
-        elif mode == 5:
-            print("Mode = Copyright Licence")
-            time.sleep(0.3)
-            cc()
-        elif mode == 6:
-            print("Mode = Discord Invite")
-            time.sleep(0.3)
-            dis()
-        elif mode == 7:
-            print("Mode = Empty")
-            time.sleep(0.3)
-            empty()
-        elif mode == 8:
-            print("Mode = Get Important Data")
-            time.sleep(0.3)
-            getalldata()
-        elif mode == 9:
-            print("Change Log:")
-            time.sleep(0.3)
-            changelog()
-        elif mode == 0:
-            print("Thanks for using it!")
-            time.sleep(0.3)
-            quit()
-        else:
-            print("Mode Unknown")
-            time.sleep(1)
-
-        return None
-
-
 # preload
 getcontext().prec = 6
 sleeptimer = 0
@@ -153,8 +72,79 @@ print("Learn more about CC BY-NC-SA 4.0: Choose '5' in Mode")
 print("Contact Info: Discord Yingfeng#8524")
 time.sleep(0.5)
 input("Press Any Key to Start!\n")
-mode()
-
+while True:
+    mode = int(input(
+        "Mode \n 1.Scan Team Matches \n 2.Excel Functions [Not Finished] \n 3.Search Team Season History \n 5.For Copyright License\n 6.Discord Link \n 8.Get Important Info For a Team \n 9.Change Log\n 0.Quit \n"))
+    if mode == 1:
+        print("Mode = Scan Team Matches")
+        time.sleep(0.3)
+        scanteammatches()
+    elif mode == 2:
+        print("Mode = Excels")
+        #sleeptimer = float(input("Set Sleep Time\n"))
+        print(
+        "1.Scan Teams \n2.Scan Matches [Don't use this]\n3.Write Team Important Data\n4.Don't Ues This\n5.Can Specific Match [PreSet World Championship]\n6.Get We Need")
+        time.sleep(0.3)
+        excelmode = int(input())
+        if excelmode == 1:
+            print("Mode = Scan Teams and Write to Excel")
+            time.sleep(0.3)
+            excelscanteams()
+        elif excelmode == 2:
+            print("Mode = Write Team Matches [Don't use this]")
+            time.sleep(0.3)
+            excelteammatches()
+        elif excelmode == 3:
+            print("Mode = Write Team Important Data in Excel")
+            time.sleep(0.3)
+            excelgetalldata()
+        elif excelmode == 4:
+            print("Mode = Scan Bugged Team [It will crash]")
+            time.sleep(0.3)
+            excelgetallbugs()
+        elif excelmode == 5:
+            print("Mode = Scan World Championship")
+            time.sleep(0.3)
+            excelscanworld()
+        elif excelmode == 6:
+            print("Mode = Scan We Need")
+            time.sleep(0.3)
+            excelgetweneed()
+    elif mode == 3:
+        print("Mode = Search Team History : Current Season")
+        time.sleep(0.3)
+        searchteamcurrentseason()
+    elif mode == 4:
+        print("Bubble!")
+        timeisout()
+        answer()
+    elif mode == 5:
+        print("Mode = Copyright Licence")
+        time.sleep(0.3)
+        cc()
+    elif mode == 6:
+        print("Mode = Discord Invite")
+        time.sleep(0.3)
+        dis()
+    elif mode == 7:
+        print("Mode = Empty")
+        time.sleep(0.3)
+        empty()
+    elif mode == 8:
+        print("Mode = Get Important Data")
+        time.sleep(0.3)
+        getalldata()
+    elif mode == 9:
+        print("Change Log:")
+        time.sleep(0.3)
+        changelog()
+    elif mode == 0:
+        print("Thanks for using it!")
+        time.sleep(0.3)
+        quit()
+    else:
+        print("Mode Unknown")
+        time.sleep(1)
 
 class global_var:
     r = ""
@@ -359,7 +349,7 @@ def scanteammatches():
 
     pprint.pprint(output)
     time.sleep(1)
-    mode()
+    
     return None
 
 
@@ -502,7 +492,7 @@ def excelscanteams():  # 201
             print('')
             print('reset and xls saved!')
             time.sleep(2)
-            mode()
+            
 
     # time.sleep(1)
     return None
@@ -797,7 +787,7 @@ def excelgetalldata():  # 203
             sheetline = 1
             print('')
             print('reset and xls saved!')
-            mode()
+            
 
 
 def excelgetallbugs():  # 204
@@ -1042,7 +1032,7 @@ def excelgetallbugs():  # 204
             sheetline = 1
             print('')
             print('reset and xls saved!')
-            mode()
+            
 
 
 def excelgetweneed():  # 205
@@ -1289,7 +1279,7 @@ def excelgetweneed():  # 205
             sheetline = 1
             print('')
             print('reset and xls saved!')
-            mode()
+            
 
 
 def excelscanworld():
@@ -1529,7 +1519,7 @@ def excelscanworld():
             sheetline = 1
             print('')
             print('reset and xls saved!')
-            mode()
+            
 
 
 # Need to test when competition start
@@ -1561,7 +1551,7 @@ def excelteammatches():
 
     pprint.pprint(output)
     time.sleep(1)
-    mode()
+    
     return None
 
 
@@ -1589,7 +1579,7 @@ def searchteamcurrentseason():
 
     pprint.pprint(output)
     time.sleep(1)
-    mode()
+    
     return None
 
 
@@ -1636,7 +1626,7 @@ def getalldata():
 
     loop = 0
 
-    mode()
+    
 
     for r in json_dict["result"]:
         line = '                                                                     {}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = {} || Blue Alliance 1 = {} Blue Alliance 2 = {} Blue Alliance 3 = {} Blue Sit = {} || Red Score = {} Blue Score = {}'.format(
@@ -1663,7 +1653,7 @@ def changelog():
     print("1.0 - First Version")
     print()
     time.sleep(1)
-    mode()
+    
     return None
 
 
@@ -1672,21 +1662,21 @@ def empty():
     print("Return to Menu.")
     print()
     time.sleep(1)
-    mode()
+    
 
 
 def cc():
     print("Opening your browser and view https://creativecommons.org/licenses/by-nc-sa/4.0/ in 3 seconds.")
     time.sleep(3)
     webbrowser.open('https://creativecommons.org/licenses/by-nc-sa/4.0/')
-    mode()
+    
 
 
 def dis():
     print("Opening your browser and view https://discord.gg/kBX4JHS in 3 seconds!")
     time.sleep(3)
     webbrowser.open('https://discord.gg/kBX4JHS')
-    mode()
+    
 
 
 def timeisout():
@@ -2383,7 +2373,7 @@ def graphbubble():
     plt.savefig("graph/" + global_var.inputmode + ".png")
     print("Graph poped and saved.")
     plt.show()
-    mode()
+    
 
 
 def answer():
@@ -2413,7 +2403,7 @@ def answer():
 
     time.sleep(2)
     input("Press Any Key to Continue\n")
-    mode()
+    
 
 
 '''
