@@ -673,85 +673,25 @@ def excelgetalldata():  # 203
 
             if float(flag) >= 70:
                 sheet3.write(teaminfoline, 8, str(flag) + "%", style70)
-                sheet3.write(teaminfoline, 9, "", style70)
-                sheet3.write(teaminfoline, 10, "", style70)
-                sheet3.write(teaminfoline, 11, "", style70)
-                sheet3.write(teaminfoline, 12, "", style70)
-                sheet3.write(teaminfoline, 13, "", style70)
-                sheet3.write(teaminfoline, 14, "", style70)
-                sheet3.write(teaminfoline, 15, "", style70)
-                sheet3.write(teaminfoline, 16, "", style70)
-                sheet3.write(teaminfoline, 17, "", style70)
-                sheet3.write(teaminfoline, 18, "", style70)
-                sheet3.write(teaminfoline, 19, "", style70)
-                sheet3.write(teaminfoline, 20, "", style70)
+                for x in range (9,21):
+                    sheet3.write(teaminfoline, x, "", style70)
 
             elif float(flag) >= 50:
                 sheet3.write(teaminfoline, 8, str(flag) + "%", style50)
-                sheet3.write(teaminfoline, 9, "", style50)
-                sheet3.write(teaminfoline, 10, "", style50)
-                sheet3.write(teaminfoline, 11, "", style50)
-                sheet3.write(teaminfoline, 12, "", style50)
-                sheet3.write(teaminfoline, 13, "", style50)
-                sheet3.write(teaminfoline, 14, "", style50)
-                sheet3.write(teaminfoline, 15, "", style50)
-                sheet3.write(teaminfoline, 16, "", style50)
-                sheet3.write(teaminfoline, 17, "", style50)
-                sheet3.write(teaminfoline, 18, "", style50)
-                sheet3.write(teaminfoline, 19, "", style50)
-                sheet3.write(teaminfoline, 20, "", style50)
+                for x in range (9,21):
+                    sheet3.write(teaminfoline, x "", style50)
 
             elif float(flag) >= 30:
                 sheet3.write(teaminfoline, 8, str(flag) + "%", style30)
-                sheet3.write(teaminfoline, 9, "", style30)
-                sheet3.write(teaminfoline, 10, "", style30)
-                sheet3.write(teaminfoline, 11, "", style30)
-                sheet3.write(teaminfoline, 12, "", style30)
-                sheet3.write(teaminfoline, 13, "", style30)
-                sheet3.write(teaminfoline, 14, "", style30)
-                sheet3.write(teaminfoline, 15, "", style30)
-                sheet3.write(teaminfoline, 16, "", style30)
-                sheet3.write(teaminfoline, 17, "", style30)
-                sheet3.write(teaminfoline, 18, "", style30)
-                sheet3.write(teaminfoline, 19, "", style30)
-                sheet3.write(teaminfoline, 20, "", style30)
+                for x in range (9,21):
+                    sheet3.write(teaminfoline, x, "", style30)
 
             else:
                 sheet3.write(teaminfoline, 8, str(flag) + "%", style0)
-                sheet3.write(teaminfoline, 9, "", style0)
-                sheet3.write(teaminfoline, 10, "", style0)
-                sheet3.write(teaminfoline, 11, "", style0)
-                sheet3.write(teaminfoline, 12, "", style0)
-                sheet3.write(teaminfoline, 13, "", style0)
-                sheet3.write(teaminfoline, 14, "", style0)
-                sheet3.write(teaminfoline, 15, "", style0)
-                sheet3.write(teaminfoline, 16, "", style0)
-                sheet3.write(teaminfoline, 17, "", style0)
-                sheet3.write(teaminfoline, 18, "", style0)
-                sheet3.write(teaminfoline, 19, "", style0)
-                sheet3.write(teaminfoline, 20, "", style0)
-
-            sheet3.write(sheetline, 0, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 1, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 2, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 3, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 4, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 5, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 6, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 7, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 8, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 9, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 10, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 11, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 12, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 13, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 14, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 15, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 16, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 17, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 18, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 19, "- - - - - - -", styleblank)
-            sheet3.write(sheetline, 20, "- - - - - - -", styleblank)
+                for x in range (9,21):
+                    sheet3.write(teaminfoline, x, "", style0)
+            for x in range (0,21):
+                sheet3.write(sheetline, x, "- - - - - - -", styleblank)
 
             sheetline += 1
 
@@ -978,85 +918,26 @@ def excelgetallbugs():  # 204
 
             if float(flag) >= 70:
                 sheet10.write(teaminfoline, 8, str(flag) + "%", style70)
-                sheet10.write(teaminfoline, 9, "", style70)
-                sheet10.write(teaminfoline, 10, "", style70)
-                sheet10.write(teaminfoline, 11, "", style70)
-                sheet10.write(teaminfoline, 12, "", style70)
-                sheet10.write(teaminfoline, 13, "", style70)
-                sheet10.write(teaminfoline, 14, "", style70)
-                sheet10.write(teaminfoline, 15, "", style70)
-                sheet10.write(teaminfoline, 16, "", style70)
-                sheet10.write(teaminfoline, 17, "", style70)
-                sheet10.write(teaminfoline, 18, "", style70)
-                sheet10.write(teaminfoline, 19, "", style70)
-                sheet10.write(teaminfoline, 20, "", style70)
+                for x in range (9,21):
+                    sheet10.write(teaminfoline, x, "", style70)
 
             elif float(flag) >= 50:
                 sheet10.write(teaminfoline, 8, str(flag) + "%", style50)
-                sheet10.write(teaminfoline, 9, "", style50)
-                sheet10.write(teaminfoline, 10, "", style50)
-                sheet10.write(teaminfoline, 11, "", style50)
-                sheet10.write(teaminfoline, 12, "", style50)
-                sheet10.write(teaminfoline, 13, "", style50)
-                sheet10.write(teaminfoline, 14, "", style50)
-                sheet10.write(teaminfoline, 15, "", style50)
-                sheet10.write(teaminfoline, 16, "", style50)
-                sheet10.write(teaminfoline, 17, "", style50)
-                sheet10.write(teaminfoline, 18, "", style50)
-                sheet10.write(teaminfoline, 19, "", style50)
-                sheet10.write(teaminfoline, 20, "", style50)
+                for x in range (9,21):
+                    sheet10.write(teaminfoline, x, "", style50)
 
             elif float(flag) >= 30:
                 sheet10.write(teaminfoline, 8, str(flag) + "%", style30)
-                sheet10.write(teaminfoline, 9, "", style30)
-                sheet10.write(teaminfoline, 10, "", style30)
-                sheet10.write(teaminfoline, 11, "", style30)
-                sheet10.write(teaminfoline, 12, "", style30)
-                sheet10.write(teaminfoline, 13, "", style30)
-                sheet10.write(teaminfoline, 14, "", style30)
-                sheet10.write(teaminfoline, 15, "", style30)
-                sheet10.write(teaminfoline, 16, "", style30)
-                sheet10.write(teaminfoline, 17, "", style30)
-                sheet10.write(teaminfoline, 18, "", style30)
-                sheet10.write(teaminfoline, 19, "", style30)
-                sheet10.write(teaminfoline, 20, "", style30)
+                for x in range (9,21):
+                    sheet10.write(teaminfoline, x, "", style30)
 
             else:
                 sheet10.write(teaminfoline, 8, str(flag) + "%", style0)
-                sheet10.write(teaminfoline, 9, "", style0)
-                sheet10.write(teaminfoline, 10, "", style0)
-                sheet10.write(teaminfoline, 11, "", style0)
-                sheet10.write(teaminfoline, 12, "", style0)
-                sheet10.write(teaminfoline, 13, "", style0)
-                sheet10.write(teaminfoline, 14, "", style0)
-                sheet10.write(teaminfoline, 15, "", style0)
-                sheet10.write(teaminfoline, 16, "", style0)
-                sheet10.write(teaminfoline, 17, "", style0)
-                sheet10.write(teaminfoline, 18, "", style0)
-                sheet10.write(teaminfoline, 19, "", style0)
-                sheet10.write(teaminfoline, 20, "", style0)
-
-            sheet10.write(sheetline, 0, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 1, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 2, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 3, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 4, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 5, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 6, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 7, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 8, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 9, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 10, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 11, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 12, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 13, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 14, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 15, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 16, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 17, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 18, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 19, "- - - - - - -", styleblank)
-            sheet10.write(sheetline, 20, "- - - - - - -", styleblank)
+                for x in range (9,21):
+                    sheet10.write(teaminfoline, x, "", style0)
+            for x in range (0,21):
+                sheet10.write(sheetline, x, "- - - - - - -", styleblank)
+            
 
             sheetline += 1
 
@@ -1284,85 +1165,28 @@ def excelgetweneed():  # 205
 
             if float(flag) >= 70:
                 sheet6.write(teaminfoline, 8, str(flag) + "%", style70)
-                sheet6.write(teaminfoline, 9, "", style70)
-                sheet6.write(teaminfoline, 10, "", style70)
-                sheet6.write(teaminfoline, 11, "", style70)
-                sheet6.write(teaminfoline, 12, "", style70)
-                sheet6.write(teaminfoline, 13, "", style70)
-                sheet6.write(teaminfoline, 14, "", style70)
-                sheet6.write(teaminfoline, 15, "", style70)
-                sheet6.write(teaminfoline, 16, "", style70)
-                sheet6.write(teaminfoline, 17, "", style70)
-                sheet6.write(teaminfoline, 18, "", style70)
-                sheet6.write(teaminfoline, 19, "", style70)
-                sheet6.write(teaminfoline, 20, "", style70)
+                for x in range (9,21):
+                    sheet6.write(teaminfoline, x, "", style70)
 
             elif float(flag) >= 50:
                 sheet6.write(teaminfoline, 8, str(flag) + "%", style50)
-                sheet6.write(teaminfoline, 9, "", style50)
-                sheet6.write(teaminfoline, 10, "", style50)
-                sheet6.write(teaminfoline, 11, "", style50)
-                sheet6.write(teaminfoline, 12, "", style50)
-                sheet6.write(teaminfoline, 13, "", style50)
-                sheet6.write(teaminfoline, 14, "", style50)
-                sheet6.write(teaminfoline, 15, "", style50)
-                sheet6.write(teaminfoline, 16, "", style50)
-                sheet6.write(teaminfoline, 17, "", style50)
-                sheet6.write(teaminfoline, 18, "", style50)
-                sheet6.write(teaminfoline, 19, "", style50)
-                sheet6.write(teaminfoline, 20, "", style50)
+                for x in range (9,21):
+                    sheet6.write(teaminfoline, x, "", style50)
+
 
             elif float(flag) >= 30:
                 sheet6.write(teaminfoline, 8, str(flag) + "%", style30)
-                sheet6.write(teaminfoline, 9, "", style30)
-                sheet6.write(teaminfoline, 10, "", style30)
-                sheet6.write(teaminfoline, 11, "", style30)
-                sheet6.write(teaminfoline, 12, "", style30)
-                sheet6.write(teaminfoline, 13, "", style30)
-                sheet6.write(teaminfoline, 14, "", style30)
-                sheet6.write(teaminfoline, 15, "", style30)
-                sheet6.write(teaminfoline, 16, "", style30)
-                sheet6.write(teaminfoline, 17, "", style30)
-                sheet6.write(teaminfoline, 18, "", style30)
-                sheet6.write(teaminfoline, 19, "", style30)
-                sheet6.write(teaminfoline, 20, "", style30)
+                for x in range (9,21):
+                    sheet6.write(teaminfoline, x, "", style30)
+
 
             else:
                 sheet6.write(teaminfoline, 8, str(flag) + "%", style0)
-                sheet6.write(teaminfoline, 9, "", style0)
-                sheet6.write(teaminfoline, 10, "", style0)
-                sheet6.write(teaminfoline, 11, "", style0)
-                sheet6.write(teaminfoline, 12, "", style0)
-                sheet6.write(teaminfoline, 13, "", style0)
-                sheet6.write(teaminfoline, 14, "", style0)
-                sheet6.write(teaminfoline, 15, "", style0)
-                sheet6.write(teaminfoline, 16, "", style0)
-                sheet6.write(teaminfoline, 17, "", style0)
-                sheet6.write(teaminfoline, 18, "", style0)
-                sheet6.write(teaminfoline, 19, "", style0)
-                sheet6.write(teaminfoline, 20, "", style0)
+                for x in range (9,21):
+                    sheet6.write(teaminfoline, x, "", style0)
 
-            sheet6.write(sheetline, 0, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 1, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 2, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 3, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 4, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 5, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 6, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 7, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 8, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 9, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 10, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 11, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 12, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 13, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 14, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 15, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 16, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 17, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 18, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 19, "- - - - - - -", styleblank)
-            sheet6.write(sheetline, 20, "- - - - - - -", styleblank)
+            for x in range (0,21)
+                sheet6.write(sheetline, x, "- - - - - - -", styleblank)
 
             sheetline += 1
 
@@ -1598,7 +1422,7 @@ def excelscanworld():
                 time.sleep(0.1)
 
             sheetline += 1
-
+            
             sheet5.write(sheetline, 0, "- - - - - - -", styleblank)
             sheet5.write(sheetline, 1, "- - - - - - -", styleblank)
             sheet5.write(sheetline, 2, "- - - - - - -", styleblank)
