@@ -1422,41 +1422,12 @@ def excelscanworld():
                 time.sleep(0.1)
 
             sheetline += 1
-            
-            sheet5.write(sheetline, 0, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 1, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 2, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 3, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 4, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 5, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 6, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 7, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 8, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 9, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 10, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 11, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 12, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 13, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 14, "- - - - - - -", styleblank)
+            for x in range (0,15):
+                sheet5.write(sheetline, x, "- - - - - - -", styleblank)
 
             sheetline += 1
-
-            sheet5.write(sheetline, 0, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 1, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 2, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 3, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 4, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 5, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 6, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 7, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 8, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 9, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 10, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 11, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 12, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 13, "- - - - - - -", styleblank)
-            sheet5.write(sheetline, 14, "- - - - - - -", styleblank)
-
+            for x in range (0,15):
+                sheet5.write(sheetline, x, "- - - - - - -", styleblank)
             sheetline += 1
 
             decimal = (time.time() - start)
