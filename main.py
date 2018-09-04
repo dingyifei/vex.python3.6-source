@@ -679,7 +679,7 @@ def excelgetalldata():  # 203
             elif float(flag) >= 50:
                 sheet3.write(teaminfoline, 8, str(flag) + "%", style50)
                 for x in range(9, 21):
-                    sheet3.write(teaminfoline, x "", style50)
+                    sheet3.write(teaminfoline, x, "", style50)
 
             elif float(flag) >= 30:
                 sheet3.write(teaminfoline, 8, str(flag) + "%", style30)
@@ -1182,8 +1182,8 @@ def excelgetweneed():  # 205
                 for x in range(9, 21):
                     sheet6.write(teaminfoline, x, "", style0)
 
-            for x in range(0, 21)
-            sheet6.write(sheetline, x, "- - - - - - -", styleblank)
+            for x in range(0, 21):
+                sheet6.write(sheetline, x, "- - - - - - -", styleblank)
 
             sheetline += 1
 
