@@ -11,13 +11,91 @@ import os  # , errno
 #from math import pi
 from decimal import getcontext, Decimal
 
+
+def mode():
+    while True:
+        mode = int(input(
+            "Mode \n 1.Scan Team Matches \n 2.Excel Functions [Not Finished] \n 3.Search Team Season History \n 5.For Copyright License\n 6.Discord Link \n 8.Get Important Info For a Team \n 9.Change Log\n 0.Quit \n"))
+        if mode == 1:
+            print("Mode = Scan Team Matches")
+            time.sleep(0.3)
+            scanteammatches()
+        elif mode == 2:
+            print("Mode = Excels")
+            #sleeptimer = float(input("Set Sleep Time\n"))
+            print(
+                "1.Scan Teams \n2.Scan Matches [Don't use this]\n3.Write Team Important Data\n4.Don't Ues This\n5.Can Specific Match [PreSet World Championship]\n6.Get We Need")
+            time.sleep(0.3)
+            excelmode = int(input())
+
+            if excelmode == 1:
+                print("Mode = Scan Teams and Write to Excel")
+                time.sleep(0.3)
+                excelscanteams()
+            elif excelmode == 2:
+                print("Mode = Write Team Matches [Don't use this]")
+                time.sleep(0.3)
+                excelteammatches()
+            elif excelmode == 3:
+                print("Mode = Write Team Important Data in Excel")
+                time.sleep(0.3)
+                excelgetalldata()
+            elif excelmode == 4:
+                print("Mode = Scan Bugged Team [It will crash]")
+                time.sleep(0.3)
+                excelgetallbugs()
+            elif excelmode == 5:
+                print("Mode = Scan World Championship")
+                time.sleep(0.3)
+                excelscanworld()
+            elif excelmode == 6:
+                print("Mode = Scan We Need")
+                time.sleep(0.3)
+                excelgetweneed()
+
+        elif mode == 3:
+            print("Mode = Search Team History : Current Season")
+            time.sleep(0.3)
+            searchteamcurrentseason()
+        elif mode == 4:
+            print("Bubble!")
+            timeisout()
+            answer()
+        elif mode == 5:
+            print("Mode = Copyright Licence")
+            time.sleep(0.3)
+            cc()
+        elif mode == 6:
+            print("Mode = Discord Invite")
+            time.sleep(0.3)
+            dis()
+        elif mode == 7:
+            print("Mode = Empty")
+            time.sleep(0.3)
+            empty()
+        elif mode == 8:
+            print("Mode = Get Important Data")
+            time.sleep(0.3)
+            getalldata()
+        elif mode == 9:
+            print("Change Log:")
+            time.sleep(0.3)
+            changelog()
+        elif mode == 0:
+            print("Thanks for using it!")
+            time.sleep(0.3)
+            quit()
+        else:
+            print("Mode Unknown")
+            time.sleep(1)
+
+        return None
+
+
+# preload
 getcontext().prec = 6
-
-# -----------------------------------------------------------------------------------------------------------------------
 sleeptimer = 0
-
 book = xlwt.Workbook(encoding="utf-8")
-
 sheet1 = book.add_sheet("#Cover", cell_overwrite_ok=True)
 sheet2 = book.add_sheet("#Matches", cell_overwrite_ok=True)
 sheet3 = book.add_sheet("#Important Data", cell_overwrite_ok=True)
@@ -29,7 +107,6 @@ sheet8 = book.add_sheet("#Team Spot 2", cell_overwrite_ok=True)
 sheet9 = book.add_sheet("#Team Spot 3", cell_overwrite_ok=True)
 sheet10 = book.add_sheet("#Team Spot 4", cell_overwrite_ok=True)
 sheet11 = book.add_sheet("#Bugged Teams", cell_overwrite_ok=True)
-
 now = time.strftime("%c")
 timenow = "Last Update:" + time.strftime("%c")
 sheet1.write(2, 1, timenow)
@@ -43,12 +120,14 @@ style3 = xlwt.easyxf(
     'pattern: pattern solid, fore_colour pink;''font: colour white, bold True;')
 style4 = xlwt.easyxf(
     'pattern: pattern solid, fore_colour pale_blue;''font: colour white, bold True;')
-stylered = xlwt.easyxf('font: colour red, bold True;')
-styleblue = xlwt.easyxf('font: colour blue, bold True;')
+stylered = xlwt.easyxf(
+    'font: colour red, bold True;')
+styleblue = xlwt.easyxf(
+    'font: colour blue, bold True;')
 styleblank = xlwt.easyxf(
     'pattern: pattern solid, fore_colour black;''font: colour white, bold True;')
-styleb = xlwt.easyxf('font: colour black, bold True;')
-
+styleb = xlwt.easyxf(
+    'font: colour black, bold True;')
 style70 = xlwt.easyxf(
     'pattern: pattern solid, fore_colour red;''font: colour white, bold True;')
 style50 = xlwt.easyxf(
@@ -66,16 +145,19 @@ sheet2.write(0, 4, "Ranking")
 sheet2.write(0, 5, "Highest")
 sheet2.write(0, 6, "Result")
 
+# Start!
+print("[VEXDB Reader] By Team 35211C, Haorui Zhou")
+print("Version 1.2 Update: 2018/4/25 21:11")
+print("Copyright: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License")
+print("Learn more about CC BY-NC-SA 4.0: Choose '5' in Mode")
+print("Contact Info: Discord Yingfeng#8524")
+time.sleep(0.5)
+input("Press Any Key to Start!\n")
+mode()
+
 
 class global_var:
     r = ""
-
-    teamr1 = ""
-    teamr2 = ""
-    teamr3 = ""
-    teamb1 = ""
-    teamb2 = ""
-    teamb3 = ""
 
     teamr1 = ""
     teamr2 = ""
@@ -2333,99 +2415,6 @@ def answer():
     input("Press Any Key to Continue\n")
     mode()
 
-
-def mode():
-    while True:
-        mode = int(input(
-            "Mode \n 1.Scan Team Matches \n 2.Excel Functions [Not Finished] \n 3.Search Team Season History \n 5.For Copyright License\n 6.Discord Link \n 8.Get Important Info For a Team \n 9.Change Log\n 0.Quit \n"))
-        if mode == 1:
-            print("Mode = Scan Team Matches")
-            time.sleep(0.3)
-            scanteammatches()
-        elif mode == 2:
-            print("Mode = Excels")
-            #sleeptimer = float(input("Set Sleep Time\n"))
-            print(
-                "1.Scan Teams \n2.Scan Matches [Don't use this]\n3.Write Team Important Data\n4.Don't Ues This\n5.Can Specific Match [PreSet World Championship]\n6.Get We Need")
-            time.sleep(0.3)
-            excelmode = int(input())
-
-            if excelmode == 1:
-                print("Mode = Scan Teams and Write to Excel")
-                time.sleep(0.3)
-                excelscanteams()
-            elif excelmode == 2:
-                print("Mode = Write Team Matches [Don't use this]")
-                time.sleep(0.3)
-                excelteammatches()
-            elif excelmode == 3:
-                print("Mode = Write Team Important Data in Excel")
-                time.sleep(0.3)
-                excelgetalldata()
-            elif excelmode == 4:
-                print("Mode = Scan Bugged Team [It will crash]")
-                time.sleep(0.3)
-                excelgetallbugs()
-            elif excelmode == 5:
-                print("Mode = Scan World Championship")
-                time.sleep(0.3)
-                excelscanworld()
-            elif excelmode == 6:
-                print("Mode = Scan We Need")
-                time.sleep(0.3)
-                excelgetweneed()
-
-        elif mode == 3:
-            print("Mode = Search Team History : Current Season")
-            time.sleep(0.3)
-            searchteamcurrentseason()
-        elif mode == 4:
-            print("Bubble!")
-            timeisout()
-            answer()
-        elif mode == 5:
-            print("Mode = Copyright Licence")
-            time.sleep(0.3)
-            cc()
-        elif mode == 6:
-            print("Mode = Discord Invite")
-            time.sleep(0.3)
-            dis()
-        elif mode == 7:
-            print("Mode = Empty")
-            time.sleep(0.3)
-            empty()
-        elif mode == 8:
-            print("Mode = Get Important Data")
-            time.sleep(0.3)
-            getalldata()
-        elif mode == 9:
-            print("Change Log:")
-            time.sleep(0.3)
-            changelog()
-        elif mode == 0:
-            print("Thanks for using it!")
-            time.sleep(0.3)
-            quit()
-        else:
-            print("Mode Unknown")
-            time.sleep(1)
-
-        return None
-
-
-# Start!
-print("[VEXDB Reader] By Team 35211C, Haorui Zhou")
-print("Version 1.2 Update: 2018/4/25 21:11")
-print("Copyright: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License")
-print("Learn more about CC BY-NC-SA 4.0: Choose '5' in Mode")
-print("Contact Info: Discord Yingfeng#8524")
-time.sleep(0.5)
-input("Press Any Key to Start!\n")
-
-mode()
-
-# End!
 
 '''
 def graphred():
