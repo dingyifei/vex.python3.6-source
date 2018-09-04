@@ -673,24 +673,24 @@ def excelgetalldata():  # 203
 
             if float(flag) >= 70:
                 sheet3.write(teaminfoline, 8, str(flag) + "%", style70)
-                for x in range (9,21):
+                for x in range(9, 21):
                     sheet3.write(teaminfoline, x, "", style70)
 
             elif float(flag) >= 50:
                 sheet3.write(teaminfoline, 8, str(flag) + "%", style50)
-                for x in range (9,21):
+                for x in range(9, 21):
                     sheet3.write(teaminfoline, x "", style50)
 
             elif float(flag) >= 30:
                 sheet3.write(teaminfoline, 8, str(flag) + "%", style30)
-                for x in range (9,21):
+                for x in range(9, 21):
                     sheet3.write(teaminfoline, x, "", style30)
 
             else:
                 sheet3.write(teaminfoline, 8, str(flag) + "%", style0)
-                for x in range (9,21):
+                for x in range(9, 21):
                     sheet3.write(teaminfoline, x, "", style0)
-            for x in range (0,21):
+            for x in range(0, 21):
                 sheet3.write(sheetline, x, "- - - - - - -", styleblank)
 
             sheetline += 1
@@ -918,26 +918,25 @@ def excelgetallbugs():  # 204
 
             if float(flag) >= 70:
                 sheet10.write(teaminfoline, 8, str(flag) + "%", style70)
-                for x in range (9,21):
+                for x in range(9, 21):
                     sheet10.write(teaminfoline, x, "", style70)
 
             elif float(flag) >= 50:
                 sheet10.write(teaminfoline, 8, str(flag) + "%", style50)
-                for x in range (9,21):
+                for x in range(9, 21):
                     sheet10.write(teaminfoline, x, "", style50)
 
             elif float(flag) >= 30:
                 sheet10.write(teaminfoline, 8, str(flag) + "%", style30)
-                for x in range (9,21):
+                for x in range(9, 21):
                     sheet10.write(teaminfoline, x, "", style30)
 
             else:
                 sheet10.write(teaminfoline, 8, str(flag) + "%", style0)
-                for x in range (9,21):
+                for x in range(9, 21):
                     sheet10.write(teaminfoline, x, "", style0)
-            for x in range (0,21):
+            for x in range(0, 21):
                 sheet10.write(sheetline, x, "- - - - - - -", styleblank)
-            
 
             sheetline += 1
 
@@ -1165,28 +1164,26 @@ def excelgetweneed():  # 205
 
             if float(flag) >= 70:
                 sheet6.write(teaminfoline, 8, str(flag) + "%", style70)
-                for x in range (9,21):
+                for x in range(9, 21):
                     sheet6.write(teaminfoline, x, "", style70)
 
             elif float(flag) >= 50:
                 sheet6.write(teaminfoline, 8, str(flag) + "%", style50)
-                for x in range (9,21):
+                for x in range(9, 21):
                     sheet6.write(teaminfoline, x, "", style50)
-
 
             elif float(flag) >= 30:
                 sheet6.write(teaminfoline, 8, str(flag) + "%", style30)
-                for x in range (9,21):
+                for x in range(9, 21):
                     sheet6.write(teaminfoline, x, "", style30)
-
 
             else:
                 sheet6.write(teaminfoline, 8, str(flag) + "%", style0)
-                for x in range (9,21):
+                for x in range(9, 21):
                     sheet6.write(teaminfoline, x, "", style0)
 
-            for x in range (0,21)
-                sheet6.write(sheetline, x, "- - - - - - -", styleblank)
+            for x in range(0, 21)
+            sheet6.write(sheetline, x, "- - - - - - -", styleblank)
 
             sheetline += 1
 
@@ -1422,11 +1419,11 @@ def excelscanworld():
                 time.sleep(0.1)
 
             sheetline += 1
-            for x in range (0,15):
+            for x in range(0, 15):
                 sheet5.write(sheetline, x, "- - - - - - -", styleblank)
 
             sheetline += 1
-            for x in range (0,15):
+            for x in range(0, 15):
                 sheet5.write(sheetline, x, "- - - - - - -", styleblank)
             sheetline += 1
 
@@ -2274,6 +2271,7 @@ def graphbubble():
         print("Previous deleted.")
         time.sleep(1)
     except OSError:
+        print("something is not right")
         pass
     plt.xlabel(
         "Skill / [Defensive]")
