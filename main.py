@@ -1,17 +1,17 @@
 import json
+import os
 import pprint
 import time
 import webbrowser
 import xlwt
 import matplotlib.pyplot as plt
-import os
+import pandas as pd
 from decimal import getcontext, Decimal
+from math import pi
 
 # import errno
-# import pandas as pd
 # import numpy as np
 # import seaborn as sns
-# from math import pi
 
 
 # preload
@@ -69,21 +69,26 @@ sheet2.write(0, 5, "Highest")
 sheet2.write(0, 6, "Result")
 
 
-
 class global_var:
-    r = ""
+    r = "" #nothing use it as public
 
+    # used in graphbubble, graphred, timeisout
     teamr1 = ""
     teamr2 = ""
     teamr3 = ""
 
+    # used in graphbubble, graphblue, timeisout
     teamb1 = ""
     teamb2 = ""
     teamb3 = ""
 
+    #this is some real public!
     teamsent = ""
+
+    # only used in teamskill and timeisout
     teamname = ""
 
+    # they have no use
     teamr1skill = 0
     teamr2skill = 0
     teamr3skill = 0
@@ -91,22 +96,180 @@ class global_var:
     teamb2skill = 0
     teamb3skill = 0
 
+
+    # used in graphbubble, graphred, timeisout
     teamr1wins = 0
     teamr2wins = 0
     teamr3wins = 0
+
+    # used in graphbubble, graphblue, timeisout
     teamb1wins = 0
     teamb2wins = 0
     teamb3wins = 0
 
+    # only used in teamsent
     teamwins = 0
 
+    # only used in teamskill
     teamskill = 0
 
+    #used in answer only
     teamrskill = 0
     teambskill = 0
 
+    # used in teamskill and timeisout
     skillave = 0
 
+    # used in answer, graphbubble, graphred, timeisout
+    teamr1skillout = 0
+    teamr2skillout = 0
+    teamr3skillout = 0
+    teamb1skillout = 0
+    teamb2skillout = 0
+    teamb3skillout = 0
+
+    # no use
+    teamr1worldexp = 0
+    teamr2worldexp = 0
+    teamr3worldexp = 0
+    teamb1worldexp = 0
+    teamb2worldexp = 0
+    teamb3worldexp = 0
+    teamrworldexpave = 0
+    teambworldexpave = 0
+
+    # only graphbubble, graphred, and timeisout
+    teamr1ap = 0
+    teamr2ap = 0
+    teamr3ap = 0
+
+    # only graphbubble, graphblue, and timeisout
+    teamb1ap = 0
+    teamb2ap = 0
+    teamb3ap = 0
+
+    # only teamap
+    teamap = 0
+
+    # only teamranking
+    teamranking = 0
+
+    # only graphbubble, graphred, and timeisout
+    teamr1ranking = 0
+    teamr2ranking = 0
+    teamr3ranking = 0
+
+    # only graphbubble, graphblue, and timeisout
+    teamb1ranking = 0
+    teamb2ranking = 0
+    teamb3ranking = 0
+
+    # only teamhighest
+    teamhighest = 0
+
+    # only graphbubble, graphred, and timeisout
+    teamr1highest = 0
+    teamr2highest = 0
+    teamr3highest = 0
+
+    # only graphbubble, graphblue, and timeisout
+    teamb1highest = 0
+    teamb2highest = 0
+    teamb3highest = 0
+
+    # only graphbubble and timeisout
+    teamr1ccwm = 0
+    teamr2ccwm = 0
+    teamr3ccwm = 0
+    teamb1ccwm = 0
+    teamb2ccwm = 0
+    teamb3ccwm = 0
+
+    # only teamccwm
+    teamccwm = 0
+
+    # only graphbubble and timeisout
+    teamr1opr = 0
+    teamr2opr = 0
+    teamr3opr = 0
+    teamb1opr = 0
+    teamb2opr = 0
+    teamb3opr = 0
+
+    #only teamopr
+    teamopr = 0
+
+    # only graphbubble and timeisout
+    teamr1dpr = 0
+    teamr2dpr = 0
+    teamr3dpr = 0
+    teamb1dpr = 0
+    teamb2dpr = 0
+    teamb3dpr = 0
+
+    # Only teampr
+    teamdpr = 0
+
+    # Only timeisout
+    presetname1 = "prac15"
+    presetname2 = "qual12"
+    presetname3 = "qual38"
+    presetname4 = "qual70"
+    presetname5 = "qual89"
+    presetname6 = "qual111"
+    presetname7 = "qual135"
+    presetname8 = "qual167"
+    presetname9 = "qual186"
+    presetname10 = "qual198"
+
+    # Only timeisout
+    graphpreset1 = "1064A,365X,,1437Z,35211C,"
+    graphpreset2 = "35211C,81K,,2719B,10955M,"
+    graphpreset3 = "17071B,934Z,,35211C,9551B,"
+    graphpreset4 = "35211C,7853A,,624K,4815B,"
+    graphpreset5 = "1961U,35211C,,7258B,7536B,"
+    graphpreset6 = "8110B,169A,,35211C,9228A,"
+    graphpreset7 = "35211C,6627A,,98807A,6741A,"
+    graphpreset8 = "2360S,9932E,,5139A,35211C,"
+    graphpreset9 = "3269B,3767A,,35211C,8192B,"
+    graphpreset10 = "35211C,9060C,,2U,97934U,"
+
+    # Only teamcurrent and timeisout
+    inputmode = ""
+
+    # Only teamcurrent and timeisout
+    currentranking = 0
+    currentwins = 0
+    currentlosses = 0
+
+    # only graphbubble and timeisout
+    teamr1currentranking = 0
+    teamr2currentranking = 0
+    teamr3currentranking = 0
+    teamb1currentranking = 0
+    teamb2currentranking = 0
+    teamb3currentranking = 0
+
+    # only graphbubble and timeisout
+    teamr1currentwins = 0
+    teamr2currentwins = 0
+    teamr3currentwins = 0
+    teamb1currentwins = 0
+    teamb2currentwins = 0
+    teamb3currentwins = 0
+
+    # only graphbubble and timeisout
+    teamr1currentlosses = 0
+    teamr2currentlosses = 0
+    teamr3currentlosses = 0
+    teamb1currentlosses = 0
+    teamb2currentlosses = 0
+    teamb3currentlosses = 0
+
+    CONST_match = "&sku=RE-VRC-17-3805" #Only used in Team current
+
+
+    #the crap I don't want to locate
     winsave = 0
     winstotal = 0
     apave = 0
@@ -122,129 +285,6 @@ class global_var:
     ccwmtotal = 0
     ccwmave = 0
 
-    teamr1skillout = 0
-    teamr2skillout = 0
-    teamr3skillout = 0
-    teamb1skillout = 0
-    teamb2skillout = 0
-    teamb3skillout = 0
-
-    teamr1worldexp = 0
-    teamr2worldexp = 0
-    teamr3worldexp = 0
-    teamb1worldexp = 0
-    teamb2worldexp = 0
-    teamb3worldexp = 0
-    teamrworldexpave = 0
-    teambworldexpave = 0
-
-    teamr1ap = 0
-    teamr2ap = 0
-    teamr3ap = 0
-    teamb1ap = 0
-    teamb2ap = 0
-    teamb3ap = 0
-
-    teamap = 0
-
-    teamranking = 0
-
-    teamr1ranking = 0
-    teamr2ranking = 0
-    teamr3ranking = 0
-    teamb1ranking = 0
-    teamb2ranking = 0
-    teamb3ranking = 0
-
-    teamhighest = 0
-
-    teamr1highest = 0
-    teamr2highest = 0
-    teamr3highest = 0
-    teamb1highest = 0
-    teamb2highest = 0
-    teamb3highest = 0
-
-    teamr1ccwm = 0
-    teamr2ccwm = 0
-    teamr3ccwm = 0
-    teamb1ccwm = 0
-    teamb2ccwm = 0
-    teamb3ccwm = 0
-
-    teamccwm = 0
-
-    teamr1opr = 0
-    teamr2opr = 0
-    teamr3opr = 0
-    teamb1opr = 0
-    teamb2opr = 0
-    teamb3opr = 0
-
-    teamopr = 0
-
-    teamr1dpr = 0
-    teamr2dpr = 0
-    teamr3dpr = 0
-    teamb1dpr = 0
-    teamb2dpr = 0
-    teamb3dpr = 0
-
-    teamdpr = 0
-
-    presetname1 = "prac15"
-    presetname2 = "qual12"
-    presetname3 = "qual38"
-    presetname4 = "qual70"
-    presetname5 = "qual89"
-    presetname6 = "qual111"
-    presetname7 = "qual135"
-    presetname8 = "qual167"
-    presetname9 = "qual186"
-    presetname10 = "qual198"
-
-    graphpreset1 = "1064A,365X,,1437Z,35211C,"
-    graphpreset2 = "35211C,81K,,2719B,10955M,"
-    graphpreset3 = "17071B,934Z,,35211C,9551B,"
-    graphpreset4 = "35211C,7853A,,624K,4815B,"
-    graphpreset5 = "1961U,35211C,,7258B,7536B,"
-    graphpreset6 = "8110B,169A,,35211C,9228A,"
-    graphpreset7 = "35211C,6627A,,98807A,6741A,"
-    graphpreset8 = "2360S,9932E,,5139A,35211C,"
-    graphpreset9 = "3269B,3767A,,35211C,8192B,"
-    graphpreset10 = "35211C,9060C,,2U,97934U,"
-
-    inputmode = ""
-
-    currentranking = 0
-    currentwins = 0
-    currentlosses = 0
-
-    teamr1currentranking = 0
-    teamr2currentranking = 0
-    teamr3currentranking = 0
-    teamb1currentranking = 0
-    teamb2currentranking = 0
-    teamb3currentranking = 0
-
-    teamr1currentwins = 0
-    teamr2currentwins = 0
-    teamr3currentwins = 0
-    teamb1currentwins = 0
-    teamb2currentwins = 0
-    teamb3currentwins = 0
-
-    teamr1currentlosses = 0
-    teamr2currentlosses = 0
-    teamr3currentlosses = 0
-    teamb1currentlosses = 0
-    teamb2currentlosses = 0
-    teamb3currentlosses = 0
-
-    CONST_match = "&sku=RE-VRC-17-3805"
-
-
-# -----------------------------------------------------------------------------------------------------------------------
 
 def scanteammatches():
     name = input('Team #?\n')
@@ -419,7 +459,6 @@ def excelscanteams():  # 201
             time.sleep(2)
 
     # time.sleep(1)
-    return None
 
 
 def excelgetalldata():  # 203
@@ -825,7 +864,7 @@ def excelgetallbugs():  # 204
 
                 line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = ' \
                        '{} || Blue Alliance 1 = {} Blue Alliance 2 = {} Blue Alliance 3 = {} Blue Sit = {} || Red ' \
-                       'Score = {} Blue Score = {}'\
+                       'Score = {} Blue Score = {}' \
                     .format(r["sku"], r["matchnum"], r["round"], r["red1"], r["red2"], r["red3"], r["redsit"],
                             r["blue1"], r["blue2"], r["blue3"], r["bluesit"], r["redscore"], r["bluescore"])
 
@@ -943,7 +982,7 @@ def excelgetallbugs():  # 204
             ave = (float(decimal) / (int(number)))
             ave = Decimal.from_float(ave).quantize(Decimal('0.0'))
 
-            eta = (float(ave) * ((int(len(list1) - (int(number))))))
+            eta = float(ave) * (int(len(list1) - (int(number))))
             etatomin = (float(eta) / 60)
             etatomin = Decimal.from_float(etatomin).quantize(Decimal('0.0'))
 
@@ -1110,9 +1149,9 @@ def excelgetweneed():  # 205
                 elif int(dataredsc) < int(databluesc):
                     sheet6.write(sheetline, 14, "Blue", style2)
 
-                if (int(dataredsc) + 20 < int(databluesc)):
+                if int(dataredsc) + 20 < int(databluesc):
                     sheet6.write(sheetline, 14, "Blue Easy", style4)
-                elif (int(dataredsc) - 20 > int(databluesc)):
+                elif int(dataredsc) - 20 > int(databluesc):
                     sheet6.write(sheetline, 14, "Red Easy", style3)
 
                 if datared1 == teamloop or datared2 == teamloop or datared3 == teamloop:
@@ -1191,7 +1230,7 @@ def excelgetweneed():  # 205
             ave = (float(decimal) / (int(number)))
             ave = Decimal.from_float(ave).quantize(Decimal('0.0'))
 
-            eta = (float(ave) * ((int(len(list1) - (int(number))))))
+            eta = float(ave) * (int(len(list1) - (int(number))))
             etatomin = (float(eta) / 60)
             etatomin = Decimal.from_float(etatomin).quantize(Decimal('0.0'))
 
@@ -1389,9 +1428,9 @@ def excelscanworld():
                 elif int(dataredsc) < int(databluesc):
                     sheet5.write(sheetline, 14, "Blue", style2)
 
-                if (int(dataredsc) + 20 < int(databluesc)):
+                if int(dataredsc) + 20 < int(databluesc):
                     sheet5.write(sheetline, 14, "Blue Easy", style4)
-                elif (int(dataredsc) - 20 > int(databluesc)):
+                elif int(dataredsc) - 20 > int(databluesc):
                     sheet5.write(sheetline, 14, "Red Easy", style3)
 
                 if datared1 == teamloop or datared2 == teamloop or datared3 == teamloop:
@@ -1432,7 +1471,7 @@ def excelscanworld():
             ave = (float(decimal) / (int(number)))
             ave = Decimal.from_float(ave).quantize(Decimal('0.0'))
 
-            eta = (float(ave) * ((int(len(list1) - (int(number))))))
+            eta = float(ave) * (int(len(list1) - (int(number))))
             etatomin = (float(eta) / 60)
             etatomin = Decimal.from_float(etatomin).quantize(Decimal('0.0'))
 
@@ -1444,31 +1483,24 @@ def excelscanworld():
         if number >= 5:
             number = 0
             sheetline = 1
-            print('')
-            print('reset and xls saved!')
+            print('\n reset and xls saved!')
 
 
 # Need to test when competition start
+
 
 def excelteammatches():
     name = input('Team #?\n')
     print('Checking, TEAM %s.' % name)
 
     from urllib.request import urlopen
-
     r = urlopen('https://api.vexdb.io/v1/get_matches?team=' +
                 name + '&season=Turning%20Point')
-
     text = r.read()
-
     pprint.pprint(json.loads(text))
-
     json_dict = json.loads(text)
-
     print('\n')
-
     output = []
-
     for r in json_dict["result"]:
         line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = {} || ' \
                'Blue Alliance 1 = {} Blue Alliance 2 = {} Blue Alliance 3 = {} Blue Sit = {} || Red Score = {} Blue ' \
@@ -1476,38 +1508,28 @@ def excelteammatches():
             .format(r["sku"], r["matchnum"], r["round"], r["red1"], r["red2"], r["red3"], r["redsit"], r["blue1"],
                     r["blue2"], r["blue3"], r["bluesit"], r["redscore"], r["bluescore"])
         output.append(line)
-
     pprint.pprint(output)
     time.sleep(1)
-
     return None
 
 
 def searchteamcurrentseason():
     name = str(input('Team #?\n'))
     print('Checking, TEAM %s.' % name)
-
     from urllib.request import urlopen
     r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
                 name + '&season=Turning%20Point')
     text = r.read()
-
     pprint.pprint(json.loads(text))
-
     json_dict = json.loads(text)
-
     print('\n')
-
     output = []
-
     for r in json_dict["result"]:
         line = "Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}" \
             .format(r["team"], r["wins"], r["losses"], r["ap"], r["rank"], r["max_score"])
         output.append(line)
-
     pprint.pprint(output)
     time.sleep(1)
-
     return None
 
 
@@ -1516,44 +1538,28 @@ def getalldata():
     print("This will show the recent three matches.")
     name = str(input('Team #?\n'))
     print('Checking, TEAM %s.' % name)
-
     from urllib.request import urlopen
     r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
                 name + '&season=Turning%20Point')
     text = r.read()
-
     # pprint.pprint(json.loads(text))
-
     json_dict = json.loads(text)
-
     # print('\n')
-
     output = []
-
     for r in json_dict["result"]:
         line = "Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}" \
             .format(r["team"], r["wins"], r["losses"], r["ap"], r["rank"], r["max_score"])
         output.append(line)
-
     pprint.pprint(output)
-
     from urllib.request import urlopen
-
     r = urlopen('https://api.vexdb.io/v1/get_matches?team=' +
                 name + '&season=Turning%20Point')
-
     text = r.read()
-
     # pprint.pprint(json.loads(text))
-
     json_dict = json.loads(text)
-
     # print('\n')
-
     output = []
-
     loop = 0
-
     for r in json_dict["result"]:
         line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = {} || ' \
                'Blue Alliance 1 = {} Blue Alliance 2 = {} Blue Alliance 3 = {} Blue Sit = {} || Red Score = {} Blue ' \
@@ -1570,30 +1576,29 @@ def getalldata():
     return None
 
 
-def changelog():
+def changelog():  # will remove
     print("Current Version: 1.1")
     print("1.1 - Add Copyright Information")
     print("1.0 - First Version")
     print()
     time.sleep(1)
-
     return None
 
 
-def empty():
+def empty():  # will remove
     print("Nothing here yet.")
     print("Return to Menu.")
     print()
     time.sleep(1)
 
 
-def cc():
+def cc():  # will remove
     print("Opening your browser and view https://creativecommons.org/licenses/by-nc-sa/4.0/ in 3 seconds.")
     time.sleep(3)
     webbrowser.open('https://creativecommons.org/licenses/by-nc-sa/4.0/')
 
 
-def dis():
+def dis():  ## will remove
     print("Opening your browser and view https://discord.gg/kBX4JHS in 3 seconds!")
     time.sleep(3)
     webbrowser.open('https://discord.gg/kBX4JHS')
@@ -1606,39 +1611,48 @@ def timeisout():
     teams = ""
     if global_var.inputmode == str(global_var.presetname1):
         teams = global_var.graphpreset1
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(',')
+        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
+            ',')
     elif global_var.inputmode == str(global_var.presetname2):
         teams = global_var.graphpreset2
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(',')
+        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
+            ',')
     elif global_var.inputmode == str(global_var.presetname3):
         teams = global_var.graphpreset3
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(',')
+        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
+            ',')
     elif global_var.inputmode == str(global_var.presetname4):
         teams = global_var.graphpreset4
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(',')
+        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
+            ',')
     elif global_var.inputmode == str(global_var.presetname5):
         teams = global_var.graphpreset5
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(',')
+        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
+            ',')
     elif global_var.inputmode == str(global_var.presetname6):
         teams = global_var.graphpreset6
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(',')
+        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
+            ',')
     elif global_var.inputmode == str(global_var.presetname7):
         teams = global_var.graphpreset7
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(',')
+        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
+            ',')
     elif global_var.inputmode == str(global_var.presetname8):
         teams = global_var.graphpreset8
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(',')
+        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
+            ',')
     elif global_var.inputmode == str(global_var.presetname9):
         teams = global_var.graphpreset9
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(',')
+        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
+            ',')
     elif global_var.inputmode == str(global_var.presetname10):
         teams = global_var.graphpreset10
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(',')
+        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
+            ',')
     else:
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = global_var.inputmode.split(',')
-
+        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = global_var.inputmode.split(
+            ',')
     # global_var.teamr1,global_var.teamr2,global_var.teamr3,global_var.teamb1,global_var.teamb2,global_var.teamb3 = input("Please input 6 teams separate by ,\n").split(',')
-
     print(
         "TR1: " + global_var.teamr1 + " TR2: " + global_var.teamr2 + " TR3: " + global_var.teamr3 + " || TB1: "
         + global_var.teamb1 + " TB2: " + global_var.teamb2 + " TB3: " + global_var.teamb3)
@@ -1660,6 +1674,7 @@ def timeisout():
         global_var.teamr1currentlosses = global_var.currentlosses
     else:
         print("Team Red 1 is blank.")
+
     if str(global_var.teamr2) != "":
         global_var.teamsent = global_var.teamr2
         global_var.teamname = global_var.teamr2
@@ -1753,7 +1768,7 @@ def timeisout():
     # print("Skill is average of all this season. Auto is the previous competition. (Should be the state final)")
     # print("Ranking is (10-Ranking), if the team is not the first 10th, it will show as 0.")
 
-    graphbubble()
+    graphbubble()  # pass value use arg instead of global
 
     return None
 
@@ -1793,9 +1808,7 @@ def teamskill():
     r = urlopen('https://api.vexdb.io/v1/get_skills?team=' +
                 global_var.teamsent + '&season=Turning%20Point')
     text = r.read()
-
     json_dict = json.loads(text)
-
     # output = []
     skilltotal = 0
     totalattempts = 0
@@ -1816,10 +1829,8 @@ def teamskill():
     decimal = skillave
     decimal = Decimal.from_float(decimal).quantize(Decimal('0.0'))
     global_var.skillave = decimal
-
     global_var.teamskill = float(global_var.skillave)
     print(global_var.teamname + ": " + str(global_var.skillave))
-
     teamsent()
 
 
@@ -1831,28 +1842,23 @@ def teamsent():
     from urllib.request import urlopen
     r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
                 global_var.teamsent + '&season=Turning%20Point')
-
     text = r.read()
-
     json_dict = json.loads(text)
     for r in json_dict["result"]:
         # line = '{}'.format(r["wins"])
         global_var.teamwins = '{}'.format(r["wins"])
         count += 1
         global_var.winstotal = global_var.teamwins + global_var.teamwins
-
         if global_var.teamwins == "" or global_var.teamwins == "":
             print("break cuz blank")
             count -= 1
             global_var.winsave = float(global_var.winstotal) / int(count)
             teamap()
-
         global_var.winsave = float(global_var.winstotal) / int(count)
-
     teamcurrent()
 
 
-def teamcurrent():
+def teamcurrent(): #can be part of teamsent()
     global_var.currentranking = 0
     global_var.currentwins = 0
     global_var.currentlosses = 0
@@ -1860,10 +1866,8 @@ def teamcurrent():
     r = urlopen(
         'https://api.vexdb.io/v1/get_rankings?team=' + global_var.teamsent + '&season=Turning%20Point'
         + global_var.CONST_match)
-
     text = r.read()
     json_dict = json.loads(text)
-
     for r in json_dict["result"]:
         # line = '{}'.format(r["rank"], r["wins"], r["losses"])
         # output.append(line)
@@ -1880,7 +1884,6 @@ def teamap():
     from urllib.request import urlopen
     r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
                 global_var.teamsent + '&season=Turning%20Point')
-
     text = r.read()
     json_dict = json.loads(text)
 
@@ -1890,6 +1893,7 @@ def teamap():
         global_var.teamap = '{}'.format(r["ap"])
         count += 1
         diff = 0
+
         if int(global_var.teamap) > 25:
             diff = (int(global_var.teamap) - 25) * 0.2
             global_var.teamap = 25 + float(diff)
@@ -1902,7 +1906,6 @@ def teamap():
             count -= 1
             global_var.teamap = global_var.apave
             teamranking()
-
     teamranking()
 
 
@@ -1914,10 +1917,8 @@ def teamranking():
     from urllib.request import urlopen
     r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
                 global_var.teamsent + '&season=Turning%20Point')
-
     text = r.read()
     json_dict = json.loads(text)
-
     for r in json_dict["result"]:
         # line = '{}'.format(r["rank"])
         # output.append(line)
@@ -1932,9 +1933,7 @@ def teamranking():
             count -= 1
             global_var.rankave = float(global_var.ranktotal) / int(count)
             teamhighest()
-
         global_var.rankave = float(global_var.teamranking) / int(count)
-
     teamhighest()
 
 
@@ -1945,10 +1944,8 @@ def teamhighest():
     from urllib.request import urlopen
     r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
                 global_var.teamsent + '&season=Turning%20Point')
-
     text = r.read()
     json_dict = json.loads(text)
-
     for r in json_dict["result"]:
         # line = '{}'.format(r["max_score"])
         # output.append(line)
@@ -1957,13 +1954,11 @@ def teamhighest():
         global_var.highesttotal = int(
             global_var.highesttotal) + int(global_var.teamhighest)
         global_var.highestave = int(global_var.highesttotal) / count
-
         if global_var.teamhighest == "":
             print("break cuz blank")
             count -= 1
             global_var.highestave = float(global_var.highesttotal) / int(count)
             teampr()
-
         global_var.highestave = float(global_var.highesttotal) / int(count)
     teampr()
 
@@ -1976,12 +1971,9 @@ def teampr():
     from urllib.request import urlopen
     r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
                 global_var.teamsent + '&season=Turning%20Point')
-
     text = r.read()
     json_dict = json.loads(text)
-
     count = 0
-
     for r in json_dict["result"]:
         # line = '{} {}'.format(r["opr"], r["dpr"])
         # output.append(line)
@@ -2024,40 +2016,32 @@ def teamccwm():
     from urllib.request import urlopen
     r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
                 global_var.teamsent + '&season=Turning%20Point')
-
     text = r.read()
     json_dict = json.loads(text)
-
     count = 0
-
     for r in json_dict["result"]:
         # line = '{}'.format(r["ccwm"])
         # output.append(line)
         global_var.teamccwm = '{}'.format(r["ccwm"])
         count += 1
-
         global_var.ccwmtotal = float(
             global_var.ccwmtotal) + float(global_var.teamccwm)
         global_var.ccwmave = float(global_var.ccwmtotal) / int(count)
-
         if global_var.teamccwm == "" or global_var.teamccwm == "":
             print("break cuz blank")
             count -= 18
             global_var.teamccwm = float(global_var.ccwmave)
             break
-
         global_var.teamccwm = float(global_var.ccwmave)
 
 
-def graphbubble():
+def graphbubble():  # it should be part of "timeisout"
     global_var.teamr1skillout = float(global_var.teamr1skillout) / 10
     global_var.teamr2skillout = float(global_var.teamr2skillout) / 10
     global_var.teamr3skillout = float(global_var.teamr3skillout) / 10
-
     global_var.teamr1ap = round(float(global_var.teamr1ap) / 5, 1)
     global_var.teamr2ap = round(float(global_var.teamr2ap) / 5, 1)
     global_var.teamr3ap = round(float(global_var.teamr3ap) / 5, 1)
-
     # The Formula
     global_var.teamr1ranking = int(10 - int(global_var.teamr1ranking))
     global_var.teamr2ranking = int(10 - int(global_var.teamr2ranking))
@@ -2315,8 +2299,8 @@ def answer():
     input("Press Any Key to Continue\n")
 
 
-'''
-def graphred():
+
+def graphred(): #nothing use this
     # Set data
     fig1 = plt.figure('Red')
 
@@ -2464,6 +2448,7 @@ def graphblue():
     # ------- PART 1: Create background
 
     # number of variable
+
     categories = list(df)[1:]
     N = len(categories)
 
@@ -2512,7 +2497,6 @@ def graphblue():
     plt.show()
     plt.close()
 
-'''
 
 
 # Start!
