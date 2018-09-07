@@ -18,6 +18,11 @@ from math import pi
 getcontext().prec = 6
 sleeptimer = 0
 book = xlwt.Workbook(encoding="utf-8")
+
+#title = ["#Cover", "#Matches", "#Important Data", "#Blank", "#For World", "#What We Need", "#Team Spot 1"
+#    , "#Team Spot 2", "#Team Spot 3", "#Team Spot 4", "#Bugged Teams"]
+
+
 sheet1 = book.add_sheet("#Cover", cell_overwrite_ok=True)
 sheet2 = book.add_sheet("#Matches", cell_overwrite_ok=True)
 sheet3 = book.add_sheet("#Important Data", cell_overwrite_ok=True)
@@ -29,6 +34,7 @@ sheet8 = book.add_sheet("#Team Spot 2", cell_overwrite_ok=True)
 sheet9 = book.add_sheet("#Team Spot 3", cell_overwrite_ok=True)
 sheet10 = book.add_sheet("#Team Spot 4", cell_overwrite_ok=True)
 sheet11 = book.add_sheet("#Bugged Teams", cell_overwrite_ok=True)
+
 now = time.strftime("%c")
 timenow = "Last Update:" + time.strftime("%c")
 sheet1.write(2, 1, timenow)
@@ -70,7 +76,7 @@ sheet2.write(0, 6, "Result")
 
 
 class global_var:
-    r = "" #nothing use it as public
+    r = ""  # nothing use it as public
 
     # used in graphbubble, graphred, timeisout
     teamr1 = ""
@@ -82,7 +88,7 @@ class global_var:
     teamb2 = ""
     teamb3 = ""
 
-    #this is some real public!
+    # this is some real public!
     teamsent = ""
 
     # only used in teamskill and timeisout
@@ -96,7 +102,6 @@ class global_var:
     teamb2skill = 0
     teamb3skill = 0
 
-
     # used in graphbubble, graphred, timeisout
     teamr1wins = 0
     teamr2wins = 0
@@ -106,16 +111,6 @@ class global_var:
     teamb1wins = 0
     teamb2wins = 0
     teamb3wins = 0
-
-    # only used in teamsent
-    teamwins = 0
-
-    # only used in teamskill
-    teamskill = 0
-
-    #used in answer only
-    teamrskill = 0
-    teambskill = 0
 
     # used in teamskill and timeisout
     skillave = 0
@@ -185,9 +180,6 @@ class global_var:
     teamb2ccwm = 0
     teamb3ccwm = 0
 
-    # only teamccwm
-    teamccwm = 0
-
     # only graphbubble and timeisout
     teamr1opr = 0
     teamr2opr = 0
@@ -196,7 +188,7 @@ class global_var:
     teamb2opr = 0
     teamb3opr = 0
 
-    #only teamopr
+    # only teamopr
     teamopr = 0
 
     # only graphbubble and timeisout
@@ -206,9 +198,6 @@ class global_var:
     teamb1dpr = 0
     teamb2dpr = 0
     teamb3dpr = 0
-
-    # Only teampr
-    teamdpr = 0
 
     # Only timeisout
     presetname1 = "prac15"
@@ -222,17 +211,6 @@ class global_var:
     presetname9 = "qual186"
     presetname10 = "qual198"
 
-    # Only timeisout
-    graphpreset1 = "1064A,365X,,1437Z,35211C,"
-    graphpreset2 = "35211C,81K,,2719B,10955M,"
-    graphpreset3 = "17071B,934Z,,35211C,9551B,"
-    graphpreset4 = "35211C,7853A,,624K,4815B,"
-    graphpreset5 = "1961U,35211C,,7258B,7536B,"
-    graphpreset6 = "8110B,169A,,35211C,9228A,"
-    graphpreset7 = "35211C,6627A,,98807A,6741A,"
-    graphpreset8 = "2360S,9932E,,5139A,35211C,"
-    graphpreset9 = "3269B,3767A,,35211C,8192B,"
-    graphpreset10 = "35211C,9060C,,2U,97934U,"
 
     # Only teamcurrent and timeisout
     inputmode = ""
@@ -266,10 +244,9 @@ class global_var:
     teamb2currentlosses = 0
     teamb3currentlosses = 0
 
-    CONST_match = "&sku=RE-VRC-17-3805" #Only used in Team current
+    CONST_match = "&sku=RE-VRC-17-3805"  # Only used in Team current
 
-
-    #the crap I don't want to locate
+    # the crap I don't want to locate
     winsave = 0
     winstotal = 0
     apave = 0
@@ -1609,50 +1586,8 @@ def timeisout():
     global_var.inputmode = str(
         input("Type in the preset value or 6 teams separate by ,\n"))
     teams = ""
-    if global_var.inputmode == str(global_var.presetname1):
-        teams = global_var.graphpreset1
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
-            ',')
-    elif global_var.inputmode == str(global_var.presetname2):
-        teams = global_var.graphpreset2
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
-            ',')
-    elif global_var.inputmode == str(global_var.presetname3):
-        teams = global_var.graphpreset3
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
-            ',')
-    elif global_var.inputmode == str(global_var.presetname4):
-        teams = global_var.graphpreset4
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
-            ',')
-    elif global_var.inputmode == str(global_var.presetname5):
-        teams = global_var.graphpreset5
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
-            ',')
-    elif global_var.inputmode == str(global_var.presetname6):
-        teams = global_var.graphpreset6
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
-            ',')
-    elif global_var.inputmode == str(global_var.presetname7):
-        teams = global_var.graphpreset7
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
-            ',')
-    elif global_var.inputmode == str(global_var.presetname8):
-        teams = global_var.graphpreset8
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
-            ',')
-    elif global_var.inputmode == str(global_var.presetname9):
-        teams = global_var.graphpreset9
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
-            ',')
-    elif global_var.inputmode == str(global_var.presetname10):
-        teams = global_var.graphpreset10
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = teams.split(
-            ',')
-    else:
-        global_var.teamr1, global_var.teamr2, global_var.teamr3, global_var.teamb1, global_var.teamb2, global_var.teamb3 = global_var.inputmode.split(
-            ',')
-    # global_var.teamr1,global_var.teamr2,global_var.teamr3,global_var.teamb1,global_var.teamb2,global_var.teamb3 = input("Please input 6 teams separate by ,\n").split(',')
+
+        # global_var.teamr1,global_var.teamr2,global_var.teamr3,global_var.teamb1,global_var.teamb2,global_var.teamb3 = input("Please input 6 teams separate by ,\n").split(',')
     print(
         "TR1: " + global_var.teamr1 + " TR2: " + global_var.teamr2 + " TR3: " + global_var.teamr3 + " || TB1: "
         + global_var.teamb1 + " TB2: " + global_var.teamb2 + " TB3: " + global_var.teamb3)
@@ -1829,7 +1764,7 @@ def teamskill():
     decimal = skillave
     decimal = Decimal.from_float(decimal).quantize(Decimal('0.0'))
     global_var.skillave = decimal
-    global_var.teamskill = float(global_var.skillave)
+    teamskill = float(global_var.skillave)
     print(global_var.teamname + ": " + str(global_var.skillave))
     teamsent()
 
@@ -1837,7 +1772,7 @@ def teamskill():
 def teamsent():
     count = 0
     global_var.winsave = 0
-    global_var.teamwins = 0
+    teamwins = 0
     global_var.winstotal = 0
     from urllib.request import urlopen
     r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
@@ -1846,10 +1781,10 @@ def teamsent():
     json_dict = json.loads(text)
     for r in json_dict["result"]:
         # line = '{}'.format(r["wins"])
-        global_var.teamwins = '{}'.format(r["wins"])
+        teamwins = '{}'.format(r["wins"])
         count += 1
-        global_var.winstotal = global_var.teamwins + global_var.teamwins
-        if global_var.teamwins == "" or global_var.teamwins == "":
+        global_var.winstotal = teamwins + teamwins
+        if teamwins == "" or teamwins == "":
             print("break cuz blank")
             count -= 1
             global_var.winsave = float(global_var.winstotal) / int(count)
@@ -1858,7 +1793,7 @@ def teamsent():
     teamcurrent()
 
 
-def teamcurrent(): #can be part of teamsent()
+def teamcurrent():  # can be part of teamsent()
     global_var.currentranking = 0
     global_var.currentwins = 0
     global_var.currentlosses = 0
@@ -1967,7 +1902,7 @@ def teampr():
     global_var.oprtotal = 0
     global_var.dprtotal = 0
     global_var.teamopr = 0
-    global_var.teamdpr = 0
+    teamdpr = 0
     from urllib.request import urlopen
     r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
                 global_var.teamsent + '&season=Turning%20Point')
@@ -1977,22 +1912,22 @@ def teampr():
     for r in json_dict["result"]:
         # line = '{} {}'.format(r["opr"], r["dpr"])
         # output.append(line)
-        global_var.teamopr = '{}'.format(r["opr"])
-        global_var.teamdpr = '{}'.format(r["dpr"])
-        global_var.teamopr = (float(global_var.teamopr) / 5)
-        global_var.teamdpr = (float(global_var.teamdpr) / 5)
+        teamopr = '{}'.format(r["opr"])
+        teamdpr = '{}'.format(r["dpr"])
+        teamopr = (float(global_var.teamopr) / 5)
+        teamdpr = (float(teamdpr) / 5)
         count += 1
         global_var.oprtotal = float(
             global_var.oprtotal) + float(global_var.teamopr)
         global_var.oprave = float(global_var.oprtotal) / int(count)
         global_var.dprtotal = float(
-            global_var.dprtotal) + float(global_var.teamdpr)
+            global_var.dprtotal) + float(teamdpr)
         global_var.dprave = float(global_var.dprtotal) / int(count)
 
-        if global_var.teamdpr == "" or global_var.teamopr == "":
+        if teamdpr == "" or global_var.teamopr == "":
             print("break cuz blank")
             count -= 1
-            global_var.teamdpr = float(global_var.dprave)
+            teamdpr = float(global_var.dprave)
             global_var.teamopr = float(global_var.oprave)
             teamccwm()
 
@@ -2003,14 +1938,14 @@ def teampr():
             line = '{} {}'.format(r["opr"], r["dpr"])
             # output.append(line)
             global_var.teamopr = '{}'.format(r["opr"])
-            global_var.teamdpr = '{}'.format(r["dpr"])
+            teamdpr = '{}'.format(r["dpr"])
             global_var.teamopr = (float(global_var.teamopr) / 5)
-            global_var.teamdpr = (float(global_var.teamdpr) / 5)
+            teamdpr = (float(teamdpr) / 5)
         '''
 
 
 def teamccwm():
-    global_var.teamccwm = 0
+    teamccwm = 0
     global_var.ccwmtotal = 0
     global_var.ccwmave = 0
     from urllib.request import urlopen
@@ -2022,17 +1957,17 @@ def teamccwm():
     for r in json_dict["result"]:
         # line = '{}'.format(r["ccwm"])
         # output.append(line)
-        global_var.teamccwm = '{}'.format(r["ccwm"])
+        teamccwm = '{}'.format(r["ccwm"])
         count += 1
         global_var.ccwmtotal = float(
-            global_var.ccwmtotal) + float(global_var.teamccwm)
+            global_var.ccwmtotal) + float(teamccwm)
         global_var.ccwmave = float(global_var.ccwmtotal) / int(count)
-        if global_var.teamccwm == "" or global_var.teamccwm == "":
+        if teamccwm == "" or teamccwm == "":
             print("break cuz blank")
             count -= 18
-            global_var.teamccwm = float(global_var.ccwmave)
+            teamccwm = float(global_var.ccwmave)
             break
-        global_var.teamccwm = float(global_var.ccwmave)
+        teamccwm = float(global_var.ccwmave)
 
 
 def graphbubble():  # it should be part of "timeisout"
@@ -2273,12 +2208,14 @@ def graphbubble():  # it should be part of "timeisout"
 def answer():
     # answerr = 0
     # answerb = 0
+
     teamrexist = 0
     teambexist = 0
-    global_var.teamrskill = float(global_var.teamr1skillout) + float(global_var.teamr2skillout) + float(
-        global_var.teamr3skillout)
-    global_var.teambskill = float(global_var.teamb1skillout) + float(global_var.teamb2skillout) + float(
-        global_var.teamb3skillout)
+
+    # teamrskill = float(global_var.teamr1skillout) + float(global_var.teamr2skillout) + float(
+    #     global_var.teamr3skillout)
+    # teambskill = float(global_var.teamb1skillout) + float(global_var.teamb2skillout) + float(
+    #     global_var.teamb3skillout)
     # teamrave = (float(global_var.teamrskill) / 3)
     # teambave = (float(global_var.teambskill)) / 3
 
@@ -2299,25 +2236,24 @@ def answer():
     input("Press Any Key to Continue\n")
 
 
-
-def graphred(): #nothing use this
+def graphred():  # nothing use this
     # Set data
     fig1 = plt.figure('Red')
 
-    global_var.teamr1skillout = float(global_var.teamr1skillout)/10
-    global_var.teamr2skillout = float(global_var.teamr2skillout)/10
-    global_var.teamr3skillout = float(global_var.teamr3skillout)/10
+    global_var.teamr1skillout = float(global_var.teamr1skillout) / 10
+    global_var.teamr2skillout = float(global_var.teamr2skillout) / 10
+    global_var.teamr3skillout = float(global_var.teamr3skillout) / 10
 
-    global_var.teamr1ap = round(float(global_var.teamr1ap)/5, 1)
-    global_var.teamr2ap = round(float(global_var.teamr2ap)/5, 1)
-    global_var.teamr3ap = round(float(global_var.teamr3ap)/5, 1)
+    global_var.teamr1ap = round(float(global_var.teamr1ap) / 5, 1)
+    global_var.teamr2ap = round(float(global_var.teamr2ap) / 5, 1)
+    global_var.teamr3ap = round(float(global_var.teamr3ap) / 5, 1)
 
-#The Formula
+    # The Formula
     global_var.teamr1ranking = int(10 - int(global_var.teamr1ranking))
     global_var.teamr2ranking = int(10 - int(global_var.teamr2ranking))
     global_var.teamr3ranking = int(10 - int(global_var.teamr3ranking))
 
-#/17
+    # /17
     global_var.teamr1highest = round(float(int(global_var.teamr1highest) / 17), 1)
     global_var.teamr2highest = round(float(int(global_var.teamr2highest) / 17), 1)
     global_var.teamr3highest = round(float(int(global_var.teamr3highest) / 17), 1)
@@ -2329,20 +2265,24 @@ def graphred(): #nothing use this
     if int(global_var.teamr3ranking) < 0:
         global_var.teamr3ranking = 0
 
-#Check
-    print("Skill " + str(global_var.teamr1skillout) + " " + str(global_var.teamr2skillout) + " " + str(global_var.teamr3skillout))
-    print("Season Wins " + str(global_var.teamr1wins) + " " + str(global_var.teamr2wins) + " " + str(global_var.teamr3wins))
+    # Check
+    print("Skill " + str(global_var.teamr1skillout) + " " + str(global_var.teamr2skillout) + " " + str(
+        global_var.teamr3skillout))
+    print("Season Wins " + str(global_var.teamr1wins) + " " + str(global_var.teamr2wins) + " " + str(
+        global_var.teamr3wins))
     print("AP " + str(global_var.teamr1ap) + " " + str(global_var.teamr2ap) + " " + str(global_var.teamr3ap))
-    print("Ranking " + str(global_var.teamr1ranking) + " " + str(global_var.teamr2ranking) + " " + str(global_var.teamr3ranking))
-    print("Highest " + str(global_var.teamr1highest) + " " + str(global_var.teamr2highest) + " " + str(global_var.teamr3highest))
+    print("Ranking " + str(global_var.teamr1ranking) + " " + str(global_var.teamr2ranking) + " " + str(
+        global_var.teamr3ranking))
+    print("Highest " + str(global_var.teamr1highest) + " " + str(global_var.teamr2highest) + " " + str(
+        global_var.teamr3highest))
 
     df = pd.DataFrame.from_items([
         ('group', ['A', 'B', 'C', 'D']),
         ('Skill', [global_var.teamr1skillout, global_var.teamr2skillout, global_var.teamr3skillout, 0]),
         ('Season Wins', [global_var.teamr1wins, global_var.teamr2wins, global_var.teamr3wins, 0]),
-        ('AP', [global_var.teamr1ap, global_var.teamr2ap, global_var.teamr3ap, 0]), #/5
-        ('Highest', [global_var.teamr1highest, global_var.teamr2highest, global_var.teamr3highest, 0]), #/15
-        ('Rankings', [global_var.teamr1ranking, global_var.teamr2ranking, global_var.teamr3ranking, 0]) #The Formula
+        ('AP', [global_var.teamr1ap, global_var.teamr2ap, global_var.teamr3ap, 0]),  # /5
+        ('Highest', [global_var.teamr1highest, global_var.teamr2highest, global_var.teamr3highest, 0]),  # /15
+        ('Rankings', [global_var.teamr1ranking, global_var.teamr2ranking, global_var.teamr3ranking, 0])  # The Formula
     ])
 
     # 'Skill': [global_var.teamr1skillout, global_var.teamr2skillout, global_var.teamr3skillout,0],
@@ -2397,24 +2337,25 @@ def graphred(): #nothing use this
     plt.show()
     plt.close()
 
+
 def graphblue():
     # Set data
     fig2 = plt.figure('Blue')
 
-    global_var.teamb1skillout = float(global_var.teamb1skillout)/10
-    global_var.teamb2skillout = float(global_var.teamb2skillout)/10
-    global_var.teamb3skillout = float(global_var.teamb3skillout)/10
+    global_var.teamb1skillout = float(global_var.teamb1skillout) / 10
+    global_var.teamb2skillout = float(global_var.teamb2skillout) / 10
+    global_var.teamb3skillout = float(global_var.teamb3skillout) / 10
 
-    global_var.teamb1ap = round(float(global_var.teamb1ap)/5, 1)
-    global_var.teamb2ap = round(float(global_var.teamb2ap)/5, 1)
-    global_var.teamb3ap = round(float(global_var.teamb3ap)/5, 1)
+    global_var.teamb1ap = round(float(global_var.teamb1ap) / 5, 1)
+    global_var.teamb2ap = round(float(global_var.teamb2ap) / 5, 1)
+    global_var.teamb3ap = round(float(global_var.teamb3ap) / 5, 1)
 
-#The Formula
+    # The Formula
     global_var.teamb1ranking = int(10 - int(global_var.teamb1ranking))
     global_var.teamb2ranking = int(10 - int(global_var.teamb2ranking))
     global_var.teamb3ranking = int(10 - int(global_var.teamb3ranking))
 
-#/17
+    # /17
     global_var.teamb1highest = round(float(int(global_var.teamb1highest) / 17), 1)
     global_var.teamb2highest = round(float(int(global_var.teamb2highest) / 17), 1)
     global_var.teamb3highest = round(float(int(global_var.teamb3highest) / 17), 1)
@@ -2426,20 +2367,24 @@ def graphblue():
     if int(global_var.teamb3ranking) <= 0:
         global_var.teamb3ranking = 0
 
-#Check
-    print("Skill " + str(global_var.teamb1skillout) + " " + str(global_var.teamb2skillout) + " " + str(global_var.teamb3skillout))
-    print("Season Wins " + str(global_var.teamb1wins) + " " + str(global_var.teamb2wins) + " " + str(global_var.teamb3wins))
+    # Check
+    print("Skill " + str(global_var.teamb1skillout) + " " + str(global_var.teamb2skillout) + " " + str(
+        global_var.teamb3skillout))
+    print("Season Wins " + str(global_var.teamb1wins) + " " + str(global_var.teamb2wins) + " " + str(
+        global_var.teamb3wins))
     print("AP " + str(global_var.teamb1ap) + " " + str(global_var.teamb2ap) + " " + str(global_var.teamb3ap))
-    print("Ranking " + str(global_var.teamb1ranking) + " " + str(global_var.teamb2ranking) + " " + str(global_var.teamb3ranking))
-    print("Highest " + str(global_var.teamb1highest) + " " + str(global_var.teamb2highest) + " " + str(global_var.teamb3highest))
+    print("Ranking " + str(global_var.teamb1ranking) + " " + str(global_var.teamb2ranking) + " " + str(
+        global_var.teamb3ranking))
+    print("Highest " + str(global_var.teamb1highest) + " " + str(global_var.teamb2highest) + " " + str(
+        global_var.teamb3highest))
 
     df = pd.DataFrame.from_items([
         ('group', ['A', 'B', 'C', 'D']),
         ('Skill', [global_var.teamb1skillout, global_var.teamb2skillout, global_var.teamb3skillout, 0]),
         ('Season Wins', [global_var.teamb1wins, global_var.teamb2wins, global_var.teamb3wins, 0]),
-        ('AP', [global_var.teamb1ap, global_var.teamb2ap, global_var.teamb3ap, 0]), #/5
-        ('Highest', [global_var.teamb1highest, global_var.teamb2highest, global_var.teamb3highest, 0]), #/15
-        ('Rankings', [global_var.teamb1ranking, global_var.teamb2ranking, global_var.teamb3ranking, 0]) #The Formula
+        ('AP', [global_var.teamb1ap, global_var.teamb2ap, global_var.teamb3ap, 0]),  # /5
+        ('Highest', [global_var.teamb1highest, global_var.teamb2highest, global_var.teamb3highest, 0]),  # /15
+        ('Rankings', [global_var.teamb1ranking, global_var.teamb2ranking, global_var.teamb3ranking, 0])  # The Formula
     ])
 
     # 'Skill': [global_var.teamb1skillout, global_var.teamb2skillout, global_var.teamb3skillout,0],
@@ -2492,11 +2437,10 @@ def graphblue():
     # Add legend
     plt.legend(loc='upper right', bbox_to_anchor=(0.1, 0.1))
 
-    #plt.show("all")
-    #plt.show("all")
+    # plt.show("all")
+    # plt.show("all")
     plt.show()
     plt.close()
-
 
 
 # Start!
