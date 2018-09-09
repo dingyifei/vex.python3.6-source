@@ -1504,33 +1504,11 @@ def getalldata():
     # time.sleep(1)
     return None
 
-
-def changelog():  # will remove
-    print("Current Version: 1.1")
-    print("1.1 - Add Copyright Information")
-    print("1.0 - First Version")
-    print()
-    time.sleep(1)
-    return None
-
-
 def empty():  # will remove
     print("Nothing here yet.")
     print("Return to Menu.")
     print()
     time.sleep(1)
-
-
-def cc():  # will remove
-    print("Opening your browser and view https://creativecommons.org/licenses/by-nc-sa/4.0/ in 3 seconds.")
-    time.sleep(3)
-    webbrowser.open('https://creativecommons.org/licenses/by-nc-sa/4.0/')
-
-
-def dis():  ## will remove
-    print("Opening your browser and view https://discord.gg/kBX4JHS in 3 seconds!")
-    time.sleep(3)
-    webbrowser.open('https://discord.gg/kBX4JHS')
 
 
 def timeisout():
@@ -2452,14 +2430,6 @@ while True:
         print("Bubble!")
         timeisout()
         answer()
-    elif mode == 5:
-        print("Mode = Copyright Licence")
-        time.sleep(0.3)
-        cc()
-    elif mode == 6:
-        print("Mode = Discord Invite")
-        time.sleep(0.3)
-        dis()
     elif mode == 7:
         print("Mode = Empty")
         time.sleep(0.3)
@@ -2468,10 +2438,6 @@ while True:
         print("Mode = Get Important Data")
         time.sleep(0.3)
         getalldata()
-    elif mode == 9:
-        print("Change Log:")
-        time.sleep(0.3)
-        changelog()
     elif mode == 0:
         print("Thanks for using it!")
         time.sleep(0.3)
