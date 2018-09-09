@@ -76,7 +76,6 @@ sheet2.write(0, 6, "Result")
 
 
 class global_var:
-    r = ""  # nothing use it as public
 
     # used in graphbubble, graphred, timeisout
     teamr1 = ""
@@ -88,19 +87,11 @@ class global_var:
     teamb2 = ""
     teamb3 = ""
 
-    # this is some real public!
+    # Move to public
     teamsent = ""
 
     # only used in teamskill and timeisout
     teamname = ""
-
-    # they have no use
-    teamr1skill = 0
-    teamr2skill = 0
-    teamr3skill = 0
-    teamb1skill = 0
-    teamb2skill = 0
-    teamb3skill = 0
 
     # used in graphbubble, graphred, timeisout
     teamr1wins = 0
@@ -123,16 +114,6 @@ class global_var:
     teamb2skillout = 0
     teamb3skillout = 0
 
-    # no use
-    teamr1worldexp = 0
-    teamr2worldexp = 0
-    teamr3worldexp = 0
-    teamb1worldexp = 0
-    teamb2worldexp = 0
-    teamb3worldexp = 0
-    teamrworldexpave = 0
-    teambworldexpave = 0
-
     # only graphbubble, graphred, and timeisout
     teamr1ap = 0
     teamr2ap = 0
@@ -143,12 +124,6 @@ class global_var:
     teamb2ap = 0
     teamb3ap = 0
 
-    # only teamap
-    teamap = 0
-
-    # only teamranking
-    teamranking = 0
-
     # only graphbubble, graphred, and timeisout
     teamr1ranking = 0
     teamr2ranking = 0
@@ -158,9 +133,6 @@ class global_var:
     teamb1ranking = 0
     teamb2ranking = 0
     teamb3ranking = 0
-
-    # only teamhighest
-    teamhighest = 0
 
     # only graphbubble, graphred, and timeisout
     teamr1highest = 0
@@ -188,9 +160,6 @@ class global_var:
     teamb2opr = 0
     teamb3opr = 0
 
-    # only teamopr
-    teamopr = 0
-
     # only graphbubble and timeisout
     teamr1dpr = 0
     teamr2dpr = 0
@@ -198,19 +167,6 @@ class global_var:
     teamb1dpr = 0
     teamb2dpr = 0
     teamb3dpr = 0
-
-    # Only timeisout
-    presetname1 = "prac15"
-    presetname2 = "qual12"
-    presetname3 = "qual38"
-    presetname4 = "qual70"
-    presetname5 = "qual89"
-    presetname6 = "qual111"
-    presetname7 = "qual135"
-    presetname8 = "qual167"
-    presetname9 = "qual186"
-    presetname10 = "qual198"
-
 
     # Only teamcurrent and timeisout
     inputmode = ""
@@ -235,8 +191,6 @@ class global_var:
     teamb1currentwins = 0
     teamb2currentwins = 0
     teamb3currentwins = 0
-
-    # only graphbubble and timeisout
     teamr1currentlosses = 0
     teamr2currentlosses = 0
     teamr3currentlosses = 0
@@ -258,8 +212,6 @@ class global_var:
     rankave = 0
     ranktotal = 0
     highestave = 0
-    highesttotal = 0
-    ccwmtotal = 0
     ccwmave = 0
 
 
@@ -1813,7 +1765,7 @@ def teamcurrent():  # can be part of teamsent()
 
 
 def teamap():
-    global_var.teamap = 0
+    teammap = 0
     global_var.aptotal = 0
     count = 0
     from urllib.request import urlopen
@@ -1825,27 +1777,27 @@ def teamap():
     for r in json_dict["result"]:
         # line = '{}'.format(r["ap"])
         # output.append(line)
-        global_var.teamap = '{}'.format(r["ap"])
+        teammap = '{}'.format(r["ap"])
         count += 1
         diff = 0
 
-        if int(global_var.teamap) > 25:
-            diff = (int(global_var.teamap) - 25) * 0.2
-            global_var.teamap = 25 + float(diff)
+        if int(teammap) > 25:
+            diff = (int(teammap) - 25) * 0.2
+            teammap = 25 + float(diff)
             print("Balance over 25, " + str(diff))
-        global_var.aptotal = int(global_var.aptotal) + int(global_var.teamap)
+        global_var.aptotal = int(global_var.aptotal) + int(teammap)
         global_var.apave = int(global_var.aptotal) / int(count)
 
-        if global_var.teamap == "" or global_var.teamap == "":
+        if teammap == "" or teammap == "":
             print("break cuz blank")
             count -= 1
-            global_var.teamap = global_var.apave
+            teammap = global_var.apave
             teamranking()
     teamranking()
 
 
 def teamranking():
-    global_var.teamranking = 0
+    TeamRanking = 0
     global_var.ranktotal = 0
     global_var.rankave = 0
     count = 0
@@ -1857,23 +1809,23 @@ def teamranking():
     for r in json_dict["result"]:
         # line = '{}'.format(r["rank"])
         # output.append(line)
-        global_var.teamranking = '{}'.format(r["rank"])
+        TeamRanking = '{}'.format(r["rank"])
         count += 1
         global_var.ranktotal = int(
-            global_var.ranktotal) + int(global_var.teamranking)
+            global_var.ranktotal) + int(TeamRanking)
         global_var.rankave = float(global_var.ranktotal) / int(count)
 
-        if global_var.teamranking == "" or global_var.teamranking == "":
+        if TeamRanking == "" or TeamRanking == "":
             print("break cuz blank")
             count -= 1
             global_var.rankave = float(global_var.ranktotal) / int(count)
             teamhighest()
-        global_var.rankave = float(global_var.teamranking) / int(count)
+        global_var.rankave = float(TeamRanking) / int(count)
     teamhighest()
 
 
 def teamhighest():
-    global_var.highesttotal = 0
+    highesttotal = 0
     global_var.highestave = 0
     count = 0
     from urllib.request import urlopen
@@ -1884,24 +1836,24 @@ def teamhighest():
     for r in json_dict["result"]:
         # line = '{}'.format(r["max_score"])
         # output.append(line)
-        global_var.teamhighest = '{}'.format(r["max_score"])
+        TeamHighest = '{}'.format(r["max_score"])
         count += 1
-        global_var.highesttotal = int(
-            global_var.highesttotal) + int(global_var.teamhighest)
-        global_var.highestave = int(global_var.highesttotal) / count
-        if global_var.teamhighest == "":
+        highesttotal = int(
+            highesttotal) + int(TeamHighest)
+        global_var.highestave = int(highesttotal) / count
+        if TeamHighest == "":
             print("break cuz blank")
             count -= 1
-            global_var.highestave = float(global_var.highesttotal) / int(count)
+            global_var.highestave = float(highesttotal) / int(count)
             teampr()
-        global_var.highestave = float(global_var.highesttotal) / int(count)
+        global_var.highestave = float(highesttotal) / int(count)
     teampr()
 
 
 def teampr():
     global_var.oprtotal = 0
     global_var.dprtotal = 0
-    global_var.teamopr = 0
+    teamopr = 0
     teamdpr = 0
     from urllib.request import urlopen
     r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
@@ -1914,21 +1866,21 @@ def teampr():
         # output.append(line)
         teamopr = '{}'.format(r["opr"])
         teamdpr = '{}'.format(r["dpr"])
-        teamopr = (float(global_var.teamopr) / 5)
+        teamopr = (float(teamopr) / 5)
         teamdpr = (float(teamdpr) / 5)
         count += 1
         global_var.oprtotal = float(
-            global_var.oprtotal) + float(global_var.teamopr)
+            global_var.oprtotal) + float(teamopr)
         global_var.oprave = float(global_var.oprtotal) / int(count)
         global_var.dprtotal = float(
             global_var.dprtotal) + float(teamdpr)
         global_var.dprave = float(global_var.dprtotal) / int(count)
 
-        if teamdpr == "" or global_var.teamopr == "":
+        if teamdpr == "" or teamopr == "":
             print("break cuz blank")
             count -= 1
             teamdpr = float(global_var.dprave)
-            global_var.teamopr = float(global_var.oprave)
+            teamopr = float(global_var.oprave)
             teamccwm()
 
         teamccwm()
@@ -1937,16 +1889,16 @@ def teampr():
         for r in json_dict["result"]:
             line = '{} {}'.format(r["opr"], r["dpr"])
             # output.append(line)
-            global_var.teamopr = '{}'.format(r["opr"])
+            teamopr = '{}'.format(r["opr"])
             teamdpr = '{}'.format(r["dpr"])
-            global_var.teamopr = (float(global_var.teamopr) / 5)
+            teamopr = (float(teamopr) / 5)
             teamdpr = (float(teamdpr) / 5)
         '''
 
 
 def teamccwm():
     teamccwm = 0
-    global_var.ccwmtotal = 0
+    ccwmtotal = 0
     global_var.ccwmave = 0
     from urllib.request import urlopen
     r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
@@ -1959,9 +1911,9 @@ def teamccwm():
         # output.append(line)
         teamccwm = '{}'.format(r["ccwm"])
         count += 1
-        global_var.ccwmtotal = float(
-            global_var.ccwmtotal) + float(teamccwm)
-        global_var.ccwmave = float(global_var.ccwmtotal) / int(count)
+        ccwmtotal = float(
+            ccwmtotal) + float(teamccwm)
+        global_var.ccwmave = float(ccwmtotal) / int(count)
         if teamccwm == "" or teamccwm == "":
             print("break cuz blank")
             count -= 18
