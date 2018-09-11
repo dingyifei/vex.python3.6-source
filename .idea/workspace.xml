@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/main.py" line="1502" />
+    <bookmark url="file://$PROJECT_DIR$/main.py" line="1481" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="939f3c6f-630f-48eb-bd4e-96eb0ce19c33" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/venv/" />
@@ -35,15 +36,16 @@
     <session id="-1830622007">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="13" />
+          <entry key="project.closed" value="16" />
           <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.38" value="1" />
-          <entry key="project.open.time.4" value="1" />
+          <entry key="project.open.time.4" value="2" />
           <entry key="project.open.time.5" value="5" />
-          <entry key="project.open.time.6" value="3" />
+          <entry key="project.open.time.6" value="4" />
           <entry key="project.open.time.8" value="2" />
-          <entry key="project.opened" value="15" />
+          <entry key="project.open.time.9" value="1" />
+          <entry key="project.opened" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -59,12 +61,15 @@
       <usages-collector id="statistics.js.language.service.starts" />
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="1577" />
+          <entry key="Python Console" value="84" />
+          <entry key="dummy" value="22" />
+          <entry key="py" value="1703" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="1577" />
+          <entry key="PLAIN_TEXT" value="22" />
+          <entry key="Python" value="1787" />
         </counts>
       </usages-collector>
     </session>
@@ -77,8 +82,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="327" column="41" lean-forward="true" selection-start-line="327" selection-start-column="41" selection-end-line="327" selection-end-column="41" />
+            <state relative-caret-position="-2774">
+              <caret line="40" column="28" selection-start-line="40" selection-start-column="28" selection-end-line="40" selection-end-column="28" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -90,24 +95,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>remove</find>
-      <find>graphbubble</find>
-      <find>teamr1skill</find>
-      <find>teamb2skill</find>
-      <find>r</find>
-      <find>r =</find>
-      <find>sheet1</find>
-      <find>&quot;Team&quot;</find>
-      <find>teamrskill</find>
-      <find>global_var.teamwins</find>
-      <find>ccwm</find>
-      <find>teamccwm</find>
-      <find>teamdpr</find>
-      <find>teamwins</find>
-      <find>graphpreset3</find>
-      <find>presetname1</find>
-      <find>timeisout</find>
-      <find>ccwmtotal</find>
       <find>highesttotal</find>
       <find>global_var.teamopr</find>
       <find>global_var.r</find>
@@ -120,12 +107,33 @@
       <find>&quot;Sku&quot;</find>
       <find>changelog</find>
       <find>dis</find>
+      <find>teams</find>
+      <find>fig1</find>
+      <find>timeisout()</find>
+      <find>teamskill</find>
+      <find>urlopen</find>
+      <find>pd</find>
+      <find>winstotal</find>
+      <find>aptotal</find>
+      <find>ranktotal</find>
+      <find>dprtotal</find>
+      <find>Decimal</find>
+      <find>https://api.vexdb.io/v1/get_rankings?team=</find>
+      <find>vexdbapi</find>
+      <find>'https://api.vexdb.io/v1/get_matches?team='</find>
+      <find>&quot;Team&quot;</find>
+      <find>'https://api.vexdb.io/v1/get_rankings?team='</find>
+      <find>'&amp;season=Turning%20Point'</find>
+      <find>TeamHighest</find>
     </findStrings>
     <replaceStrings>
       <replace>teamdpr</replace>
       <replace>teamwins</replace>
       <replace>teamopr</replace>
       <replace>ccwmtotal</replace>
+      <replace>TeamHighest</replace>
+      <replace>aptotal</replace>
+      <replace>vexSeason</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -145,8 +153,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="343" />
-    <option name="y" value="320" />
+    <option name="x" value="953" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
   </component>
@@ -170,10 +177,7 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane" />
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -254,7 +258,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4934877" weight="0.29540482" />
       <window_info id="Structure" order="1" sideWeight="0.5065123" side_tool="true" weight="0.10660981" />
@@ -266,19 +269,19 @@
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="5" weight="0.3282981" />
       <window_info anchor="bottom" id="Docker" order="6" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.499501" weight="0.32887402" />
+      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.499501" visible="true" weight="0.32887402" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.500998" side_tool="true" weight="0.24080268" />
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.32887402" />
-      <window_info anchor="bottom" id="Python Console" order="11" sideWeight="0.499002" weight="0.24245472" />
+      <window_info anchor="bottom" id="Python Console" order="11" sideWeight="0.499002" weight="0.57079154" />
       <window_info anchor="bottom" id="Inspection Results" order="12" weight="0.21962096" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" weight="0.32942432" />
       <window_info anchor="right" id="Database" order="4" weight="0.32942432" />
-      <window_info active="true" anchor="right" x="-81" y="454" width="1876" height="296" id="Find" order="5" visible="true" weight="0.5554371" />
-      <window_info anchor="right" x="0" y="0" width="465" height="926" id="Documentation" order="6" side_tool="true" weight="0.32984033" />
+      <window_info anchor="right" x="0" y="0" width="465" height="926" id="Documentation" order="5" side_tool="true" weight="0.32984033" />
+      <window_info active="true" anchor="right" x="-81" y="454" width="1876" height="296" id="Find" order="6" visible="true" weight="0.56556505" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49643946" visible="true" weight="0.14072494" />
@@ -364,8 +367,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="327" column="41" lean-forward="true" selection-start-line="327" selection-start-column="41" selection-end-line="327" selection-end-column="41" />
+        <state relative-caret-position="-2774">
+          <caret line="40" column="28" selection-start-line="40" selection-start-column="28" selection-end-line="40" selection-end-column="28" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
