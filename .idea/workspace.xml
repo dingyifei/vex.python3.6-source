@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/main.py" line="1477" />
+    <bookmark url="file://$PROJECT_DIR$/main.py" line="1481" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="939f3c6f-630f-48eb-bd4e-96eb0ce19c33" name="Default Changelist" comment="">
@@ -50,12 +50,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="5" />
+          <entry key="py" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="5" />
+          <entry key="Python" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts" />
@@ -63,13 +63,13 @@
         <counts>
           <entry key="Python Console" value="84" />
           <entry key="dummy" value="33" />
-          <entry key="py" value="1997" />
+          <entry key="py" value="2331" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="33" />
-          <entry key="Python" value="2081" />
+          <entry key="Python" value="2415" />
         </counts>
       </usages-collector>
     </session>
@@ -82,11 +82,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+            <state relative-caret-position="171">
+              <caret line="219" lean-forward="true" selection-start-line="219" selection-end-line="219" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
                 <element signature="e#21499#30427#0" />
+                <marker date="1536780693524" expanded="true" signature="5935:6011" ph="..." />
               </folding>
             </state>
           </provider>
@@ -96,9 +97,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>global_var.teamopr</find>
-      <find>global_var.r</find>
-      <find>(0, 0, &quot;Team&quot;)</find>
       <find>global_var.teamap</find>
       <find>teammap</find>
       <find>teamopr</find>
@@ -125,7 +123,10 @@
       <find>'&amp;season=Turning%20Point'</find>
       <find>TeamHighest</find>
       <find>'https://api.vexdb.io/v1/get_rankings?team='</find>
+      <find>text = r.read()</find>
       <find>url</find>
+      <find>pprint</find>
+      <find>json_dict[&quot;result&quot;]:</find>
     </findStrings>
     <replaceStrings>
       <replace>teamdpr</replace>
@@ -182,6 +183,7 @@
     <panes />
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="sqlite" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
@@ -260,6 +262,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4934877" weight="0.29540482" />
       <window_info id="Structure" order="1" sideWeight="0.5065123" side_tool="true" weight="0.10660981" />
@@ -271,19 +274,19 @@
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="5" weight="0.3277592" />
       <window_info anchor="bottom" id="Docker" order="6" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49840087" visible="true" weight="0.27647716" />
+      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49840087" weight="0.27647716" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Event Log" order="9" sideWeight="0.50159913" side_tool="true" visible="true" weight="0.27647716" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50159913" side_tool="true" weight="0.27647716" />
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.32887402" />
       <window_info anchor="bottom" id="Python Console" order="11" sideWeight="0.499002" weight="0.57079154" />
-      <window_info anchor="bottom" id="Inspection Results" order="12" weight="0.21962096" />
+      <window_info anchor="bottom" id="Inspection Results" order="12" visible="true" weight="0.21962096" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" weight="0.32942432" />
       <window_info anchor="right" id="Database" order="4" weight="0.32942432" />
       <window_info anchor="right" x="0" y="0" width="465" height="926" id="Documentation" order="5" side_tool="true" weight="0.32984033" />
-      <window_info anchor="right" x="-81" y="454" width="1876" height="296" id="Find" order="6" weight="0.56556505" />
+      <window_info active="true" anchor="right" x="-81" y="454" width="1876" height="296" id="Find" order="6" visible="true" weight="0.56556505" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49643946" visible="true" weight="0.14072494" />
@@ -367,13 +370,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://C:/Program Files/Python37/Lib/pprint.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-10440" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+        <state relative-caret-position="171">
+          <caret line="219" lean-forward="true" selection-start-line="219" selection-end-line="219" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
             <element signature="e#21499#30427#0" />
+            <marker date="1536780693524" expanded="true" signature="5935:6011" ph="..." />
           </folding>
         </state>
       </provider>

@@ -25,6 +25,7 @@ book = xlwt.Workbook(encoding="utf-8")
 VEXDB_API_MATCHES = 'https://api.vexdb.io/v1/get_matches?team='
 VEXDB_API_RANK = 'https://api.vexdb.io/v1/get_rankings?team='
 VEX_SEASON = '&season=Turning%20Point'
+VEXDB_API_SKILL = 'https://api.vexdb.io/v1/get_skills?team='
 
 sheet1 = book.add_sheet("#Cover", cell_overwrite_ok=True)
 sheet2 = book.add_sheet("#Matches", cell_overwrite_ok=True)
@@ -213,6 +214,10 @@ class GlobalVar:
     rankave = 0
     highestave = 0
     ccwmave = 0
+
+def vex_json(api_type, team, season):  # TODO(Yifei): Make it work
+    """Return a json dict. e.g. vex_json(Matches, team_name, season)"""
+
 
 
 def scan_team_matches():
@@ -960,7 +965,6 @@ def excel_get_we_need():  # 205
             # pprint.pprint(output)
 
             r = urlopen(VEXDB_API_MATCHES + teamloop + VEX_SEASON)  # TODO(Yifei): Turn this into a function
-
             text = r.read()
 
             # pprint.pprint(json.loads(text))
@@ -1753,9 +1757,11 @@ def teampr():
 def teamccwm():
     ccwmtotal = 0
     GlobalVar.ccwmave = 0
+
     r = urlopen(VEXDB_API_RANK + GlobalVar.teamsent + VEX_SEASON)
     text = r.read()
     json_dict = json.loads(text)
+
     count = 0
     for r in json_dict["result"]:
         # line = '{}'.format(r["ccwm"])
