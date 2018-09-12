@@ -1,3 +1,4 @@
+# coding=utf-8
 import json
 import os
 import pprint
@@ -44,29 +45,29 @@ sheet1.write(3, 1,
              "Because of there are no data for these teams: 1119S, 7386A, 8000X, 8000Z, 19771B, 30638A, 36632A, "
              "37073A, 60900A, 76921B, 99556A, 99691E, 99691H are not include in the sheet #Important Data")
 
-style1 = xlwt.easyxf(
+STYLE_1 = xlwt.easyxf(
     'pattern: pattern solid, fore_colour red;''font: colour white, bold True;')
-style2 = xlwt.easyxf(
+STYLE_2 = xlwt.easyxf(
     'pattern: pattern solid, fore_colour blue;''font: colour white, bold True;')
-style3 = xlwt.easyxf(
+STYLE_3 = xlwt.easyxf(
     'pattern: pattern solid, fore_colour pink;''font: colour white, bold True;')
-style4 = xlwt.easyxf(
+STYLE_4 = xlwt.easyxf(
     'pattern: pattern solid, fore_colour pale_blue;''font: colour white, bold True;')
-stylered = xlwt.easyxf(
+STYLE_RED = xlwt.easyxf(
     'font: colour red, bold True;')
-styleblue = xlwt.easyxf(
+STYLE_BLUE = xlwt.easyxf(
     'font: colour blue, bold True;')
-styleblank = xlwt.easyxf(
+STYLE_BLACK = xlwt.easyxf(
     'pattern: pattern solid, fore_colour black;''font: colour white, bold True;')
-styleb = xlwt.easyxf(
+STYLE_B = xlwt.easyxf(
     'font: colour black, bold True;')
-style70 = xlwt.easyxf(
+STYLE_70 = xlwt.easyxf(
     'pattern: pattern solid, fore_colour red;''font: colour white, bold True;')
-style50 = xlwt.easyxf(
+STYLE_50 = xlwt.easyxf(
     'pattern: pattern solid, fore_colour light_orange;''font: colour white, bold True;')
-style30 = xlwt.easyxf(
+STYLE_30 = xlwt.easyxf(
     'pattern: pattern solid, fore_colour pale_blue;''font: colour white, bold True;')
-style0 = xlwt.easyxf(
+STYLE_0 = xlwt.easyxf(
     'pattern: pattern solid, fore_colour bright_green;''font: colour black, bold True;')
 
 sheet2.write(0, 0, "Team")
@@ -239,6 +240,7 @@ def scan_team_matches():
 
 
 def excel_scan_teams():  # 201
+
     start = time.time()
     number = 0
     sheetline = 0
@@ -306,11 +308,8 @@ def excel_scan_teams():  # 201
             sheetline += 1
 
             r = urlopen(VEXDB_API_RANK + str(teamloop) + VEX_SEASON)
-
             text = r.read()
-
             json_dict = json.loads(text)
-
             output = []
 
             for r in json_dict["result"]:
@@ -326,9 +325,9 @@ def excel_scan_teams():  # 201
                 datamaxscore = '{}'.format(r["max_score"])
 
                 if int(datawins) > int(datalosses):
-                    sheet2.write(sheetline, 6, "Positive", style1)
+                    sheet2.write(sheetline, 6, "Positive", STYLE_1)
                 elif int(datawins) < int(datalosses):
-                    sheet2.write(sheetline, 6, "Negative", style2)
+                    sheet2.write(sheetline, 6, "Negative", STYLE_2)
                 output.append(line)
 
                 # ['sheet' + str(number)].write(1, 1,teamloop)
@@ -482,9 +481,9 @@ def excel_get_all_data():  # 203
             sheet3.write(sheetline, 5, datamaxscore)
 
             if int(datawins) > int(datalosses):
-                sheet3.write(sheetline, 6, "Positive", style1)
+                sheet3.write(sheetline, 6, "Positive", STYLE_1)
             elif int(datawins) < int(datalosses):
-                sheet3.write(sheetline, 6, "Negative", style2)
+                sheet3.write(sheetline, 6, "Negative", STYLE_2)
 
             sheetline += 1
 
@@ -549,41 +548,41 @@ def excel_get_all_data():  # 203
 
                 sheet3.write(sheetline, 0, datasku)
                 sheet3.write(sheetline, 1, datamatchnum)
-                sheet3.write(sheetline, 2, datared1, stylered)
-                sheet3.write(sheetline, 3, datared2, stylered)
-                sheet3.write(sheetline, 4, datared3, stylered)
-                sheet3.write(sheetline, 5, dataredsit, stylered)
-                sheet3.write(sheetline, 6, datablue1, styleblue)
-                sheet3.write(sheetline, 7, datablue2, styleblue)
-                sheet3.write(sheetline, 8, datablue3, styleblue)
-                sheet3.write(sheetline, 9, databluesit, styleblue)
-                sheet3.write(sheetline, 10, dataredsc, stylered)
-                sheet3.write(sheetline, 11, databluesc, styleblue)
-                sheet3.write(sheetline, 12, datateam + " =", styleb)
+                sheet3.write(sheetline, 2, datared1, STYLE_RED)
+                sheet3.write(sheetline, 3, datared2, STYLE_RED)
+                sheet3.write(sheetline, 4, datared3, STYLE_RED)
+                sheet3.write(sheetline, 5, dataredsit, STYLE_RED)
+                sheet3.write(sheetline, 6, datablue1, STYLE_BLUE)
+                sheet3.write(sheetline, 7, datablue2, STYLE_BLUE)
+                sheet3.write(sheetline, 8, datablue3, STYLE_BLUE)
+                sheet3.write(sheetline, 9, databluesit, STYLE_BLUE)
+                sheet3.write(sheetline, 10, dataredsc, STYLE_RED)
+                sheet3.write(sheetline, 11, databluesc, STYLE_BLUE)
+                sheet3.write(sheetline, 12, datateam + " =", STYLE_B)
 
                 if int(dataredsc) > int(databluesc):
-                    sheet3.write(sheetline, 14, "Red", style1)
+                    sheet3.write(sheetline, 14, "Red", STYLE_1)
                 elif int(dataredsc) < int(databluesc):
-                    sheet3.write(sheetline, 14, "Blue", style2)
+                    sheet3.write(sheetline, 14, "Blue", STYLE_2)
 
                 if int(dataredsc) + 20 < int(databluesc):
-                    sheet3.write(sheetline, 14, "Blue Easy", style4)
+                    sheet3.write(sheetline, 14, "Blue Easy", STYLE_4)
                 elif int(dataredsc) - 20 > int(databluesc):
-                    sheet3.write(sheetline, 14, "Red Easy", style3)
+                    sheet3.write(sheetline, 14, "Red Easy", STYLE_3)
 
                 if datared1 == teamloop or datared2 == teamloop or datared3 == teamloop:
                     if int(dataredsc) > int(databluesc):
-                        sheet3.write(sheetline, 13, "Win", styleb)
+                        sheet3.write(sheetline, 13, "Win", STYLE_B)
                         win += 1
                     else:
-                        sheet3.write(sheetline, 13, "Lose", styleblank)
+                        sheet3.write(sheetline, 13, "Lose", STYLE_BLACK)
 
                 elif datablue1 == teamloop or datablue2 == teamloop or datablue3 == teamloop:
                     if int(dataredsc) < int(databluesc):
-                        sheet3.write(sheetline, 13, "Win", styleb)
+                        sheet3.write(sheetline, 13, "Win", STYLE_B)
                         win += 1
                     else:
-                        sheet3.write(sheetline, 13, "Lose", styleblank)
+                        sheet3.write(sheetline, 13, "Lose", STYLE_BLACK)
 
                 # To see if 0 = 0
 
@@ -592,9 +591,9 @@ def excel_get_all_data():  # 203
                     matches -= 1
 
                 elif int(dataredsc) == 0:
-                    sheet3.write(sheetline, 15, "Red DQ?", styleblank)
+                    sheet3.write(sheetline, 15, "Red DQ?", STYLE_BLACK)
                 elif int(databluesc) == 0:
-                    sheet3.write(sheetline, 15, "Blue DQ?", styleblank)
+                    sheet3.write(sheetline, 15, "Blue DQ?", STYLE_BLACK)
 
                 sheetline += 1
                 loop += 1
@@ -617,26 +616,26 @@ def excel_get_all_data():  # 203
             flag = Decimal.from_float(flag).quantize(Decimal('0.0'))
 
             if float(flag) >= 70:
-                sheet3.write(teaminfoline, 8, str(flag) + "%", style70)
+                sheet3.write(teaminfoline, 8, str(flag) + "%", STYLE_70)
                 for x in range(9, 21):
-                    sheet3.write(teaminfoline, x, "", style70)
+                    sheet3.write(teaminfoline, x, "", STYLE_70)
 
             elif float(flag) >= 50:
-                sheet3.write(teaminfoline, 8, str(flag) + "%", style50)
+                sheet3.write(teaminfoline, 8, str(flag) + "%", STYLE_50)
                 for x in range(9, 21):
-                    sheet3.write(teaminfoline, x, "", style50)
+                    sheet3.write(teaminfoline, x, "", STYLE_50)
 
             elif float(flag) >= 30:
-                sheet3.write(teaminfoline, 8, str(flag) + "%", style30)
+                sheet3.write(teaminfoline, 8, str(flag) + "%", STYLE_30)
                 for x in range(9, 21):
-                    sheet3.write(teaminfoline, x, "", style30)
+                    sheet3.write(teaminfoline, x, "", STYLE_30)
 
             else:
-                sheet3.write(teaminfoline, 8, str(flag) + "%", style0)
+                sheet3.write(teaminfoline, 8, str(flag) + "%", STYLE_0)
                 for x in range(9, 21):
-                    sheet3.write(teaminfoline, x, "", style0)
+                    sheet3.write(teaminfoline, x, "", STYLE_0)
             for x in range(0, 21):
-                sheet3.write(sheetline, x, "- - - - - - -", styleblank)
+                sheet3.write(sheetline, x, "- - - - - - -", STYLE_BLACK)
 
             sheetline += 1
 
@@ -715,9 +714,9 @@ def excel_get_all_bugs():  # 204
             sheet10.write(sheetline, 5, datamaxscore)
 
             if int(datawins) > int(datalosses):
-                sheet10.write(sheetline, 6, "Positive", style1)
+                sheet10.write(sheetline, 6, "Positive", STYLE_1)
             elif int(datawins) < int(datalosses):
-                sheet10.write(sheetline, 6, "Negative", style2)
+                sheet10.write(sheetline, 6, "Negative", STYLE_2)
 
             sheetline += 1
 
@@ -783,41 +782,41 @@ def excel_get_all_bugs():  # 204
 
                 sheet10.write(sheetline, 0, datasku)
                 sheet10.write(sheetline, 1, datamatchnum)
-                sheet10.write(sheetline, 2, datared1, stylered)
-                sheet10.write(sheetline, 3, datared2, stylered)
-                sheet10.write(sheetline, 4, datared3, stylered)
-                sheet10.write(sheetline, 5, dataredsit, stylered)
-                sheet10.write(sheetline, 6, datablue1, styleblue)
-                sheet10.write(sheetline, 7, datablue2, styleblue)
-                sheet10.write(sheetline, 8, datablue3, styleblue)
-                sheet10.write(sheetline, 9, databluesit, styleblue)
-                sheet10.write(sheetline, 10, dataredsc, stylered)
-                sheet10.write(sheetline, 11, databluesc, styleblue)
-                sheet10.write(sheetline, 12, datateam + " =", styleb)
+                sheet10.write(sheetline, 2, datared1, STYLE_RED)
+                sheet10.write(sheetline, 3, datared2, STYLE_RED)
+                sheet10.write(sheetline, 4, datared3, STYLE_RED)
+                sheet10.write(sheetline, 5, dataredsit, STYLE_RED)
+                sheet10.write(sheetline, 6, datablue1, STYLE_BLUE)
+                sheet10.write(sheetline, 7, datablue2, STYLE_BLUE)
+                sheet10.write(sheetline, 8, datablue3, STYLE_BLUE)
+                sheet10.write(sheetline, 9, databluesit, STYLE_BLUE)
+                sheet10.write(sheetline, 10, dataredsc, STYLE_RED)
+                sheet10.write(sheetline, 11, databluesc, STYLE_BLUE)
+                sheet10.write(sheetline, 12, datateam + " =", STYLE_B)
 
                 if int(dataredsc) > int(databluesc):
-                    sheet10.write(sheetline, 14, "Red", style1)
+                    sheet10.write(sheetline, 14, "Red", STYLE_1)
                 elif int(dataredsc) < int(databluesc):
-                    sheet10.write(sheetline, 14, "Blue", style2)
+                    sheet10.write(sheetline, 14, "Blue", STYLE_2)
 
                 if int(dataredsc) + 20 < int(databluesc):
-                    sheet10.write(sheetline, 14, "Blue Easy", style4)
+                    sheet10.write(sheetline, 14, "Blue Easy", STYLE_4)
                 elif int(dataredsc) - 20 > int(databluesc):
-                    sheet10.write(sheetline, 14, "Red Easy", style3)
+                    sheet10.write(sheetline, 14, "Red Easy", STYLE_3)
 
                 if datared1 == teamloop or datared2 == teamloop or datared3 == teamloop:
                     if int(dataredsc) > int(databluesc):
-                        sheet10.write(sheetline, 13, "Win", styleb)
+                        sheet10.write(sheetline, 13, "Win", STYLE_B)
                         win += 1
                     else:
-                        sheet10.write(sheetline, 13, "Lose", styleblank)
+                        sheet10.write(sheetline, 13, "Lose", STYLE_BLACK)
 
                 elif datablue1 == teamloop or datablue2 == teamloop or datablue3 == teamloop:
                     if int(dataredsc) < int(databluesc):
-                        sheet10.write(sheetline, 13, "Win", styleb)
+                        sheet10.write(sheetline, 13, "Win", STYLE_B)
                         win += 1
                     else:
-                        sheet10.write(sheetline, 13, "Lose", styleblank)
+                        sheet10.write(sheetline, 13, "Lose", STYLE_BLACK)
 
                 # To see if 0 = 0
 
@@ -826,9 +825,9 @@ def excel_get_all_bugs():  # 204
                     matches -= 1
 
                 elif int(dataredsc) == 0:
-                    sheet10.write(sheetline, 15, "Red DQ?", styleblank)
+                    sheet10.write(sheetline, 15, "Red DQ?", STYLE_BLACK)
                 elif int(databluesc) == 0:
-                    sheet10.write(sheetline, 15, "Blue DQ?", styleblank)
+                    sheet10.write(sheetline, 15, "Blue DQ?", STYLE_BLACK)
 
                 sheetline += 1
                 loop += 1
@@ -851,26 +850,26 @@ def excel_get_all_bugs():  # 204
             flag = Decimal.from_float(flag).quantize(Decimal('0.0'))
 
             if float(flag) >= 70:
-                sheet10.write(teaminfoline, 8, str(flag) + "%", style70)
+                sheet10.write(teaminfoline, 8, str(flag) + "%", STYLE_70)
                 for x in range(9, 21):
-                    sheet10.write(teaminfoline, x, "", style70)
+                    sheet10.write(teaminfoline, x, "", STYLE_70)
 
             elif float(flag) >= 50:
-                sheet10.write(teaminfoline, 8, str(flag) + "%", style50)
+                sheet10.write(teaminfoline, 8, str(flag) + "%", STYLE_50)
                 for x in range(9, 21):
-                    sheet10.write(teaminfoline, x, "", style50)
+                    sheet10.write(teaminfoline, x, "", STYLE_50)
 
             elif float(flag) >= 30:
-                sheet10.write(teaminfoline, 8, str(flag) + "%", style30)
+                sheet10.write(teaminfoline, 8, str(flag) + "%", STYLE_30)
                 for x in range(9, 21):
-                    sheet10.write(teaminfoline, x, "", style30)
+                    sheet10.write(teaminfoline, x, "", STYLE_30)
 
             else:
-                sheet10.write(teaminfoline, 8, str(flag) + "%", style0)
+                sheet10.write(teaminfoline, 8, str(flag) + "%", STYLE_0)
                 for x in range(9, 21):
-                    sheet10.write(teaminfoline, x, "", style0)
+                    sheet10.write(teaminfoline, x, "", STYLE_0)
             for x in range(0, 21):
-                sheet10.write(sheetline, x, "- - - - - - -", styleblank)
+                sheet10.write(sheetline, x, "- - - - - - -", STYLE_BLACK)
 
             sheetline += 1
 
@@ -905,9 +904,9 @@ def excel_get_we_need():  # 205
              '4815B', '5139A', '6627A', '6741A', '7258B', '7536B', '7853A', '8110B', '8192B', '9060C', '9228A', '9551B',
              '9932E', '10955M', '17071B', '35211C', '97934U', '98807A']
 
-    while True: # Todo(Yifei): What is this loop for?
+    while True:  # Todo(Yifei): What is this loop for?
 
-        while number < int(len(list1)): # TODO(Yifei): Use for loop instead
+        while number < int(len(list1)):  # TODO(Yifei): Use for loop instead
 
             teamloop = list1[number]
             print(teamloop)
@@ -952,15 +951,15 @@ def excel_get_we_need():  # 205
             sheet6.write(sheetline, 5, datamaxscore)
 
             if int(datawins) > int(datalosses):
-                sheet6.write(sheetline, 6, "Positive", style1)
+                sheet6.write(sheetline, 6, "Positive", STYLE_1)
             elif int(datawins) < int(datalosses):
-                sheet6.write(sheetline, 6, "Negative", style2)
+                sheet6.write(sheetline, 6, "Negative", STYLE_2)
 
             sheetline += 1
 
             # pprint.pprint(output)
 
-            r = urlopen(VEXDB_API_MATCHES + teamloop + VEX_SEASON) # TODO(Yifei): Turn this into a function
+            r = urlopen(VEXDB_API_MATCHES + teamloop + VEX_SEASON)  # TODO(Yifei): Turn this into a function
 
             text = r.read()
 
@@ -1025,41 +1024,41 @@ def excel_get_we_need():  # 205
 
                 sheet6.write(sheetline, 0, datasku)
                 sheet6.write(sheetline, 1, datamatchnum)
-                sheet6.write(sheetline, 2, datared1, stylered)
-                sheet6.write(sheetline, 3, datared2, stylered)
-                sheet6.write(sheetline, 4, datared3, stylered)
-                sheet6.write(sheetline, 5, dataredsit, stylered)
-                sheet6.write(sheetline, 6, datablue1, styleblue)
-                sheet6.write(sheetline, 7, datablue2, styleblue)
-                sheet6.write(sheetline, 8, datablue3, styleblue)
-                sheet6.write(sheetline, 9, databluesit, styleblue)
-                sheet6.write(sheetline, 10, dataredsc, stylered)
-                sheet6.write(sheetline, 11, databluesc, styleblue)
-                sheet6.write(sheetline, 12, datateam + " =", styleb)
+                sheet6.write(sheetline, 2, datared1, STYLE_RED)
+                sheet6.write(sheetline, 3, datared2, STYLE_RED)
+                sheet6.write(sheetline, 4, datared3, STYLE_RED)
+                sheet6.write(sheetline, 5, dataredsit, STYLE_RED)
+                sheet6.write(sheetline, 6, datablue1, STYLE_BLUE)
+                sheet6.write(sheetline, 7, datablue2, STYLE_BLUE)
+                sheet6.write(sheetline, 8, datablue3, STYLE_BLUE)
+                sheet6.write(sheetline, 9, databluesit, STYLE_BLUE)
+                sheet6.write(sheetline, 10, dataredsc, STYLE_RED)
+                sheet6.write(sheetline, 11, databluesc, STYLE_BLUE)
+                sheet6.write(sheetline, 12, datateam + " =", STYLE_B)
 
                 if int(dataredsc) > int(databluesc):
-                    sheet6.write(sheetline, 14, "Red", style1)
+                    sheet6.write(sheetline, 14, "Red", STYLE_1)
                 elif int(dataredsc) < int(databluesc):
-                    sheet6.write(sheetline, 14, "Blue", style2)
+                    sheet6.write(sheetline, 14, "Blue", STYLE_2)
 
                 if int(dataredsc) + 20 < int(databluesc):
-                    sheet6.write(sheetline, 14, "Blue Easy", style4)
+                    sheet6.write(sheetline, 14, "Blue Easy", STYLE_4)
                 elif int(dataredsc) - 20 > int(databluesc):
-                    sheet6.write(sheetline, 14, "Red Easy", style3)
+                    sheet6.write(sheetline, 14, "Red Easy", STYLE_3)
 
                 if datared1 == teamloop or datared2 == teamloop or datared3 == teamloop:
                     if int(dataredsc) > int(databluesc):
-                        sheet6.write(sheetline, 13, "Win", styleb)
+                        sheet6.write(sheetline, 13, "Win", STYLE_B)
                         win += 1
                     else:
-                        sheet6.write(sheetline, 13, "Lose", styleblank)
+                        sheet6.write(sheetline, 13, "Lose", STYLE_BLACK)
 
                 elif datablue1 == teamloop or datablue2 == teamloop or datablue3 == teamloop:
                     if int(dataredsc) < int(databluesc):
-                        sheet6.write(sheetline, 13, "Win", styleb)
+                        sheet6.write(sheetline, 13, "Win", STYLE_B)
                         win += 1
                     else:
-                        sheet6.write(sheetline, 13, "Lose", styleblank)
+                        sheet6.write(sheetline, 13, "Lose", STYLE_BLACK)
 
                 # To see if 0 = 0
 
@@ -1068,9 +1067,9 @@ def excel_get_we_need():  # 205
                     matches -= 1
 
                 elif int(dataredsc) == 0:
-                    sheet6.write(sheetline, 15, "Red DQ?", styleblank)
+                    sheet6.write(sheetline, 15, "Red DQ?", STYLE_BLACK)
                 elif int(databluesc) == 0:
-                    sheet6.write(sheetline, 15, "Blue DQ?", styleblank)
+                    sheet6.write(sheetline, 15, "Blue DQ?", STYLE_BLACK)
 
                 sheetline += 1
                 loop += 1
@@ -1093,27 +1092,27 @@ def excel_get_we_need():  # 205
             flag = Decimal.from_float(flag).quantize(Decimal('0.0'))
 
             if float(flag) >= 70:
-                sheet6.write(teaminfoline, 8, str(flag) + "%", style70)
+                sheet6.write(teaminfoline, 8, str(flag) + "%", STYLE_70)
                 for x in range(9, 21):
-                    sheet6.write(teaminfoline, x, "", style70)
+                    sheet6.write(teaminfoline, x, "", STYLE_70)
 
             elif float(flag) >= 50:
-                sheet6.write(teaminfoline, 8, str(flag) + "%", style50)
+                sheet6.write(teaminfoline, 8, str(flag) + "%", STYLE_50)
                 for x in range(9, 21):
-                    sheet6.write(teaminfoline, x, "", style50)
+                    sheet6.write(teaminfoline, x, "", STYLE_50)
 
             elif float(flag) >= 30:
-                sheet6.write(teaminfoline, 8, str(flag) + "%", style30)
+                sheet6.write(teaminfoline, 8, str(flag) + "%", STYLE_30)
                 for x in range(9, 21):
-                    sheet6.write(teaminfoline, x, "", style30)
+                    sheet6.write(teaminfoline, x, "", STYLE_30)
 
             else:
-                sheet6.write(teaminfoline, 8, str(flag) + "%", style0)
+                sheet6.write(teaminfoline, 8, str(flag) + "%", STYLE_0)
                 for x in range(9, 21):
-                    sheet6.write(teaminfoline, x, "", style0)
+                    sheet6.write(teaminfoline, x, "", STYLE_0)
 
             for x in range(0, 21):
-                sheet6.write(sheetline, x, "- - - - - - -", styleblank)
+                sheet6.write(sheetline, x, "- - - - - - -", STYLE_BLACK)
 
             sheetline += 1
 
@@ -1239,9 +1238,9 @@ def excel_scan_world():
             sheet5.write(sheetline, 5, datamaxscore)
 
             if int(datawins) > int(datalosses):
-                sheet5.write(sheetline, 6, "Positive", style1)
+                sheet5.write(sheetline, 6, "Positive", STYLE_1)
             elif int(datawins) < int(datalosses):
-                sheet5.write(sheetline, 6, "Negative", style2)
+                sheet5.write(sheetline, 6, "Negative", STYLE_2)
 
             sheetline += 1
 
@@ -1291,38 +1290,38 @@ def excel_scan_world():
 
                 sheet5.write(sheetline, 0, datasku)
                 sheet5.write(sheetline, 1, datamatchnum)
-                sheet5.write(sheetline, 2, datared1, stylered)
-                sheet5.write(sheetline, 3, datared2, stylered)
-                sheet5.write(sheetline, 4, datared3, stylered)
-                sheet5.write(sheetline, 5, dataredsit, stylered)
-                sheet5.write(sheetline, 6, datablue1, styleblue)
-                sheet5.write(sheetline, 7, datablue2, styleblue)
-                sheet5.write(sheetline, 8, datablue3, styleblue)
-                sheet5.write(sheetline, 9, databluesit, styleblue)
-                sheet5.write(sheetline, 10, dataredsc, stylered)
-                sheet5.write(sheetline, 11, databluesc, styleblue)
-                sheet5.write(sheetline, 12, datateam + " =", styleb)
+                sheet5.write(sheetline, 2, datared1, STYLE_RED)
+                sheet5.write(sheetline, 3, datared2, STYLE_RED)
+                sheet5.write(sheetline, 4, datared3, STYLE_RED)
+                sheet5.write(sheetline, 5, dataredsit, STYLE_RED)
+                sheet5.write(sheetline, 6, datablue1, STYLE_BLUE)
+                sheet5.write(sheetline, 7, datablue2, STYLE_BLUE)
+                sheet5.write(sheetline, 8, datablue3, STYLE_BLUE)
+                sheet5.write(sheetline, 9, databluesit, STYLE_BLUE)
+                sheet5.write(sheetline, 10, dataredsc, STYLE_RED)
+                sheet5.write(sheetline, 11, databluesc, STYLE_BLUE)
+                sheet5.write(sheetline, 12, datateam + " =", STYLE_B)
 
                 if int(dataredsc) > int(databluesc):
-                    sheet5.write(sheetline, 14, "Red", style1)
+                    sheet5.write(sheetline, 14, "Red", STYLE_1)
                 elif int(dataredsc) < int(databluesc):
-                    sheet5.write(sheetline, 14, "Blue", style2)
+                    sheet5.write(sheetline, 14, "Blue", STYLE_2)
 
                 if int(dataredsc) + 20 < int(databluesc):
-                    sheet5.write(sheetline, 14, "Blue Easy", style4)
+                    sheet5.write(sheetline, 14, "Blue Easy", STYLE_4)
                 elif int(dataredsc) - 20 > int(databluesc):
-                    sheet5.write(sheetline, 14, "Red Easy", style3)
+                    sheet5.write(sheetline, 14, "Red Easy", STYLE_3)
 
                 if datared1 == teamloop or datared2 == teamloop or datared3 == teamloop:
                     if int(dataredsc) > int(databluesc):
-                        sheet5.write(sheetline, 13, "Win", styleb)
+                        sheet5.write(sheetline, 13, "Win", STYLE_B)
                     else:
-                        sheet5.write(sheetline, 13, "Lose", styleblank)
+                        sheet5.write(sheetline, 13, "Lose", STYLE_BLACK)
                 elif datablue1 == teamloop or datablue2 == teamloop or datablue3 == teamloop:
                     if int(dataredsc) < int(databluesc):
-                        sheet5.write(sheetline, 13, "Win", styleb)
+                        sheet5.write(sheetline, 13, "Win", STYLE_B)
                     else:
-                        sheet5.write(sheetline, 13, "Lose", styleblank)
+                        sheet5.write(sheetline, 13, "Lose", STYLE_BLACK)
 
                 sheetline += 1
                 loop += 1
@@ -1338,11 +1337,11 @@ def excel_scan_world():
 
             sheetline += 1
             for x in range(0, 15):
-                sheet5.write(sheetline, x, "- - - - - - -", styleblank)
+                sheet5.write(sheetline, x, "- - - - - - -", STYLE_BLACK)
 
             sheetline += 1
             for x in range(0, 15):
-                sheet5.write(sheetline, x, "- - - - - - -", styleblank)
+                sheet5.write(sheetline, x, "- - - - - - -", STYLE_BLACK)
             sheetline += 1
 
             decimal = (time.time() - start)
@@ -1586,7 +1585,7 @@ def team_skill():
         attempt = int(r["attempts"])
         if int(attempt) != 0:
             totalattempts += 1
-        skilltotal = skill + skilltotal
+        skilltotal += skill
 
     if int(totalattempts) != 0:
         skillave = int(skilltotal) / int(totalattempts)
@@ -2099,211 +2098,3 @@ while True:
     else:
         print("Mode Unknown")
         time.sleep(1)
-
-'''
-def graphred():  # nothing use this
-    # Set data
-    fig1 = plt.figure('Red')
-
-    GlobalVar.teamr1skillout = float(GlobalVar.teamr1skillout) / 10
-    GlobalVar.teamr2skillout = float(GlobalVar.teamr2skillout) / 10
-    GlobalVar.teamr3skillout = float(GlobalVar.teamr3skillout) / 10
-
-    GlobalVar.teamr1ap = round(float(GlobalVar.teamr1ap) / 5, 1)
-    GlobalVar.teamr2ap = round(float(GlobalVar.teamr2ap) / 5, 1)
-    GlobalVar.teamr3ap = round(float(GlobalVar.teamr3ap) / 5, 1)
-
-    # The Formula
-    GlobalVar.teamr1ranking = int(10 - int(GlobalVar.teamr1ranking))
-    GlobalVar.teamr2ranking = int(10 - int(GlobalVar.teamr2ranking))
-    GlobalVar.teamr3ranking = int(10 - int(GlobalVar.teamr3ranking))
-
-    # /17
-    GlobalVar.teamr1highest = round(float(int(GlobalVar.teamr1highest) / 17), 1)
-    GlobalVar.teamr2highest = round(float(int(GlobalVar.teamr2highest) / 17), 1)
-    GlobalVar.teamr3highest = round(float(int(GlobalVar.teamr3highest) / 17), 1)
-
-    if int(GlobalVar.teamr1ranking) < 0:
-        GlobalVar.teamr1ranking = 0
-    if int(GlobalVar.teamr2ranking) < 0:
-        GlobalVar.teamr2ranking = 0
-    if int(GlobalVar.teamr3ranking) < 0:
-        GlobalVar.teamr3ranking = 0
-
-    # Check
-    print("Skill " + str(GlobalVar.teamr1skillout) + " " + str(GlobalVar.teamr2skillout) + " " + str(
-        GlobalVar.teamr3skillout))
-    print("Season Wins " + str(GlobalVar.teamr1wins) + " " + str(GlobalVar.teamr2wins) + " " + str(
-        GlobalVar.teamr3wins))
-    print("AP " + str(GlobalVar.teamr1ap) + " " + str(GlobalVar.teamr2ap) + " " + str(GlobalVar.teamr3ap))
-    print("Ranking " + str(GlobalVar.teamr1ranking) + " " + str(GlobalVar.teamr2ranking) + " " + str(
-        GlobalVar.teamr3ranking))
-    print("Highest " + str(GlobalVar.teamr1highest) + " " + str(GlobalVar.teamr2highest) + " " + str(
-        GlobalVar.teamr3highest))
-
-    df = pd.DataFrame.from_items([
-        ('group', ['A', 'B', 'C', 'D']),
-        ('Skill', [GlobalVar.teamr1skillout, GlobalVar.teamr2skillout, GlobalVar.teamr3skillout, 0]),
-        ('Season Wins', [GlobalVar.teamr1wins, GlobalVar.teamr2wins, GlobalVar.teamr3wins, 0]),
-        ('AP', [GlobalVar.teamr1ap, GlobalVar.teamr2ap, GlobalVar.teamr3ap, 0]),  # /5
-        ('Highest', [GlobalVar.teamr1highest, GlobalVar.teamr2highest, GlobalVar.teamr3highest, 0]),  # /15
-        ('Rankings', [GlobalVar.teamr1ranking, GlobalVar.teamr2ranking, GlobalVar.teamr3ranking, 0])  # The Formula
-    ])
-
-    # 'Skill': [GlobalVar.teamr1skillout, GlobalVar.teamr2skillout, GlobalVar.teamr3skillout,0],
-    # 'Season Wins': [GlobalVar.teamr1wins, GlobalVar.teamr2wins, GlobalVar.teamr3wins, 0],
-
-    # ------- PART 1: Create background
-
-    # number of variable
-    categories = list(df)[1:]
-    N = len(categories)
-
-    # What will be the angle of each axis in the plot? (we divide the plot / number of variable)
-    angles = [n / float(N) * 2 * pi for n in range(N)]
-    angles += angles[:1]
-
-    # Initialise the spider plot
-    ax = plt.subplot(111, polar=True)
-
-    # If you want the first axis to be on top:
-    ax.set_theta_offset(pi / 2)
-    ax.set_theta_direction(-1)
-
-    # Draw one axe per variable + add labels labels yet
-    plt.xticks(angles[:-1], categories)
-
-    # Draw ylabels
-    ax.set_rlabel_position(0)
-    plt.yticks([3, 6, 9], ["3", "6", "9"], color="grey", size=7)
-    plt.ylim(0, 12)
-
-    # Ind1
-    values = df.loc[0].drop('group').values.flatten().tolist()
-    values += values[:1]
-    ax.plot(angles, values, linewidth=1, linestyle='solid', label=str(GlobalVar.teamr1))
-    ax.fill(angles, values, 'b', alpha=0.1)
-
-    # Ind2
-    values = df.loc[1].drop('group').values.flatten().tolist()
-    values += values[:1]
-    ax.plot(angles, values, linewidth=1, linestyle='solid', label=str(GlobalVar.teamr2))
-    ax.fill(angles, values, 'r', alpha=0.1)
-
-    # Ind3
-    values = df.loc[2].drop('group').values.flatten().tolist()
-    values += values[:1]
-    ax.plot(angles, values, linewidth=1, linestyle='solid', label=str(GlobalVar.teamr3))
-    ax.fill(angles, values, 'r', alpha=0.1)
-
-    # Add legend
-    plt.legend(loc='upper right', bbox_to_anchor=(0.1, 0.1))
-
-    plt.show()
-    plt.close()
-
-
-def graphblue():
-    # Set data
-    fig2 = plt.figure('Blue')
-
-    GlobalVar.teamb1skillout = float(GlobalVar.teamb1skillout) / 10
-    GlobalVar.teamb2skillout = float(GlobalVar.teamb2skillout) / 10
-    GlobalVar.teamb3skillout = float(GlobalVar.teamb3skillout) / 10
-
-    GlobalVar.teamb1ap = round(float(GlobalVar.teamb1ap) / 5, 1)
-    GlobalVar.teamb2ap = round(float(GlobalVar.teamb2ap) / 5, 1)
-    GlobalVar.teamb3ap = round(float(GlobalVar.teamb3ap) / 5, 1)
-
-    # The Formula
-    GlobalVar.teamb1ranking = int(10 - int(GlobalVar.teamb1ranking))
-    GlobalVar.teamb2ranking = int(10 - int(GlobalVar.teamb2ranking))
-    GlobalVar.teamb3ranking = int(10 - int(GlobalVar.teamb3ranking))
-
-    # /17
-    GlobalVar.teamb1highest = round(float(int(GlobalVar.teamb1highest) / 17), 1)
-    GlobalVar.teamb2highest = round(float(int(GlobalVar.teamb2highest) / 17), 1)
-    GlobalVar.teamb3highest = round(float(int(GlobalVar.teamb3highest) / 17), 1)
-
-    if int(GlobalVar.teamb1ranking) <= 0:
-        GlobalVar.teamb1ranking = 0
-    if int(GlobalVar.teamb2ranking) <= 0:
-        GlobalVar.teamb2ranking = 0
-    if int(GlobalVar.teamb3ranking) <= 0:
-        GlobalVar.teamb3ranking = 0
-
-    # Check
-    print("Skill " + str(GlobalVar.teamb1skillout) + " " + str(GlobalVar.teamb2skillout) + " " + str(
-        GlobalVar.teamb3skillout))
-    print("Season Wins " + str(GlobalVar.teamb1wins) + " " + str(GlobalVar.teamb2wins) + " " + str(
-        GlobalVar.teamb3wins))
-    print("AP " + str(GlobalVar.teamb1ap) + " " + str(GlobalVar.teamb2ap) + " " + str(GlobalVar.teamb3ap))
-    print("Ranking " + str(GlobalVar.teamb1ranking) + " " + str(GlobalVar.teamb2ranking) + " " + str(
-        GlobalVar.teamb3ranking))
-    print("Highest " + str(GlobalVar.teamb1highest) + " " + str(GlobalVar.teamb2highest) + " " + str(
-        GlobalVar.teamb3highest))
-
-    df = pd.DataFrame.from_items([
-        ('group', ['A', 'B', 'C', 'D']),
-        ('Skill', [GlobalVar.teamb1skillout, GlobalVar.teamb2skillout, GlobalVar.teamb3skillout, 0]),
-        ('Season Wins', [GlobalVar.teamb1wins, GlobalVar.teamb2wins, GlobalVar.teamb3wins, 0]),
-        ('AP', [GlobalVar.teamb1ap, GlobalVar.teamb2ap, GlobalVar.teamb3ap, 0]),  # /5
-        ('Highest', [GlobalVar.teamb1highest, GlobalVar.teamb2highest, GlobalVar.teamb3highest, 0]),  # /15
-        ('Rankings', [GlobalVar.teamb1ranking, GlobalVar.teamb2ranking, GlobalVar.teamb3ranking, 0])  # The Formula
-    ])
-
-    # 'Skill': [GlobalVar.teamb1skillout, GlobalVar.teamb2skillout, GlobalVar.teamb3skillout,0],
-    # 'Season Wins': [GlobalVar.teamb1wins, GlobalVar.teamb2wins, GlobalVar.teamb3wins, 0],
-
-    # ------- PART 1: Create background
-
-    # number of variable
-
-    categories = list(df)[1:]
-    N = len(categories)
-
-    # What will be the angle of each axis in the plot? (we divide the plot / number of variable)
-    angles = [n / float(N) * 2 * pi for n in range(N)]
-    angles += angles[:1]
-
-    # Initialise the spider plot
-    ax = plt.subplot(111, polar=True)
-
-    # If you want the first axis to be on top:
-    ax.set_theta_offset(pi / 2)
-    ax.set_theta_direction(-1)
-
-    # Draw one axe per variable + add labels labels yet
-    plt.xticks(angles[:-1], categories)
-
-    # Draw ylabels
-    ax.set_rlabel_position(0)
-    plt.yticks([3, 6, 9], ["3", "6", "9"], color="grey", size=7)
-    plt.ylim(0, 12)
-
-    # Ind1
-    values = df.loc[0].drop('group').values.flatten().tolist()
-    values += values[:1]
-    ax.plot(angles, values, linewidth=1, linestyle='solid', label=str(GlobalVar.teamb1))
-    ax.fill(angles, values, 'b', alpha=0.1)
-
-    # Ind2
-    values = df.loc[1].drop('group').values.flatten().tolist()
-    values += values[:1]
-    ax.plot(angles, values, linewidth=1, linestyle='solid', label=str(GlobalVar.teamb2))
-    ax.fill(angles, values, 'r', alpha=0.1)
-
-    # Ind3
-    values = df.loc[2].drop('group').values.flatten().tolist()
-    values += values[:1]
-    ax.plot(angles, values, linewidth=1, linestyle='solid', label=str(GlobalVar.teamb3))
-    ax.fill(angles, values, 'r', alpha=0.1)
-
-    # Add legend
-    plt.legend(loc='upper right', bbox_to_anchor=(0.1, 0.1))
-
-    # plt.show("all")
-    # plt.show("all")
-    plt.show()
-    plt.close()
-'''
