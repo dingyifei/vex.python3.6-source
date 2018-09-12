@@ -21,7 +21,8 @@ getcontext().prec = 6
 sleep_timer = 0
 book = xlwt.Workbook(encoding="utf-8")
 
-VEXDB_API = 'https://api.vexdb.io/v1/get_matches?team='
+VEXDB_API_MATCHES = 'https://api.vexdb.io/v1/get_matches?team='
+VEXDB_API_RANK = 'https://api.vexdb.io/v1/get_rankings?team='
 VEX_SEASON = '&season=Turning%20Point'
 
 sheet1 = book.add_sheet("#Cover", cell_overwrite_ok=True)
@@ -213,11 +214,11 @@ class GlobalVar:
     ccwmave = 0
 
 
-def scanteammatches():
+def scan_team_matches():
     name = input('Team #?\n')
     print('Checking, TEAM %s.' % name)
 
-    r = urlopen(VEXDB_API + name + VEX_SEASON)
+    r = urlopen(VEXDB_API_MATCHES + name + VEX_SEASON)
     text = r.read()
     pprint.pprint(json.loads(text))
     json_dict = json.loads(text)
@@ -237,7 +238,7 @@ def scanteammatches():
     return None
 
 
-def excelscanteams():  # 201
+def excel_scan_teams():  # 201
     start = time.time()
     number = 0
     sheetline = 0
@@ -304,8 +305,7 @@ def excelscanteams():  # 201
             number += 1
             sheetline += 1
 
-            r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
-                        str(teamloop) + VEX_SEASON)
+            r = urlopen(VEXDB_API_RANK + str(teamloop) + VEX_SEASON)
 
             text = r.read()
 
@@ -378,11 +378,13 @@ def excelscanteams():  # 201
     # time.sleep(1)
 
 
-def excelgetalldata():  # 203
+def excel_get_all_data():  # 203
     time.sleep(1)
     number = 0
     sheetline = 0
     start = time.time()
+
+    # TODO(Yifei):find a way to get this list from Vex.io
     list1 = ['2S', '2U', '5S', '10N', '12C', '12E', '12F', '12G', '12J', '39A', '39J', '39K', '39W', '39Y', '46B',
              '56C', '60X', '62A', '66A', '81K', '81Y', '91C', '109A', '114T', '127X', '134C', '134D', '134E', '134G',
              '136N', '162A', '169A', '169C', '169E', '169Y', '170A', '177V', '180A', '180X', '183Z', '185A', '202Z',
@@ -452,8 +454,7 @@ def excelgetalldata():  # 203
 
             sheetline += 1
 
-            r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
-                        teamloop + VEX_SEASON)
+            r = urlopen(VEXDB_API_RANK + teamloop + VEX_SEASON)
             text = r.read()
 
             json_dict = json.loads(text)
@@ -489,7 +490,7 @@ def excelgetalldata():  # 203
 
             # pprint.pprint(output)
 
-            r = urlopen(VEXDB_API + teamloop + VEX_SEASON)
+            r = urlopen(VEXDB_API_MATCHES + teamloop + VEX_SEASON)
             text = r.read()
             # pprint.pprint(json.loads(text))
             json_dict = json.loads(text)
@@ -661,7 +662,7 @@ def excelgetalldata():  # 203
             print('reset and xls saved!')
 
 
-def excelgetallbugs():  # 204
+def excel_get_all_bugs():  # 204
     time.sleep(1)
     number = 0
     sheetline = 0
@@ -686,8 +687,7 @@ def excelgetallbugs():  # 204
 
             sheetline += 1
 
-            r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
-                        teamloop + VEX_SEASON)
+            r = urlopen(VEXDB_API_RANK + teamloop + VEX_SEASON)
             text = r.read()
 
             json_dict = json.loads(text)
@@ -723,7 +723,7 @@ def excelgetallbugs():  # 204
 
             # pprint.pprint(output)
 
-            r = urlopen(VEXDB_API + teamloop + VEX_SEASON)
+            r = urlopen(VEXDB_API_MATCHES + teamloop + VEX_SEASON)
             text = r.read()
             # pprint.pprint(json.loads(text))
             json_dict = json.loads(text)
@@ -896,7 +896,7 @@ def excelgetallbugs():  # 204
             print('reset and xls saved!')
 
 
-def excelgetweneed():  # 205
+def excel_get_we_need():  # 205
     time.sleep(1)
     number = 0
     sheetline = 0
@@ -905,9 +905,9 @@ def excelgetweneed():  # 205
              '4815B', '5139A', '6627A', '6741A', '7258B', '7536B', '7853A', '8110B', '8192B', '9060C', '9228A', '9551B',
              '9932E', '10955M', '17071B', '35211C', '97934U', '98807A']
 
-    while True:
+    while True: # Todo(Yifei): What is this loop for?
 
-        while number < int(len(list1)):
+        while number < int(len(list1)): # TODO(Yifei): Use for loop instead
 
             teamloop = list1[number]
             print(teamloop)
@@ -924,8 +924,7 @@ def excelgetweneed():  # 205
 
             sheetline += 1
 
-            r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
-                        teamloop + VEX_SEASON)
+            r = urlopen(VEXDB_API_RANK + teamloop + VEX_SEASON)
             text = r.read()
 
             json_dict = json.loads(text)
@@ -961,7 +960,7 @@ def excelgetweneed():  # 205
 
             # pprint.pprint(output)
 
-            r = urlopen(VEXDB_API + teamloop + VEX_SEASON)
+            r = urlopen(VEXDB_API_MATCHES + teamloop + VEX_SEASON) # TODO(Yifei): Turn this into a function
 
             text = r.read()
 
@@ -1140,7 +1139,7 @@ def excelgetweneed():  # 205
             print('reset and xls saved!')
 
 
-def excelscanworld():
+def excel_scan_world():
     time.sleep(1)
     number = 0
     sheetline = 0
@@ -1212,8 +1211,7 @@ def excelscanworld():
             sheet5.write(sheetline, 6, "Result")
             sheetline += 1
 
-            r = urlopen(
-                'https://api.vexdb.io/v1/get_rankings?team=' + teamloop + VEX_SEASON + '&sku=RE-VRC-17-3805')
+            r = urlopen(VEXDB_API_RANK + teamloop + VEX_SEASON + '&sku=RE-VRC-17-3805')
             text = r.read()
 
             json_dict = json.loads(text)
@@ -1248,7 +1246,7 @@ def excelscanworld():
             sheetline += 1
 
             # pprint.pprint(output)
-            r = urlopen(VEXDB_API + teamloop + VEX_SEASON)
+            r = urlopen(VEXDB_API_MATCHES + teamloop + VEX_SEASON)
             text = r.read()
             # pprint.pprint(json.loads(text))
             json_dict = json.loads(text)
@@ -1371,11 +1369,11 @@ def excelscanworld():
 # Need to test when competition start
 
 
-def excelteammatches():
+def excel_team_matches():
     name = input('Team #?\n')
     print('Checking, TEAM %s.' % name)
 
-    r = urlopen(VEXDB_API + name + VEX_SEASON)
+    r = urlopen(VEXDB_API_MATCHES + name + VEX_SEASON)
     text = r.read()
     pprint.pprint(json.loads(text))
     json_dict = json.loads(text)
@@ -1393,11 +1391,10 @@ def excelteammatches():
     return None
 
 
-def searchteamcurrentseason():
+def search_team_current_season():
     name = str(input('Team #?\n'))
     print('Checking, TEAM %s.' % name)
-    r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
-                name + VEX_SEASON)
+    r = urlopen(VEXDB_API_RANK + name + VEX_SEASON)
     text = r.read()
     pprint.pprint(json.loads(text))
     json_dict = json.loads(text)
@@ -1412,13 +1409,12 @@ def searchteamcurrentseason():
     return None
 
 
-def getalldata():
+def get_all_data():
     # getalldata
     print("This will show the recent three matches.")
     name = str(input('Team #?\n'))
     print('Checking, TEAM %s.' % name)
-    r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
-                name + VEX_SEASON)
+    r = urlopen(VEXDB_API_RANK + name + VEX_SEASON)
     text = r.read()
     # pprint.pprint(json.loads(text))
     json_dict = json.loads(text)
@@ -1429,7 +1425,7 @@ def getalldata():
             .format(r["team"], r["wins"], r["losses"], r["ap"], r["rank"], r["max_score"])
         output.append(line)
     pprint.pprint(output)
-    r = urlopen(VEXDB_API + name + VEX_SEASON)
+    r = urlopen(VEXDB_API_MATCHES + name + VEX_SEASON)
     text = r.read()
     # pprint.pprint(json.loads(text))
     json_dict = json.loads(text)
@@ -1452,7 +1448,7 @@ def getalldata():
     return None
 
 
-def timeisout():
+def time_is_out():
     # Input Team
     GlobalVar.inputmode = str(
         input("Type in the preset value or 6 teams separate by ,\n"))
@@ -1464,7 +1460,7 @@ def timeisout():
     if str(GlobalVar.teamr1) != "":
         GlobalVar.teamsent = GlobalVar.teamr1
         GlobalVar.teamname = GlobalVar.teamr1
-        teamskill()
+        team_skill()
         GlobalVar.teamr1skillout = GlobalVar.skillave
         GlobalVar.teamr1wins = GlobalVar.winsave
         GlobalVar.teamr1ap = GlobalVar.apave
@@ -1482,7 +1478,7 @@ def timeisout():
     if str(GlobalVar.teamr2) != "":
         GlobalVar.teamsent = GlobalVar.teamr2
         GlobalVar.teamname = GlobalVar.teamr2
-        teamskill()
+        team_skill()
         GlobalVar.teamr2skillout = GlobalVar.skillave
         GlobalVar.teamr2wins = GlobalVar.winsave
         GlobalVar.teamr2ap = GlobalVar.apave
@@ -1500,7 +1496,7 @@ def timeisout():
     if str(GlobalVar.teamr3) != "":
         GlobalVar.teamsent = GlobalVar.teamr3
         GlobalVar.teamname = GlobalVar.teamr3
-        teamskill()
+        team_skill()
         GlobalVar.teamr3skillout = GlobalVar.skillave
         GlobalVar.teamr3wins = GlobalVar.winsave
         GlobalVar.teamr3ap = GlobalVar.apave
@@ -1518,7 +1514,7 @@ def timeisout():
     if str(GlobalVar.teamb1) != "":
         GlobalVar.teamsent = GlobalVar.teamb1
         GlobalVar.teamname = GlobalVar.teamb1
-        teamskill()
+        team_skill()
         GlobalVar.teamb1skillout = GlobalVar.skillave
         GlobalVar.teamb1wins = GlobalVar.winsave
         GlobalVar.teamb1ap = GlobalVar.apave
@@ -1536,7 +1532,7 @@ def timeisout():
     if str(GlobalVar.teamb2) != "":
         GlobalVar.teamsent = GlobalVar.teamb2
         GlobalVar.teamname = GlobalVar.teamb2
-        teamskill()
+        team_skill()
         GlobalVar.teamb2skillout = GlobalVar.skillave
         GlobalVar.teamb2wins = GlobalVar.winsave
         GlobalVar.teamb2ap = GlobalVar.apave
@@ -1554,7 +1550,7 @@ def timeisout():
     if str(GlobalVar.teamb3) != "":
         GlobalVar.teamsent = GlobalVar.teamb3
         GlobalVar.teamname = GlobalVar.teamb3
-        teamskill()
+        team_skill()
         GlobalVar.teamb3skillout = GlobalVar.skillave
         GlobalVar.teamr3wins = GlobalVar.winsave
         GlobalVar.teamb3ap = GlobalVar.apave
@@ -1577,9 +1573,8 @@ def timeisout():
     return None
 
 
-def teamskill():
-    r = urlopen('https://api.vexdb.io/v1/get_skills?team=' +
-                GlobalVar.teamsent + VEX_SEASON)
+def team_skill():
+    r = urlopen('https://api.vexdb.io/v1/get_skills?team=' + GlobalVar.teamsent + VEX_SEASON)
     text = r.read()
     json_dict = json.loads(text)
     # output = []
@@ -1602,14 +1597,13 @@ def teamskill():
     decimal = Decimal.from_float(decimal).quantize(Decimal('0.0'))
     GlobalVar.skillave = decimal
     print(GlobalVar.teamname + ": " + str(GlobalVar.skillave))
-    teamsent()
+    team_sent()
 
 
-def teamsent():
+def team_sent():
     count = 0
     GlobalVar.winsave = 0
-    r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
-                GlobalVar.teamsent + VEX_SEASON)
+    r = urlopen(VEXDB_API_RANK + GlobalVar.teamsent + VEX_SEASON)
     text = r.read()
     json_dict = json.loads(text)
     for r in json_dict["result"]:
@@ -1623,16 +1617,14 @@ def teamsent():
             GlobalVar.winsave = float(winstotal) / int(count)
             teamap()
         GlobalVar.winsave = float(winstotal) / int(count)
-    teamcurrent()
+    team_current()
 
 
-def teamcurrent():  # can be part of teamsent()
+def team_current():  # can be part of teamsent()
     GlobalVar.currentranking = 0
     GlobalVar.currentwins = 0
     GlobalVar.currentlosses = 0
-    r = urlopen(
-        'https://api.vexdb.io/v1/get_rankings?team=' + GlobalVar.teamsent + VEX_SEASON
-        + GlobalVar.CONST_match)
+    r = urlopen(VEXDB_API_RANK + GlobalVar.teamsent + VEX_SEASON + GlobalVar.CONST_match)
     text = r.read()
     json_dict = json.loads(text)
     for r in json_dict["result"]:
@@ -1647,8 +1639,7 @@ def teamcurrent():  # can be part of teamsent()
 def teamap():
     aptotal = 0
     count = 0
-    r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
-                GlobalVar.teamsent + VEX_SEASON)
+    r = urlopen(VEXDB_API_RANK + GlobalVar.teamsent + VEX_SEASON)
     text = r.read()
     json_dict = json.loads(text)
 
@@ -1675,8 +1666,7 @@ def teamap():
 def teamranking():
     GlobalVar.rankave = 0
     count = 0
-    r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
-                GlobalVar.teamsent + VEX_SEASON)
+    r = urlopen(VEXDB_API_RANK + GlobalVar.teamsent + VEX_SEASON)
     text = r.read()
     json_dict = json.loads(text)
     for r in json_dict["result"]:
@@ -1692,17 +1682,16 @@ def teamranking():
             print("break cuz blank")
             count -= 1
             GlobalVar.rankave = float(ranktotal) / int(count)
-            teamhighest()
+            team_highest()
         GlobalVar.rankave = float(team_ranking) / int(count)
-    teamhighest()
+    team_highest()
 
 
-def teamhighest():
+def team_highest():
     highesttotal = 0
     GlobalVar.highestave = 0
     count = 0
-    r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
-                GlobalVar.teamsent + VEX_SEASON)
+    r = urlopen(VEXDB_API_RANK + GlobalVar.teamsent + VEX_SEASON)
     text = r.read()
     json_dict = json.loads(text)
     for r in json_dict["result"]:
@@ -1725,8 +1714,7 @@ def teamhighest():
 def teampr():
     GlobalVar.oprtotal = 0
     dprtotal = 0
-    r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
-                GlobalVar.teamsent + VEX_SEASON)
+    r = urlopen(VEXDB_API_RANK + GlobalVar.teamsent + VEX_SEASON)
     text = r.read()
     json_dict = json.loads(text)
     count = 0
@@ -1766,8 +1754,7 @@ def teampr():
 def teamccwm():
     ccwmtotal = 0
     GlobalVar.ccwmave = 0
-    r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' +
-                GlobalVar.teamsent + VEX_SEASON)
+    r = urlopen(VEXDB_API_RANK + GlobalVar.teamsent + VEX_SEASON)
     text = r.read()
     json_dict = json.loads(text)
     count = 0
@@ -2060,7 +2047,7 @@ while True:
     if mode == 1:
         print("Mode = Scan Team Matches")
         time.sleep(0.3)
-        scanteammatches()
+        scan_team_matches()
     elif mode == 2:
         print("Mode = Excels")
         # sleep_timer = float(input("Set Sleep Time\n"))
@@ -2072,39 +2059,39 @@ while True:
         if excelmode == 1:
             print("Mode = Scan Teams and Write to Excel")
             time.sleep(0.3)
-            excelscanteams()
+            excel_scan_teams()
         elif excelmode == 2:
             print("Mode = Write Team Matches [Don't use this]")
             time.sleep(0.3)
-            excelteammatches()
+            excel_team_matches()
         elif excelmode == 3:
             print("Mode = Write Team Important Data in Excel")
             time.sleep(0.3)
-            excelgetalldata()
+            excel_get_all_data()
         elif excelmode == 4:
             print("Mode = Scan Bugged Team [It will crash]")
             time.sleep(0.3)
-            excelgetallbugs()
+            excel_get_all_bugs()
         elif excelmode == 5:
             print("Mode = Scan World Championship")
             time.sleep(0.3)
-            excelscanworld()
+            excel_scan_world()
         elif excelmode == 6:
             print("Mode = Scan We Need")
             time.sleep(0.3)
-            excelgetweneed()
+            excel_get_we_need()
     elif mode == 3:
         print("Mode = Search Team History : Current Season")
         time.sleep(0.3)
-        searchteamcurrentseason()
+        search_team_current_season()
     elif mode == 4:
         print("Bubble!")
-        timeisout()
+        time_is_out()
         answer()
     elif mode == 8:
         print("Mode = Get Important Data")
         time.sleep(0.3)
-        getalldata()
+        get_all_data()
     elif mode == 0:
         print("Thanks for using it!")
         time.sleep(0.3)
