@@ -215,36 +215,43 @@ class GlobalVar:
     highestave = 0
     ccwmave = 0
 
-def vex_json(api_type, team, season, result):  # TODO(Yifei): Make it work，"Team" should accept both string and list
-    """Return a json dict or a list of multiple json dict. e.g. vex_json(Matches, team_name, season, result(should be list))"""
+def vexdb_json(api_type, api_parameters):  # TODO(Yifei): Make it work，"Team" should accept both string and list
+    """Return a json dict or a list of multiple json dict. e.g. vex_json(Matches, team_name, season
+        The args should be list or string""" # TODO(Yifei): Rewrite this
 
-    _VEX_SEASON = [ # Accept Seasons
-        "Skyrise",
-        "Toss%20Up",
-        "Sack%20Attack",
-        "Gateway",
-        "Round%20Up",
-        "Clean%20Sweep",
-        "Elevation",
-        "Bridge%20Battle",
-        "Nothing%20But%20Net",
-        "Starstruck",
-        "In%20The%20Zone",
-        "Turning%20Point"
-    ]
+    # The first parameter should come with ? and everything afte the first one should start with &
+    # API Type, parameters, seasons can found on vexdb.io/the_data
 
     _API_TYPE = [ # Accept Types
-        "matches",
-        "ranking",
-        "skills"
+        "Events",
+        "Teams",
+        "Matches",
+        "Rankings",
+        "Season Rankings",
+        "Awards",
+        "Skills"
     ]
 
-    r = urlopen("https://api.vexdb.io/v1/get_" + api_type + "?team=" + team + "&season=" +season)
-    text = r.read()
-    json_dict = json.loads(text)
-    for x in result:
-        print("Not fix yet")
-# Note: Data always Come with "Status" (usually 1), "Size" (How many items are in the "result", and "result" which
+    # TODO(Yifei): Multi thread, timeout retry, input data check
+    # TODO(Yifei):Accept List and return 2d dictionary
+    _parameters = ""
+    if type(api_parameters) == dict:
+        _keys = api_parameters.keys()
+        _values = api_parameters.values()
+
+    if api_type:
+        try:
+            r = urlopen("https://api.vexdb.io/v1/get_" + api_type + _parameters)
+        except:
+            return "an error had occur in vex_json"
+        else:
+            text = r.read()
+            json_dict = json.loads(text)
+            return json_dict
+    else:
+        return "Null or None input"
+    # TODO(Yifei): throw error correctly
+# Note: Data always Come with "Status" (usually 1, if it is 0 then a error_text and a error_code should occur), "Size" (How many items are in the "result", and "result" which
 # contains the data we need. The result is a list of dictionaries.
 
 
@@ -2072,7 +2079,7 @@ def answer():
 
 
 # Start!
-
+# TODO(Yifei): It should be in a def so it do not run when use it as a module
 while True:
     mode = int(input(
         "Mode \n 1.Scan Team Matches \n 2.Excel Functions [Not Finished] \n 3.Search Team Season History  "
