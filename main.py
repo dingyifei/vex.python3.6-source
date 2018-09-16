@@ -215,9 +215,37 @@ class GlobalVar:
     highestave = 0
     ccwmave = 0
 
-def vex_json(api_type, team, season):  # TODO(Yifei): Make it work
-    """Return a json dict. e.g. vex_json(Matches, team_name, season)"""
+def vex_json(api_type, team, season, result):  # TODO(Yifei): Make it work，"Team" should accept both string and list
+    """Return a json dict or a list of multiple json dict. e.g. vex_json(Matches, team_name, season, result(should be list))"""
 
+    _VEX_SEASON = [ # Accept Seasons
+        "Skyrise",
+        "Toss%20Up",
+        "Sack%20Attack",
+        "Gateway",
+        "Round%20Up",
+        "Clean%20Sweep",
+        "Elevation",
+        "Bridge%20Battle",
+        "Nothing%20But%20Net",
+        "Starstruck",
+        "In%20The%20Zone",
+        "Turning%20Point"
+    ]
+
+    _API_TYPE = [ # Accept Types
+        "matches",
+        "ranking",
+        "skills"
+    ]
+
+    r = urlopen("https://api.vexdb.io/v1/get_" + api_type + "?team=" + team + "&season=" +season)
+    text = r.read()
+    json_dict = json.loads(text)
+    for x in result:
+        print("Not fix yet")
+# Note: Data always Come with "Status" (usually 1), "Size" (How many items are in the "result", and "result" which
+# contains the data we need. The result is a list of dictionaries.
 
 
 def scan_team_matches():
