@@ -215,32 +215,21 @@ class GlobalVar:
     ccwmave = 0
 
 
-def vexdb_json(api_type, api_parameters):
+def vexdb_json(api_type, api_parameters = None):
     """
     It function accept a string "api_type" and a dictionary "api_parameters", the "api_type" should be
     one from _API_TYPE The dictionary's key are the _parameters from vexdb.io/the_data and the value should
     also follow it.
     """
-    # TODO(Yifei): Rewrite this
 
     # API Type, _parameters, seasons can found on vexdb.io/the_data
+    # TODO(Yifei): Multi thread, timeout retry,throw error correctly, when return 5000 items, it means something missing
 
-    _API_TYPE = [  # Accept Types
-        "Events",
-        "Teams",
-        "Matches",
-        "Rankings",
-        "Season Rankings",
-        "Awards",
-        "Skills"
-    ]
-
-    # TODO(Yifei): Multi thread, timeout retry
     _parameters = ""
     if api_parameters:
         if type(api_parameters) == dict:
-            _keys = api_parameters.keys()
-            _values = api_parameters.values()
+            _keys = list(api_parameters.keys())
+            _values = list(api_parameters.values())
             _parameters_list = []
             if len(_keys) >= 1:
                 _parameters_list.append("?" + _keys[0] + "=" + _values[0])
@@ -267,11 +256,18 @@ def vexdb_json(api_type, api_parameters):
     else:
         return "missing api_type"
 
-
-# TODO(Yifei): throw error correctly
 # Note: Data always Come with "Status" (usually 1, if it is 0 then a error_text and a error_code should occur),
-# "Size" (How many items are in the "result", and "result" which
+# Size" (How many items are in the "result", and "result" which
 # contains the data we need. The result is a list of dictionaries.
+
+
+def team_list():
+    _team_list = []
+    _json_dict = vexdb_json("teams", {"grade":"High School"})
+    if type(_json_dict) == dict:
+        for r in _json_dict["result"]:
+            _team_list.append(r["number"])
+
 
 
 def scan_team_matches():
