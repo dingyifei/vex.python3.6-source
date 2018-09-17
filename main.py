@@ -46,30 +46,18 @@ sheet1.write(3, 1,
              "Because of there are no data for these teams: 1119S, 7386A, 8000X, 8000Z, 19771B, 30638A, 36632A, "
              "37073A, 60900A, 76921B, 99556A, 99691E, 99691H are not include in the sheet #Important Data")
 
-STYLE_1 = xlwt.easyxf(
-    'pattern: pattern solid, fore_colour red;''font: colour white, bold True;')
-STYLE_2 = xlwt.easyxf(
-    'pattern: pattern solid, fore_colour blue;''font: colour white, bold True;')
-STYLE_3 = xlwt.easyxf(
-    'pattern: pattern solid, fore_colour pink;''font: colour white, bold True;')
-STYLE_4 = xlwt.easyxf(
-    'pattern: pattern solid, fore_colour pale_blue;''font: colour white, bold True;')
-STYLE_RED = xlwt.easyxf(
-    'font: colour red, bold True;')
-STYLE_BLUE = xlwt.easyxf(
-    'font: colour blue, bold True;')
-STYLE_BLACK = xlwt.easyxf(
-    'pattern: pattern solid, fore_colour black;''font: colour white, bold True;')
-STYLE_B = xlwt.easyxf(
-    'font: colour black, bold True;')
-STYLE_70 = xlwt.easyxf(
-    'pattern: pattern solid, fore_colour red;''font: colour white, bold True;')
-STYLE_50 = xlwt.easyxf(
-    'pattern: pattern solid, fore_colour light_orange;''font: colour white, bold True;')
-STYLE_30 = xlwt.easyxf(
-    'pattern: pattern solid, fore_colour pale_blue;''font: colour white, bold True;')
-STYLE_0 = xlwt.easyxf(
-    'pattern: pattern solid, fore_colour bright_green;''font: colour black, bold True;')
+STYLE_1 = xlwt.easyxf('pattern: pattern solid, fore_colour red;''font: colour white, bold True;')
+STYLE_2 = xlwt.easyxf('pattern: pattern solid, fore_colour blue;''font: colour white, bold True;')
+STYLE_3 = xlwt.easyxf('pattern: pattern solid, fore_colour pink;''font: colour white, bold True;')
+STYLE_4 = xlwt.easyxf('pattern: pattern solid, fore_colour pale_blue;''font: colour white, bold True;')
+STYLE_RED = xlwt.easyxf('font: colour red, bold True;')
+STYLE_BLUE = xlwt.easyxf('font: colour blue, bold True;')
+STYLE_BLACK = xlwt.easyxf('pattern: pattern solid, fore_colour black;''font: colour white, bold True;')
+STYLE_B = xlwt.easyxf('font: colour black, bold True;')
+STYLE_70 = xlwt.easyxf('pattern: pattern solid, fore_colour red;''font: colour white, bold True;')
+STYLE_50 = xlwt.easyxf('pattern: pattern solid, fore_colour light_orange;''font: colour white, bold True;')
+STYLE_30 = xlwt.easyxf('pattern: pattern solid, fore_colour pale_blue;''font: colour white, bold True;')
+STYLE_0 = xlwt.easyxf('pattern: pattern solid, fore_colour bright_green;''font: colour black, bold True;')
 
 sheet2.write(0, 0, "Team")
 sheet2.write(0, 1, "Wins")
@@ -215,15 +203,15 @@ class GlobalVar:
     ccwmave = 0
 
 
-def vexdb_json(api_type, api_parameters = None):
+def vexdb_json(api_type, api_parameters):
     """
     It function accept a string "api_type" and a dictionary "api_parameters", the "api_type" should be
     one from _API_TYPE The dictionary's key are the _parameters from vexdb.io/the_data and the value should
     also follow it.
     """
-
+    
     # API Type, _parameters, seasons can found on vexdb.io/the_data
-    # TODO(Yifei): Multi thread, timeout retry,throw error correctly, when return 5000 items, it means something missing
+    # TODO(Yifei): Multi thread, timeout retry,throw error correctly
 
     _parameters = ""
     if api_parameters:
@@ -234,27 +222,33 @@ def vexdb_json(api_type, api_parameters = None):
             if len(_keys) >= 1:
                 _parameters_list.append("?" + _keys[0] + "=" + _values[0])
                 if len(_keys) > 1:
-                    for x in range(1, len(_keys) - 1):
+                    for x in range(1, len(_keys)):
                         _parameters_list.append("%" + _keys[x] + "=" + _values[x])
-            for x in range(0, len(_parameters_list) - 1):
+            for x in range(0, len(_parameters_list)):
                 _parameters += _parameters_list[x]
+    else:
+        _parameters = None
 
     if api_type and _parameters != "":
         json_dict = json.loads((urlopen("https://api.vexdb.io/v1/get_" + api_type + _parameters)).read())
         if json_dict["status"] == 0:
-            print("OOPS   " + "Error Code:" + json_dict["error_code"] + "Error Text" + json_dict["error_text"])
-            return "error"
+            print("SERVER_ERROR: " + "Error Code:" + json_dict["error_code"] + "Error Text" + json_dict["error_text"])
+            return None
+        if json_dict["size"] == 5000:
+            print("Warning: The zise of data is 5000, some data might be lost")
+            return json_dict
         else:
             return json_dict
-    if api_type and _parameters == "":
+    if api_type and _parameters is None or "":
         json_dict = json.loads((urlopen("https://api.vexdb.io/v1/get_" + api_type)).read())
         if json_dict["status"] == 0:
-            print("OOPS   " + "Error Code:" + json_dict["error_code"] + "Error Text" + json_dict["error_text"])
-            return "error"
+            print("SERVER_ERROR: " + "Error Code:" + json_dict["error_code"] + "Error Text" + json_dict["error_text"])
+            return None
+        if json_dict["size"] == 5000:
+            print("Warning: The zise of data is 5000, some data might be lost")
+            return json_dict
         else:
             return json_dict
-    else:
-        return "missing api_type"
 
 # Note: Data always Come with "Status" (usually 1, if it is 0 then a error_text and a error_code should occur),
 # Size" (How many items are in the "result", and "result" which
@@ -263,31 +257,27 @@ def vexdb_json(api_type, api_parameters = None):
 
 def team_list():
     _team_list = []
-    _json_dict = vexdb_json("teams", {"grade":"High School"})
-    if type(_json_dict) == dict:
-        for r in _json_dict["result"]:
-            _team_list.append(r["number"])
+    _json_dict = vexdb_json("teams", {"grade": "High School"})
+    for x in range(0, len(_json_dict["result"])):
+        _team_list.append(_json_dict["result"][x]["number"])
 
 
-
-def scan_team_matches():
-    name = input('Team #?\n')
-    print('Checking, TEAM %s.' % name)
-    r = urlopen(VEXDB_API_MATCHES + name + VEX_SEASON)
-    text = r.read()
-    pprint.pprint(json.loads(text))
-    json_dict = json.loads(text)
-    print('\n')
+def scan_team_matches(name):
+    # name = input('Team #?\n')
+    # print('Checking, TEAM %s.' % name)
+    _json_dict = vexdb_json("matches", {"season":"Turning%20Point", "team": name})
+    # pprint.pprint(_json_dict["result"])
+    # print('\n')
     output = []
-    for r in json_dict["result"]:
+    for r in _json_dict["result"]:
         line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = {} || ' \
                'Blue Alliance 1 = {} Blue Alliance 2 = {} Blue Alliance 3 = {} Blue Sit = {} || Red Score = {} Blue ' \
                'Score = {}'.format(r["sku"], r["matchnum"], r["round"], r["red1"], r["red2"], r["red3"], r["redsit"],
                                    r["blue1"], r["blue2"], r["blue3"], r["bluesit"], r["redscore"], r["bluescore"])
         output.append(line)
-    pprint.pprint(output)
-    time.sleep(1)
-    return None
+    # pprint.pprint(output)
+    # time.sleep(1)
+    return output
 
 
 def excel_scan_teams():  # 201
@@ -1128,9 +1118,6 @@ def excel_get_we_need():  # 205
                     break
 
                 output.append(line)
-
-                # pprint.pprint(output)
-
                 time.sleep(sleep_timer)
 
             sheetline += 1
@@ -1293,16 +1280,11 @@ def excel_scan_world():
                 sheet5.write(sheetline, 6, "Negative", STYLE_2)
 
             sheetline += 1
-
-            # pprint.pprint(output)
             r = urlopen(VEXDB_API_MATCHES + teamloop + VEX_SEASON)
             text = r.read()
-            # pprint.pprint(json.loads(text))
             json_dict = json.loads(text)
-            # print('\n')
             output = []
             loop = -10000
-            # 1-10000 For testing, should be 0
 
             sheet5.write(sheetline, 0, "Sku")
             sheet5.write(sheetline, 1, "Match")
@@ -1614,9 +1596,6 @@ def time_is_out():
     else:
         print("Team Blue 3 is blank.")
 
-    # print("Skill is average of all this season. Auto is the previous competition. (Should be the state final)")
-    # print("Ranking is (10-Ranking), if the team is not the first 10th, it will show as 0.")
-
     graphbubble()  # pass value use arg instead of global
 
     return None
@@ -1656,7 +1635,6 @@ def team_sent():
     text = r.read()
     json_dict = json.loads(text)
     for r in json_dict["result"]:
-        # line = '{}'.format(r["wins"])
         teamwins = '{}'.format(r["wins"])
         count += 1
         winstotal = teamwins + teamwins
@@ -1677,8 +1655,6 @@ def team_current():  # can be part of teamsent()
     text = r.read()
     json_dict = json.loads(text)
     for r in json_dict["result"]:
-        # line = '{}'.format(r["rank"], r["wins"], r["losses"])
-        # output.append(line)
         GlobalVar.currentranking = '{}'.format(r["rank"])
         GlobalVar.currentwins = '{}'.format(r["wins"])
         GlobalVar.currentlosses = '{}'.format(r["losses"])
@@ -1719,12 +1695,9 @@ def teamranking():
     text = r.read()
     json_dict = json.loads(text)
     for r in json_dict["result"]:
-        # line = '{}'.format(r["rank"])
-        # output.append(line)
         team_ranking = '{}'.format(r["rank"])
         count += 1
-        ranktotal = int(
-            ranktotal) + int(team_ranking)
+        ranktotal = int(ranktotal) + int(team_ranking)
         GlobalVar.rankave = float(ranktotal) / int(count)
 
         if team_ranking == "" or team_ranking == "":
@@ -1789,16 +1762,6 @@ def teampr():
 
         teamccwm()
 
-        '''
-        for r in json_dict["result"]:
-            line = '{} {}'.format(r["opr"], r["dpr"])
-            # output.append(line)
-            teamopr = '{}'.format(r["opr"])
-            teamdpr = '{}'.format(r["dpr"])
-            teamopr = (float(teamopr) / 5)
-            teamdpr = (float(teamdpr) / 5)
-        '''
-
 
 def teamccwm():
     ccwmtotal = 0
@@ -1814,8 +1777,7 @@ def teamccwm():
         # output.append(line)
         teamccwm = '{}'.format(r["ccwm"])
         count += 1
-        ccwmtotal = float(
-            ccwmtotal) + float(teamccwm)
+        ccwmtotal = float(ccwmtotal) + float(teamccwm)
         GlobalVar.ccwmave = float(ccwmtotal) / int(count)
         if teamccwm == "" or teamccwm == "":
             print("break cuz blank")
@@ -2059,18 +2021,9 @@ def graphbubble():  # it should be part of "timeisout"
 
 
 def answer():
-    # answerr = 0
-    # answerb = 0
 
     teamrexist = 0
     teambexist = 0
-
-    # teamrskill = float(GlobalVar.teamr1skillout) + float(GlobalVar.teamr2skillout) + float(
-    #     GlobalVar.teamr3skillout)
-    # teambskill = float(GlobalVar.teamb1skillout) + float(GlobalVar.teamb2skillout) + float(
-    #     GlobalVar.teamb3skillout)
-    # teamrave = (float(GlobalVar.teamrskill) / 3)
-    # teambave = (float(GlobalVar.teambskill)) / 3
 
     if GlobalVar.teamr1skillout != 0:
         teamrexist += 1
@@ -2089,64 +2042,67 @@ def answer():
     input("Press Any Key to Continue\n")
 
 
-# Start!
-# TODO(Yifei): It should be in a def so it do not run when use it as a module
-while True:
-    mode = int(input(
-        "Mode \n 1.Scan Team Matches \n 2.Excel Functions [Not Finished] \n 3.Search Team Season History  "
-        "\n 8.Get Important Info For a Team \n 9.Change Log\n 0.Quit \n"))
-    if mode == 1:
-        print("Mode = Scan Team Matches")
-        time.sleep(0.3)
-        scan_team_matches()
-    elif mode == 2:
-        print("Mode = Excels")
-        # sleep_timer = float(input("Set Sleep Time\n"))
-        print(
-            "1.Scan Teams \n2.Scan Matches [Don't use this]\n3.Write Team Important Data\n4.Don't Ues This\n5.Can "
-            "Specific Match [PreSet World Championship]\n6.Get We Need")
-        time.sleep(0.3)
-        excelmode = int(input())
-        if excelmode == 1:
-            print("Mode = Scan Teams and Write to Excel")
+def main():
+    while True:
+        mode = int(input(
+            "Mode \n 1.Scan Team Matches \n 2.Excel Functions [Not Finished] \n 3.Search Team Season History  "
+            "\n 8.Get Important Info For a Team \n 9.Change Log\n 0.Quit \n"))
+        if mode == 1:
+            print("Mode = Scan Team Matches")
             time.sleep(0.3)
-            excel_scan_teams()
-        elif excelmode == 2:
-            print("Mode = Write Team Matches [Don't use this]")
+            scan_team_matches()
+        elif mode == 2:
+            print("Mode = Excels")
+            # sleep_timer = float(input("Set Sleep Time\n"))
+            print(
+                "1.Scan Teams \n2.Scan Matches [Don't use this]\n3.Write Team Important Data\n4.Don't Ues This\n5.Can "
+                "Specific Match [PreSet World Championship]\n6.Get We Need")
             time.sleep(0.3)
-            excel_team_matches()
-        elif excelmode == 3:
-            print("Mode = Write Team Important Data in Excel")
+            excel_mode = int(input())
+            if excel_mode == 1:
+                print("Mode = Scan Teams and Write to Excel")
+                time.sleep(0.3)
+                excel_scan_teams()
+            elif excel_mode == 2:
+                print("Mode = Write Team Matches [Don't use this]")
+                time.sleep(0.3)
+                excel_team_matches()
+            elif excel_mode == 3:
+                print("Mode = Write Team Important Data in Excel")
+                time.sleep(0.3)
+                excel_get_all_data()
+            elif excel_mode == 4:
+                print("Mode = Scan Bugged Team [It will crash]")
+                time.sleep(0.3)
+                excel_get_all_bugs()
+            elif excel_mode == 5:
+                print("Mode = Scan World Championship")
+                time.sleep(0.3)
+                excel_scan_world()
+            elif excel_mode == 6:
+                print("Mode = Scan We Need")
+                time.sleep(0.3)
+                excel_get_we_need()
+        elif mode == 3:
+            print("Mode = Search Team History : Current Season")
             time.sleep(0.3)
-            excel_get_all_data()
-        elif excelmode == 4:
-            print("Mode = Scan Bugged Team [It will crash]")
+            search_team_current_season()
+        elif mode == 4:
+            print("Bubble!")
+            time_is_out()
+            answer()
+        elif mode == 8:
+            print("Mode = Get Important Data")
             time.sleep(0.3)
-            excel_get_all_bugs()
-        elif excelmode == 5:
-            print("Mode = Scan World Championship")
+            get_all_data()
+        elif mode == 0:
+            print("Thanks for using it!")
             time.sleep(0.3)
-            excel_scan_world()
-        elif excelmode == 6:
-            print("Mode = Scan We Need")
-            time.sleep(0.3)
-            excel_get_we_need()
-    elif mode == 3:
-        print("Mode = Search Team History : Current Season")
-        time.sleep(0.3)
-        search_team_current_season()
-    elif mode == 4:
-        print("Bubble!")
-        time_is_out()
-        answer()
-    elif mode == 8:
-        print("Mode = Get Important Data")
-        time.sleep(0.3)
-        get_all_data()
-    elif mode == 0:
-        print("Thanks for using it!")
-        time.sleep(0.3)
-        quit()
-    else:
-        print("Mode Unknown")
-        time.sleep(1)
+            quit()
+        else:
+            print("Mode Unknown")
+            time.sleep(1)
+
+
+if __name__ == '__main__':
+        main()
