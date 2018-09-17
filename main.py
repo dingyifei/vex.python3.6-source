@@ -81,7 +81,6 @@ sheet2.write(0, 6, "Result")
 
 
 class GlobalVar:
-
     # used in graphbubble, graphred, timeisout
     teamr1 = ""
     teamr2 = ""
@@ -215,14 +214,18 @@ class GlobalVar:
     highestave = 0
     ccwmave = 0
 
-def vexdb_json(api_type, api_parameters):  # TODO(Yifei): Make it work，"Team" should accept both string and list
-    """Return a json dict or a list of multiple json dict. e.g. vex_json(Matches, team_name, season
-        The args should be list or string""" # TODO(Yifei): Rewrite this
 
-    # The first parameter should come with ? and everything afte the first one should start with &
-    # API Type, parameters, seasons can found on vexdb.io/the_data
+def vexdb_json(api_type, api_parameters):
+    """
+    It function accept a string "api_type" and a dictionary "api_parameters", the "api_type" should be
+    one from _API_TYPE The dictionary's key are the _parameters from vexdb.io/the_data and the value should
+    also follow it.
+    """
+    # TODO(Yifei): Rewrite this
 
-    _API_TYPE = [ # Accept Types
+    # API Type, _parameters, seasons can found on vexdb.io/the_data
+
+    _API_TYPE = [  # Accept Types
         "Events",
         "Teams",
         "Matches",
@@ -232,50 +235,62 @@ def vexdb_json(api_type, api_parameters):  # TODO(Yifei): Make it work，"Team" 
         "Skills"
     ]
 
-    # TODO(Yifei): Multi thread, timeout retry, input data check
-    # TODO(Yifei):Accept List and return 2d dictionary
+    # TODO(Yifei): Multi thread, timeout retry
     _parameters = ""
-    if type(api_parameters) == dict:
-        _keys = api_parameters.keys()
-        _values = api_parameters.values()
+    if api_parameters:
+        if type(api_parameters) == dict:
+            _keys = api_parameters.keys()
+            _values = api_parameters.values()
+            _parameters_list = []
+            if len(_keys) >= 1:
+                _parameters_list.append("?" + _keys[0] + "=" + _values[0])
+                if len(_keys) > 1:
+                    for x in range(1, len(_keys) - 1):
+                        _parameters_list.append("%" + _keys[x] + "=" + _values[x])
+            for x in range(0, len(_parameters_list) - 1):
+                _parameters += _parameters_list[x]
 
-    if api_type:
-        try:
-            r = urlopen("https://api.vexdb.io/v1/get_" + api_type + _parameters)
-        except:
-            return "an error had occur in vex_json"
+    if api_type and _parameters != "":
+        json_dict = json.loads((urlopen("https://api.vexdb.io/v1/get_" + api_type + _parameters)).read())
+        if json_dict["status"] == 0:
+            print("OOPS   " + "Error Code:" + json_dict["error_code"] + "Error Text" + json_dict["error_text"])
+            return "error"
         else:
-            text = r.read()
-            json_dict = json.loads(text)
+            return json_dict
+    if api_type and _parameters == "":
+        json_dict = json.loads((urlopen("https://api.vexdb.io/v1/get_" + api_type)).read())
+        if json_dict["status"] == 0:
+            print("OOPS   " + "Error Code:" + json_dict["error_code"] + "Error Text" + json_dict["error_text"])
+            return "error"
+        else:
             return json_dict
     else:
-        return "Null or None input"
-    # TODO(Yifei): throw error correctly
-# Note: Data always Come with "Status" (usually 1, if it is 0 then a error_text and a error_code should occur), "Size" (How many items are in the "result", and "result" which
+        return "missing api_type"
+
+
+# TODO(Yifei): throw error correctly
+# Note: Data always Come with "Status" (usually 1, if it is 0 then a error_text and a error_code should occur),
+# "Size" (How many items are in the "result", and "result" which
 # contains the data we need. The result is a list of dictionaries.
 
 
 def scan_team_matches():
     name = input('Team #?\n')
     print('Checking, TEAM %s.' % name)
-
     r = urlopen(VEXDB_API_MATCHES + name + VEX_SEASON)
     text = r.read()
     pprint.pprint(json.loads(text))
     json_dict = json.loads(text)
     print('\n')
     output = []
-
     for r in json_dict["result"]:
         line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = {} || ' \
                'Blue Alliance 1 = {} Blue Alliance 2 = {} Blue Alliance 3 = {} Blue Sit = {} || Red Score = {} Blue ' \
                'Score = {}'.format(r["sku"], r["matchnum"], r["round"], r["red1"], r["red2"], r["red3"], r["redsit"],
                                    r["blue1"], r["blue2"], r["blue3"], r["bluesit"], r["redscore"], r["bluescore"])
         output.append(line)
-
     pprint.pprint(output)
     time.sleep(1)
-
     return None
 
 
