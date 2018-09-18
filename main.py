@@ -209,7 +209,7 @@ def vexdb_json(api_type, api_parameters):
     one from _API_TYPE The dictionary's key are the _parameters from vexdb.io/the_data and the value should
     also follow it.
     """
-    
+
     # API Type, _parameters, seasons can found on vexdb.io/the_data
     # TODO(Yifei): Multi thread, timeout retry,throw error correctly
 
@@ -239,6 +239,7 @@ def vexdb_json(api_type, api_parameters):
             return json_dict
         else:
             return json_dict
+
     if api_type and _parameters is None or "":
         json_dict = json.loads((urlopen("https://api.vexdb.io/v1/get_" + api_type)).read())
         if json_dict["status"] == 0:
@@ -262,10 +263,10 @@ def team_list():
         _team_list.append(_json_dict["result"][x]["number"])
 
 
-def scan_team_matches(name):
+def scan_team_matches(name: object) -> object:
     # name = input('Team #?\n')
     # print('Checking, TEAM %s.' % name)
-    _json_dict = vexdb_json("matches", {"season":"Turning%20Point", "team": name})
+    _json_dict = vexdb_json("matches", {"season": "Turning%20Point", "team": name})
     # pprint.pprint(_json_dict["result"])
     # print('\n')
     output = []
@@ -404,18 +405,14 @@ def excel_scan_teams():  # 201
             print(str(number) + "/" + str(len(list1)) + " Finished, Used " + str(decimal) + " seconds. Average " + str(
                 ave) + " seconds each. ETA: " + str(etatomin) + " mins.")
 
-            print()
-            print('wait ' + str(sleep_timer) +
+            print('\n wait ' + str(sleep_timer) +
                   ' sec for next request to server...')
 
         if number >= 5:
             number = 0
             sheetline = 1
-            print('')
-            print('reset and xls saved!')
+            print('\n reset and xls saved!')
             time.sleep(2)
-
-    # time.sleep(1)
 
 
 def excel_get_all_data():  # 203
@@ -584,9 +581,7 @@ def excel_get_all_data():  # 203
                 databluesit = '{}'.format(r["bluesit"])
                 dataredsc = '{}'.format(r["redscore"])
                 databluesc = '{}'.format(r["bluescore"])
-
                 # sheetline += 1
-
                 sheet3.write(sheetline, 0, datasku)
                 sheet3.write(sheetline, 1, datamatchnum)
                 sheet3.write(sheetline, 2, datared1, STYLE_RED)
@@ -643,9 +638,6 @@ def excel_get_all_data():  # 203
                     break
 
                 output.append(line)
-
-                # pprint.pprint(output)
-
                 time.sleep(sleep_timer)
 
             sheetline += 1
@@ -729,9 +721,7 @@ def excel_get_all_bugs():  # 204
 
             r = urlopen(VEXDB_API_RANK + teamloop + VEX_SEASON)
             text = r.read()
-
             json_dict = json.loads(text)
-
             output = []
 
             for r in json_dict["result"]:
@@ -761,16 +751,13 @@ def excel_get_all_bugs():  # 204
 
             sheetline += 1
 
-            # pprint.pprint(output)
-
             r = urlopen(VEXDB_API_MATCHES + teamloop + VEX_SEASON)
             text = r.read()
-            # pprint.pprint(json.loads(text))
             json_dict = json.loads(text)
-            # print('\n')
             output = []
 
             loop = -10000
+
             # 1-10000 For testing, should be 0
 
             sheet10.write(sheetline, 0, "Sku")
@@ -818,8 +805,6 @@ def excel_get_all_bugs():  # 204
                 databluesit = '{}'.format(r["bluesit"])
                 dataredsc = '{}'.format(r["redscore"])
                 databluesc = '{}'.format(r["bluescore"])
-
-                # sheetline += 1
 
                 sheet10.write(sheetline, 0, datasku)
                 sheet10.write(sheetline, 1, datamatchnum)
@@ -877,9 +862,6 @@ def excel_get_all_bugs():  # 204
                     break
 
                 output.append(line)
-
-                # pprint.pprint(output)
-
                 time.sleep(sleep_timer)
 
             sheetline += 1
@@ -946,7 +928,6 @@ def excel_get_we_need():  # 205
              '9932E', '10955M', '17071B', '35211C', '97934U', '98807A']
 
     while True:  # Todo(Yifei): What is this loop for?
-
         while number < int(len(list1)):  # TODO(Yifei): Use for loop instead
 
             teamloop = list1[number]
@@ -998,19 +979,10 @@ def excel_get_we_need():  # 205
 
             sheetline += 1
 
-            # pprint.pprint(output)
-
             r = urlopen(VEXDB_API_MATCHES + teamloop + VEX_SEASON)  # TODO(Yifei): Turn this into a function
             text = r.read()
-
-            # pprint.pprint(json.loads(text))
-
             json_dict = json.loads(text)
-
-            # print('\n')
-
             output = []
-
             loop = -10000
             # 1-10000 For testing, should be 0
 
@@ -1105,7 +1077,6 @@ def excel_get_we_need():  # 205
                 if int(dataredsc) == 0 and int(databluesc) == 0:
                     sheetline -= 1
                     matches -= 1
-
                 elif int(dataredsc) == 0:
                     sheet6.write(sheetline, 15, "Red DQ?", STYLE_BLACK)
                 elif int(databluesc) == 0:
@@ -1121,7 +1092,6 @@ def excel_get_we_need():  # 205
                 time.sleep(sleep_timer)
 
             sheetline += 1
-
             teaminfoline += 1
 
             decimal = (int(win) / int(matches))
@@ -1132,17 +1102,14 @@ def excel_get_we_need():  # 205
                 sheet6.write(teaminfoline, 8, str(flag) + "%", STYLE_70)
                 for x in range(9, 21):
                     sheet6.write(teaminfoline, x, "", STYLE_70)
-
             elif float(flag) >= 50:
                 sheet6.write(teaminfoline, 8, str(flag) + "%", STYLE_50)
                 for x in range(9, 21):
                     sheet6.write(teaminfoline, x, "", STYLE_50)
-
             elif float(flag) >= 30:
                 sheet6.write(teaminfoline, 8, str(flag) + "%", STYLE_30)
                 for x in range(9, 21):
                     sheet6.write(teaminfoline, x, "", STYLE_30)
-
             else:
                 sheet6.write(teaminfoline, 8, str(flag) + "%", STYLE_0)
                 for x in range(9, 21):
@@ -1171,8 +1138,7 @@ def excel_get_we_need():  # 205
         if number >= 5:
             number = 0
             sheetline = 1
-            print('')
-            print('reset and xls saved!')
+            print('\n reset and xls saved!')
 
 
 def excel_scan_world():
@@ -1245,13 +1211,12 @@ def excel_scan_world():
             sheet5.write(sheetline, 4, "Ranking")
             sheet5.write(sheetline, 5, "Highest")
             sheet5.write(sheetline, 6, "Result")
+
             sheetline += 1
 
             r = urlopen(VEXDB_API_RANK + teamloop + VEX_SEASON + '&sku=RE-VRC-17-3805')
             text = r.read()
-
             json_dict = json.loads(text)
-
             output = []
 
             for r in json_dict["result"]:
@@ -1265,6 +1230,7 @@ def excel_scan_world():
             dataap = '{}'.format(r["ap"])
             datarank = '{}'.format(r["rank"])
             datamaxscore = '{}'.format(r["max_score"])
+
             output.append(line)
 
             sheet5.write(sheetline, 0, "#" + datateam)
@@ -1362,9 +1328,6 @@ def excel_scan_world():
                     break
 
                 output.append(line)
-
-                # pprint.pprint(output)
-
                 time.sleep(0.1)
 
             sheetline += 1
@@ -1410,6 +1373,7 @@ def excel_team_matches():
     json_dict = json.loads(text)
     print('\n')
     output = []
+
     for r in json_dict["result"]:
         line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = {} || ' \
                'Blue Alliance 1 = {} Blue Alliance 2 = {} Blue Alliance 3 = {} Blue Sit = {} || Red Score = {} Blue ' \
@@ -2050,7 +2014,7 @@ def main():
         if mode == 1:
             print("Mode = Scan Team Matches")
             time.sleep(0.3)
-            scan_team_matches()
+            print(scan_team_matches(input("team number:")))
         elif mode == 2:
             print("Mode = Excels")
             # sleep_timer = float(input("Set Sleep Time\n"))
