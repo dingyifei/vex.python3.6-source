@@ -1681,12 +1681,9 @@ def team_highest():
     text = r.read()
     json_dict = json.loads(text)
     for r in json_dict["result"]:
-        # line = '{}'.format(r["max_score"])
-        # output.append(line)
         team_highest = '{}'.format(r["max_score"])
         count += 1
-        highesttotal = int(
-            highesttotal) + int(team_highest)
+        highesttotal = int(highesttotal) + int(team_highest)
         GlobalVar.highestave = int(highesttotal) / count
         if team_highest == "":
             print("break cuz blank")
