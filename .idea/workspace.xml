@@ -4,8 +4,8 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/main.py" line="1455" />
-    <bookmark url="file://$PROJECT_DIR$/main.py" line="261" />
+    <bookmark url="file://$PROJECT_DIR$/main.py" line="1303" />
+    <bookmark url="file://$PROJECT_DIR$/main.py" line="262" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="939f3c6f-630f-48eb-bd4e-96eb0ce19c33" name="Default Changelist" comment="">
@@ -40,18 +40,18 @@
     <session id="-1830622007">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="24" />
+          <entry key="project.closed" value="25" />
           <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.11" value="1" />
           <entry key="project.open.time.16" value="1" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.38" value="1" />
           <entry key="project.open.time.4" value="5" />
-          <entry key="project.open.time.5" value="8" />
+          <entry key="project.open.time.5" value="9" />
           <entry key="project.open.time.6" value="5" />
           <entry key="project.open.time.8" value="2" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="27" />
+          <entry key="project.opened" value="28" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -69,13 +69,13 @@
         <counts>
           <entry key="Python Console" value="84" />
           <entry key="dummy" value="33" />
-          <entry key="py" value="7291" />
+          <entry key="py" value="7724" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="33" />
-          <entry key="Python" value="7375" />
+          <entry key="Python" value="7808" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -89,10 +89,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="254">
-              <caret line="250" column="13" lean-forward="true" selection-start-line="250" selection-start-column="13" selection-end-line="250" selection-end-column="13" />
+            <state relative-caret-position="272">
+              <caret line="283" column="10" selection-start-line="283" selection-start-column="5" selection-end-line="283" selection-end-column="10" />
               <folding>
                 <element signature="e#15#26#0" expanded="true" />
+                <element signature="e#2978#5806#0" />
               </folding>
             </state>
           </provider>
@@ -102,8 +103,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>global_var.teamhighest</find>
-      <find>quit</find>
       <find>&quot;Sku&quot;</find>
       <find>changelog</find>
       <find>dis</find>
@@ -132,6 +131,8 @@
       <find>'2S', '2U', '5S', '10N', '12C', '12E', '12F', '12G', '12J', '39A', '39J', '39K', '39W'</find>
       <find>/</find>
       <find>\n</find>
+      <find>'2S', '2U', '5S', '10N', '12C', '1</find>
+      <find>list1</find>
     </findStrings>
     <replaceStrings>
       <replace>teamdpr</replace>
@@ -281,9 +282,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4934877" visible="true" weight="0.31876332" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4934877" visible="true" weight="0.32249466" />
       <window_info id="Structure" order="1" sideWeight="0.5065123" side_tool="true" weight="0.10660981" />
       <window_info id="Favorites" order="2" sideWeight="0.5007342" side_tool="true" weight="0.13646056" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -407,10 +407,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="250" column="13" lean-forward="true" selection-start-line="250" selection-start-column="13" selection-end-line="250" selection-end-column="13" />
+        <state relative-caret-position="272">
+          <caret line="283" column="10" selection-start-line="283" selection-start-column="5" selection-end-line="283" selection-end-column="10" />
           <folding>
             <element signature="e#15#26#0" expanded="true" />
+            <element signature="e#2978#5806#0" />
           </folding>
         </state>
       </provider>
