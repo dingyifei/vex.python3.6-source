@@ -1211,27 +1211,18 @@ def excel_scan_world():
 # Need to test when competition start
 
 
-def excel_team_matches():
-    name = input('Team #?\n')
-    print('Checking, TEAM %s.' % name)
+def excel_team_matches(name, season): # TODO(YIFEI): Why excel? Value name change needed.
 
-    r = urlopen(VEXDB_API_MATCHES + name + VEX_SEASON)
-    text = r.read()
-    pprint.pprint(json.loads(text))
-    json_dict = json.loads(text)
-    print('\n')
+    _json_dict = vexdb_json("matches", {"team": name, "season": season})
     output = []
-
-    for r in json_dict["result"]:
+    for r in _json_dict["result"]:
         line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = {} || ' \
                'Blue Alliance 1 = {} Blue Alliance 2 = {} Blue Alliance 3 = {} Blue Sit = {} || Red Score = {} Blue ' \
                'Score = {}' \
             .format(r["sku"], r["matchnum"], r["round"], r["red1"], r["red2"], r["red3"], r["redsit"], r["blue1"],
                     r["blue2"], r["blue3"], r["bluesit"], r["redscore"], r["bluescore"])
         output.append(line)
-    pprint.pprint(output)
-    time.sleep(1)
-    return None
+    return output
 
 
 def search_team_current_season():
@@ -1875,7 +1866,9 @@ def main():
             elif excel_mode == 2:
                 print("Mode = Write Team Matches [Don't use this]")
                 time.sleep(0.3)
-                excel_team_matches()
+                input1 = input('Team #?\n')
+                input2 = input('season #?\n')
+                pprint.pprint(excel_team_matches(input1, input2))
             elif excel_mode == 3:
                 print("Mode = Write Team Important Data in Excel")
                 time.sleep(0.3)
