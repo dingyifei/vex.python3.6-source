@@ -161,7 +161,7 @@ class GlobalVar:
     teamb3dpr = 0
 
     # Only teamcurrent and timeisout
-    inputmode = ""
+    #inputmode = ""
 
     # Only teamcurrent and timeisout
     currentranking = 0
@@ -203,7 +203,7 @@ class GlobalVar:
     ccwmave = 0
 
 
-def vexdb_json(api_type, api_parameters):
+def vexdb_json(api_type: str, api_parameters: dict):
     """
     It function accept a string "api_type" and a dictionary "api_parameters", the "api_type" should be
     one from _API_TYPE The dictionary's key are the _parameters from vexdb.io/the_data and the value should
@@ -1239,9 +1239,6 @@ def search_team_current_season(name, season): # TODO(YIFEI): Value name change.
 def get_all_data(name, season):
 
     # print("This will show the recent three matches.")
-    # name = str(input('Team #?\n'))
-    # print('Checking, TEAM %s.' % name)
-
     json_dict = vexdb_json("ranking", {"team": name, "season": season})
     ranking_result = []
     for r in json_dict["result"]:
@@ -1264,14 +1261,13 @@ def get_all_data(name, season):
     return ranking_result, matches_result
 
 
-def time_is_out():
+def time_is_out(teams: list): #TODO: NEED MORE FIX
 
-    GlobalVar.inputmode = str(
-        input("Type in the preset value or 6 teams separate by ,\n"))
+    #GlobalVar.inputmode = str(input("Type in the preset value or 6 teams separate by ,\n"))
 
-    print(
-        "TR1: " + GlobalVar.teamr1 + " TR2: " + GlobalVar.teamr2 + " TR3: " + GlobalVar.teamr3 + " || TB1: "
-        + GlobalVar.teamb1 + " TB2: " + GlobalVar.teamb2 + " TB3: " + GlobalVar.teamb3)
+    # print(
+    #     "TR1: " + GlobalVar.teamr1 + " TR2: " + GlobalVar.teamr2 + " TR3: " + GlobalVar.teamr3 + " || TB1: "
+    #     + GlobalVar.teamb1 + " TB2: " + GlobalVar.teamb2 + " TB3: " + GlobalVar.teamb3)
 
     if str(GlobalVar.teamr1) != "":
         GlobalVar.teamsent = GlobalVar.teamr1
@@ -1386,10 +1382,9 @@ def time_is_out():
     return None
 
 
-def team_skill():
-    r = urlopen('https://api.vexdb.io/v1/get_skills?team=' + GlobalVar.teamsent + VEX_SEASON)
-    text = r.read()
-    json_dict = json.loads(text)
+def team_skill(team, season):
+
+    json_dict = vexdb_json("skills", {"team": team, "season":season }) #it should be globalvar teamsent
     skilltotal = 0
     totalattempts = 0
 
@@ -1412,12 +1407,11 @@ def team_skill():
     team_sent()
 
 
-def team_sent():
+def team_sent(team, season):
+
     count = 0
     GlobalVar.winsave = 0
-    r = urlopen(VEXDB_API_RANK + GlobalVar.teamsent + VEX_SEASON)
-    text = r.read()
-    json_dict = json.loads(text)
+    json_dict = vexdb_json("rankings", {"season":season, "team": team}) # it should be teamsent
     for r in json_dict["result"]:
         teamwins = '{}'.format(r["wins"])
         count += 1
@@ -1431,13 +1425,12 @@ def team_sent():
     team_current()
 
 
-def team_current():  # can be part of teamsent()
+def team_current(team, season, sku):  # can be part of teamsent()
+
     GlobalVar.currentranking = 0
     GlobalVar.currentwins = 0
     GlobalVar.currentlosses = 0
-    r = urlopen(VEXDB_API_RANK + GlobalVar.teamsent + VEX_SEASON + GlobalVar.CONST_match)
-    text = r.read()
-    json_dict = json.loads(text)
+    json_dict = vexdb_json("rankings", {"season":season, "team":team, "sku":sku})  # teamsent, sku constant, season
     for r in json_dict["result"]:
         GlobalVar.currentranking = '{}'.format(r["rank"])
         GlobalVar.currentwins = '{}'.format(r["wins"])
@@ -1445,16 +1438,12 @@ def team_current():  # can be part of teamsent()
     teamap()
 
 
-def teamap():
+def teamap(team,season):
     aptotal = 0
     count = 0
-    r = urlopen(VEXDB_API_RANK + GlobalVar.teamsent + VEX_SEASON)
-    text = r.read()
-    json_dict = json.loads(text)
 
+    json_dict = vexdb_json("rankings", {"team":team, "season":season})#teamsent
     for r in json_dict["result"]:
-        # line = '{}'.format(r["ap"])
-        # output.append(line)
         teammap = '{}'.format(r["ap"])
         count += 1
 
@@ -1472,16 +1461,15 @@ def teamap():
     teamranking()
 
 
-def teamranking():
+def teamranking(team, season):
     GlobalVar.rankave = 0
     count = 0
-    r = urlopen(VEXDB_API_RANK + GlobalVar.teamsent + VEX_SEASON)
-    text = r.read()
-    json_dict = json.loads(text)
+
+    json_dict = vexdb_json("rankings", {"team": team, "season": season}) #teamsent
     for r in json_dict["result"]:
         team_ranking = '{}'.format(r["rank"])
         count += 1
-        ranktotal = int(ranktotal) + int(team_ranking)
+        ranktotal += int(team_ranking)
         GlobalVar.rankave = float(ranktotal) / int(count)
 
         if team_ranking == "" or team_ranking == "":
@@ -1493,17 +1481,16 @@ def teamranking():
     team_highest()
 
 
-def team_highest():
+def team_highest(team, season):
+
     highesttotal = 0
     GlobalVar.highestave = 0
     count = 0
-    r = urlopen(VEXDB_API_RANK + GlobalVar.teamsent + VEX_SEASON)
-    text = r.read()
-    json_dict = json.loads(text)
+    json_dict = vexdb_json("rankings", {"team": team, "season": season}) #teamsent
     for r in json_dict["result"]:
         team_highest = '{}'.format(r["max_score"])
         count += 1
-        highesttotal = int(highesttotal) + int(team_highest)
+        highesttotal += int(team_highest)
         GlobalVar.highestave = int(highesttotal) / count
         if team_highest == "":
             print("break cuz blank")
@@ -1514,26 +1501,21 @@ def team_highest():
     teampr()
 
 
-def teampr():
+def teampr(team, season):
+
     GlobalVar.oprtotal = 0
     dprtotal = 0
-    r = urlopen(VEXDB_API_RANK + GlobalVar.teamsent + VEX_SEASON)
-    text = r.read()
-    json_dict = json.loads(text)
+    json_dict = vexdb_json("rankings", {"team": team, "season": season}) #teamsent
     count = 0
     for r in json_dict["result"]:
-        # line = '{} {}'.format(r["opr"], r["dpr"])
-        # output.append(line)
         teamopr = '{}'.format(r["opr"])
         teamdpr = '{}'.format(r["dpr"])
         teamopr = (float(teamopr) / 5)
         teamdpr = (float(teamdpr) / 5)
         count += 1
-        GlobalVar.oprtotal = float(
-            GlobalVar.oprtotal) + float(teamopr)
+        GlobalVar.oprtotal += float(teamopr)
         GlobalVar.oprave = float(GlobalVar.oprtotal) / int(count)
-        dprtotal = float(
-            dprtotal) + float(teamdpr)
+        dprtotal += float(teamdpr)
         GlobalVar.dprave = float(dprtotal) / int(count)
 
         if teamdpr == "" or teamopr == "":
@@ -1544,21 +1526,16 @@ def teampr():
         teamccwm()
 
 
-def teamccwm():
+def teamccwm(team, season):
+
     ccwmtotal = 0
     GlobalVar.ccwmave = 0
-
-    r = urlopen(VEXDB_API_RANK + GlobalVar.teamsent + VEX_SEASON)
-    text = r.read()
-    json_dict = json.loads(text)
-
+    json_dict = vexdb_json("rankings", {"team":team, "season": season}) # teamsent
     count = 0
     for r in json_dict["result"]:
-        # line = '{}'.format(r["ccwm"])
-        # output.append(line)
         teamccwm = '{}'.format(r["ccwm"])
         count += 1
-        ccwmtotal = float(ccwmtotal) + float(teamccwm)
+        ccwmtotal += float(teamccwm)
         GlobalVar.ccwmave = float(ccwmtotal) / int(count)
         if teamccwm == "" or teamccwm == "":
             print("break cuz blank")
@@ -1579,12 +1556,9 @@ def graphbubble():  # it should be part of "timeisout"
     GlobalVar.teamr3ranking = int(10 - int(GlobalVar.teamr3ranking))
 
     # /17
-    GlobalVar.teamr1highest = round(
-        float(int(GlobalVar.teamr1highest) / 17), 1)
-    GlobalVar.teamr2highest = round(
-        float(int(GlobalVar.teamr2highest) / 17), 1)
-    GlobalVar.teamr3highest = round(
-        float(int(GlobalVar.teamr3highest) / 17), 1)
+    GlobalVar.teamr1highest = round(float(int(GlobalVar.teamr1highest) / 17), 1)
+    GlobalVar.teamr2highest = round(float(int(GlobalVar.teamr2highest) / 17), 1)
+    GlobalVar.teamr3highest = round(float(int(GlobalVar.teamr3highest) / 17), 1)
 
     if int(GlobalVar.teamr1ranking) < 0:
         GlobalVar.teamr1ranking = 0
@@ -1878,7 +1852,6 @@ def main():
             answer()
         elif mode == 8:
             print("Mode = Get Important Data")
-            time.sleep(0.3)
             input1 = input('Team #?\n')
             input2 = input('season #?\n')
             a = get_all_data(input1,input2)
