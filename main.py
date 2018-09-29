@@ -1211,7 +1211,7 @@ def excel_scan_world():
 # Need to test when competition start
 
 
-def excel_team_matches(name, season): # TODO(YIFEI): Why excel? Value name change needed.
+def excel_team_matches(name, season): # TODO(YIFEI): Why excel? Value name change.
 
     _json_dict = vexdb_json("matches", {"team": name, "season": season})
     output = []
@@ -1225,46 +1225,31 @@ def excel_team_matches(name, season): # TODO(YIFEI): Why excel? Value name chang
     return output
 
 
-def search_team_current_season():
-    name = str(input('Team #?\n'))
-    print('Checking, TEAM %s.' % name)
-    r = urlopen(VEXDB_API_RANK + name + VEX_SEASON)
-    text = r.read()
-    pprint.pprint(json.loads(text))
-    json_dict = json.loads(text)
-    print('\n')
+def search_team_current_season(name, season): # TODO(YIFEI): Value name change.
+
+    json_dict = vexdb_json("rankings", {"team":name, "season": season})
     output = []
     for r in json_dict["result"]:
         line = "Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}" \
             .format(r["team"], r["wins"], r["losses"], r["ap"], r["rank"], r["max_score"])
         output.append(line)
-    pprint.pprint(output)
-    time.sleep(1)
-    return None
+    return output
 
 
-def get_all_data():
-    # getalldata
-    print("This will show the recent three matches.")
-    name = str(input('Team #?\n'))
-    print('Checking, TEAM %s.' % name)
-    r = urlopen(VEXDB_API_RANK + name + VEX_SEASON)
-    text = r.read()
-    # pprint.pprint(json.loads(text))
-    json_dict = json.loads(text)
-    # print('\n')
-    output = []
+def get_all_data(name, season):
+
+    # print("This will show the recent three matches.")
+    # name = str(input('Team #?\n'))
+    # print('Checking, TEAM %s.' % name)
+
+    json_dict = vexdb_json("ranking", {"team": name, "season": season})
+    ranking_result = []
     for r in json_dict["result"]:
         line = "Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}" \
             .format(r["team"], r["wins"], r["losses"], r["ap"], r["rank"], r["max_score"])
-        output.append(line)
-    pprint.pprint(output)
-    r = urlopen(VEXDB_API_MATCHES + name + VEX_SEASON)
-    text = r.read()
-    # pprint.pprint(json.loads(text))
-    json_dict = json.loads(text)
-    # print('\n')
-    output = []
+        ranking_result.append(line)
+    json_dict = vexdb_json("matches", {"team": name, "season": season})
+    matches_result = []
     loop = 0
     for r in json_dict["result"]:
         line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = {} || ' \
@@ -1275,15 +1260,12 @@ def get_all_data():
         loop += 1
         if loop > 2:
             break
-        output.append(line)
-        pprint.pprint(output)
-        # book.save(name + ".xls")
-    # time.sleep(1)
-    return None
+        matches_result.append(line)
+    return ranking_result, matches_result
 
 
 def time_is_out():
-    # Input Team
+
     GlobalVar.inputmode = str(
         input("Type in the preset value or 6 teams separate by ,\n"))
 
@@ -1408,7 +1390,6 @@ def team_skill():
     r = urlopen('https://api.vexdb.io/v1/get_skills?team=' + GlobalVar.teamsent + VEX_SEASON)
     text = r.read()
     json_dict = json.loads(text)
-    # output = []
     skilltotal = 0
     totalattempts = 0
 
@@ -1844,7 +1825,7 @@ def answer():
 
 def main():
     while True:
-        mode = int(input(
+        mode = int(input( #TODO(YIFEI): int??? exception
             "Mode \n 1.Scan Team Matches \n 2.Excel Functions [Not Finished] \n 3.Search Team Season History  "
             "\n 8.Get Important Info For a Team \n 9.Change Log\n 0.Quit \n"))
         if mode == 1:
@@ -1888,7 +1869,9 @@ def main():
         elif mode == 3:
             print("Mode = Search Team History : Current Season")
             time.sleep(0.3)
-            search_team_current_season()
+            input1 = input('Team #?\n')
+            input2 = input('season #?\n')
+            pprint.pprint(search_team_current_season(input1, input2))
         elif mode == 4:
             print("Bubble!")
             time_is_out()
@@ -1896,7 +1879,12 @@ def main():
         elif mode == 8:
             print("Mode = Get Important Data")
             time.sleep(0.3)
-            get_all_data()
+            input1 = input('Team #?\n')
+            input2 = input('season #?\n')
+            a = get_all_data(input1,input2)
+            pprint.pprint(a[0])
+            pprint.pprint(a[1])
+
         elif mode == 0:
             print("Thanks for using it!")
             time.sleep(0.3)
