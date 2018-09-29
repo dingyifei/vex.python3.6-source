@@ -4,12 +4,11 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/main.py" line="1276" />
+    <bookmark url="file://$PROJECT_DIR$/main.py" line="1215" />
     <bookmark url="file://$PROJECT_DIR$/main.py" line="262" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="939f3c6f-630f-48eb-bd4e-96eb0ce19c33" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/venv/" />
@@ -56,11 +55,13 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
+          <entry key="md" value="1" />
           <entry key="py" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
+          <entry key="Markdown" value="1" />
           <entry key="Python" value="8" />
         </counts>
       </usages-collector>
@@ -69,13 +70,13 @@
         <counts>
           <entry key="Python Console" value="84" />
           <entry key="dummy" value="33" />
-          <entry key="py" value="9156" />
+          <entry key="py" value="9715" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="33" />
-          <entry key="Python" value="9240" />
+          <entry key="Python" value="9799" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -91,17 +92,24 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="76">
-                  <caret line="1532" column="82" selection-start-line="1532" selection-start-column="82" selection-end-line="1532" selection-end-column="82" />
+                <state relative-caret-position="241">
+                  <caret line="1208" column="23" selection-start-line="1208" selection-start-column="23" selection-end-line="1208" selection-end-column="23" />
                   <folding>
                     <element signature="e#15#26#0" expanded="true" />
-                    <element signature="e#8472#9121#0" />
-                    <element signature="e#9160#12108#0" />
-                    <element signature="e#12148#21408#0" />
-                    <element signature="e#21448#30562#0" />
-                    <element signature="e#30601#39781#0" />
-                    <element signature="e#39812#47042#0" />
+                    <element signature="e#60147#70688#0" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/README.md">
+              <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+                <state split_layout="SPLIT">
+                  <first_editor relative-caret-position="152">
+                    <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+                  </first_editor>
+                  <second_editor />
                 </state>
               </provider>
             </entry>
@@ -113,8 +121,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="209">
-                  <caret line="14" column="23" lean-forward="true" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
+                <state relative-caret-position="266">
+                  <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
                   <folding>
                     <element signature="e#15#26#0" expanded="true" />
                   </folding>
@@ -128,7 +136,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>pd</find>
       <find>winstotal</find>
       <find>aptotal</find>
       <find>ranktotal</find>
@@ -158,6 +165,7 @@
       <find>teamr1skillout</find>
       <find>inputmode</find>
       <find>teamsent</find>
+      <find>sleep</find>
     </findStrings>
     <replaceStrings>
       <replace>teamdpr</replace>
@@ -212,7 +220,20 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="vex.python3.6-source" type="b2602c69:ProjectViewProjectNode" />
+              <item name="vex.python3.6-source" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="sqlite" />
@@ -293,10 +314,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4934877" weight="0.6695843" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4934877" weight="0.6695096" />
       <window_info id="Structure" order="1" sideWeight="0.5065123" side_tool="true" weight="0.10660981" />
       <window_info id="Favorites" order="2" sideWeight="0.5007342" side_tool="true" weight="0.13646056" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -304,14 +325,14 @@
       <window_info anchor="bottom" id="Debug" order="2" weight="0.28428093" />
       <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="5" weight="0.3277592" />
+      <window_info anchor="bottom" id="TODO" order="5" visible="true" weight="0.3277592" />
       <window_info anchor="bottom" id="Docker" order="6" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49840087" weight="0.27647716" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50159913" side_tool="true" weight="0.27647716" />
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.32887402" />
       <window_info anchor="bottom" id="Python Console" order="11" sideWeight="0.499002" weight="0.57079154" />
-      <window_info active="true" anchor="bottom" id="Inspection Results" order="12" visible="true" weight="0.22073579" />
+      <window_info anchor="bottom" id="Inspection Results" order="12" weight="0.22073579" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -418,18 +439,23 @@
         <state relative-caret-position="-10440" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="152">
+            <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="1532" column="82" selection-start-line="1532" selection-start-column="82" selection-end-line="1532" selection-end-column="82" />
+        <state relative-caret-position="241">
+          <caret line="1208" column="23" selection-start-line="1208" selection-start-column="23" selection-end-line="1208" selection-end-column="23" />
           <folding>
             <element signature="e#15#26#0" expanded="true" />
-            <element signature="e#8472#9121#0" />
-            <element signature="e#9160#12108#0" />
-            <element signature="e#12148#21408#0" />
-            <element signature="e#21448#30562#0" />
-            <element signature="e#30601#39781#0" />
-            <element signature="e#39812#47042#0" />
+            <element signature="e#60147#70688#0" />
           </folding>
         </state>
       </provider>

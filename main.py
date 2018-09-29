@@ -264,7 +264,7 @@ def team_list():
         _team_list.append(_json_dict["result"][x]["number"])
 
 
-def scan_team_matches(name: object) -> object: # Not sure what the Object is
+def scan_team_matches(name: object) -> object: #temperory
     _json_dict = vexdb_json("matches", {"season": "Turning%20Point", "team": name})
     output = []
     for r in _json_dict["result"]:
@@ -276,51 +276,39 @@ def scan_team_matches(name: object) -> object: # Not sure what the Object is
     return output
 
 
-def excel_scan_teams():  # 201
+def excel_scan_teams(teams:list, season:str):  # 201
 
     start = time.time()
     number = 0
     sheetline = 0
-    #list1 = [] # TODO(YIFEI): This list is removed NEEDFIX
-
+    #list1 = [] # It is replace with the "teams" list
     while True:
-
-        while number < len(list1):
-
-            teamloop = list1[number]
+        while number < len(teams):
+            teamloop = teams[number]
             # ['sheet_%d' % sheetnb].write = book.add_sheet(teamloop, cell_overwrite_ok= True)
             print('')
             print(teamloop)
             print('')
             number += 1
             sheetline += 1
-
-            r = urlopen(VEXDB_API_RANK + str(teamloop) + VEX_SEASON)
-            text = r.read()
-            json_dict = json.loads(text)
+            json_dict = vexdb_json("rankings", {"team": teamloop, "season":season})
             output = []
-
             for r in json_dict["result"]:
-
                 line = 'Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}' \
                     .format(r["team"], r["wins"], r["losses"], r["ap"], r["rank"], r["max_score"])
-
                 datateam = '{}'.format(r["team"])
                 datawins = '{}'.format(r["wins"])
                 datalosses = '{}'.format(r["losses"])
                 dataap = '{}'.format(r["ap"])
                 datarank = '{}'.format(r["rank"])
                 datamaxscore = '{}'.format(r["max_score"])
-
                 if int(datawins) > int(datalosses):
                     sheet2.write(sheetline, 6, "Positive", STYLE_1)
                 elif int(datawins) < int(datalosses):
                     sheet2.write(sheetline, 6, "Negative", STYLE_2)
                 output.append(line)
-
                 # ['sheet' + str(number)].write(1, 1,teamloop)
                 # ['sheet' + str(number)].write(2, 1,line )
-
                 sheet2.write(sheetline, 0, datateam)
                 sheet2.write(sheetline, 1, datawins)
                 sheet2.write(sheetline, 2, datalosses)
@@ -328,40 +316,30 @@ def excel_scan_teams():  # 201
                 sheet2.write(sheetline, 4, datarank)
                 sheet2.write(sheetline, 5, datamaxscore)
                 sheetline += 1
-
-                # print(line)
-
                 time.sleep(sleep_timer)
-
             # pprint.pprint(output)
             book.save("Data.xls")
-
             print('')
-
             decimal = (time.time() - start)
             decimal = Decimal.from_float(decimal).quantize(Decimal('0.0'))
-
             ave = (float(decimal) / (int(number)))
             ave = Decimal.from_float(ave).quantize(Decimal('0.0'))
-
-            eta = (float(ave) * (int(len(list1) - (int(number)))))
+            eta = (float(ave) * (int(len(teams) - (int(number)))))
             etatomin = (float(eta) / 60)
             etatomin = Decimal.from_float(etatomin).quantize(Decimal('0.0'))
 
-            print(str(number) + "/" + str(len(list1)) + " Finished, Used " + str(decimal) + " seconds. Average " + str(
+            print(str(number) + "/" + str(len(teams)) + " Finished, Used " + str(decimal) + " seconds. Average " + str(
                 ave) + " seconds each. ETA: " + str(etatomin) + " mins.")
 
-            print('\n wait ' + str(sleep_timer) +
-                  ' sec for next request to server...')
+            print('\n wait ' + str(sleep_timer) + ' sec for next request to server...')
 
         if number >= 5:
             number = 0
             sheetline = 1
             print('\n reset and xls saved!')
-            time.sleep(2)
 
 
-def excel_get_all_data():  # 203
+def excel_get_all_data(teams: list, season: str):  # 203
     time.sleep(1)
     number = 0
     sheetline = 0
@@ -372,9 +350,8 @@ def excel_get_all_data():  # 203
 
     while True:
 
-        while number < int(len(list1)):
-
-            teamloop = list1[number]
+        while number < int(len(teams)):
+            teamloop = teams[number]
             print(teamloop)
             number += 1
             teaminfoline = int(sheetline)
@@ -386,16 +363,9 @@ def excel_get_all_data():  # 203
             sheet3.write(sheetline, 5, "Highest")
             sheet3.write(sheetline, 6, "Result")
             sheet3.write(sheetline, 8, "Flag")
-
             sheetline += 1
-
-            r = urlopen(VEXDB_API_RANK + teamloop + VEX_SEASON)
-            text = r.read()
-
-            json_dict = json.loads(text)
-
+            json_dict = vexdb_json("ranking", {"team":teamloop, "season": season})
             output = []
-
             for r in json_dict["result"]:
                 line = "Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}" \
                     .format(r["team"], r["wins"], r["losses"], r["ap"], r["rank"], r["max_score"])
@@ -453,20 +423,15 @@ def excel_get_all_data():  # 203
             # sheet3.write(sheetline, 16, "Cur Sit")
 
             sheetline += 1
-
             win = 0
             matches = 0
-
             for r in json_dict["result"]:
-
                 matches += 1
-
                 line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = ' \
                        '{} || Blue Alliance 1 = {} Blue Alliance 2 = {} Blue Alliance 3 = {} Blue Sit = {} || Red ' \
                        'Score = {} Blue Score = {}'.format(r["sku"], r["matchnum"], r["round"], r["red1"], r["red2"],
                                                            r["red3"], r["redsit"], r["blue1"], r["blue2"], r["blue3"],
                                                            r["bluesit"], r["redscore"], r["bluescore"])
-
                 datasku = '{}'.format(r["sku"])
                 datamatchnum = '{}'.format(r["matchnum"])
                 datared1 = '{}'.format(r["red1"])
@@ -519,7 +484,6 @@ def excel_get_all_data():  # 203
                         sheet3.write(sheetline, 13, "Lose", STYLE_BLACK)
 
                 # To see if 0 = 0
-
                 if int(dataredsc) == 0 and int(databluesc) == 0:
                     sheetline -= 1
                     matches -= 1
@@ -576,11 +540,11 @@ def excel_get_all_data():  # 203
             ave = (float(decimal) / (int(number)))
             ave = Decimal.from_float(ave).quantize(Decimal('0.0'))
 
-            eta = (float(ave) * (int(len(list1) - (int(number)))))
+            eta = (float(ave) * (int(len(teams) - (int(number)))))
             etatomin = (float(eta) / 60)
             etatomin = Decimal.from_float(etatomin).quantize(Decimal('0.0'))
 
-            print(str(number) + "/" + str(len(list1)) + " Finished, Used " + str(decimal) + " seconds. Average " + str(
+            print(str(number) + "/" + str(len(teams)) + " Finished, Used " + str(decimal) + " seconds. Average " + str(
                 ave) + " seconds each. ETA: " + str(etatomin) + " mins.")
             print()
             book.save("Data" + ".xls")
@@ -592,17 +556,15 @@ def excel_get_all_data():  # 203
             print('reset and xls saved!')
 
 
-def excel_get_all_bugs():  # 204
-    time.sleep(1)
+def excel_get_all_bugs(teams:list, season: str):  # 204
+
     number = 0
     sheetline = 0
     start = time.time()
-    #list1 = []
-    # TODO(YIFEI): THIS LIST IS REMOVED NEED FIX
 
     while True:
-        while number < int(len(list1)):
-            teamloop = list1[number]
+        while number < int(len(teams)):
+            teamloop = teams[number]
             print(teamloop)
             number += 1
             teaminfoline = int(sheetline)
@@ -614,12 +576,8 @@ def excel_get_all_bugs():  # 204
             sheet10.write(sheetline, 5, "Highest")
             sheet10.write(sheetline, 6, "Result")
             sheet10.write(sheetline, 8, "Flag")
-
             sheetline += 1
-
-            r = urlopen(VEXDB_API_RANK + teamloop + VEX_SEASON)
-            text = r.read()
-            json_dict = json.loads(text)
+            json_dict = vexdb_json("rankings", {"team": teamloop, "season": season})
             output = []
 
             for r in json_dict["result"]:
@@ -800,11 +758,11 @@ def excel_get_all_bugs():  # 204
             ave = (float(decimal) / (int(number)))
             ave = Decimal.from_float(ave).quantize(Decimal('0.0'))
 
-            eta = float(ave) * (int(len(list1) - (int(number))))
+            eta = float(ave) * (int(len(teams) - (int(number))))
             etatomin = (float(eta) / 60)
             etatomin = Decimal.from_float(etatomin).quantize(Decimal('0.0'))
 
-            print(str(number) + "/" + str(len(list1)) + " Finished, Used " + str(decimal) + " seconds. Average " + str(
+            print(str(number) + "/" + str(len(teams)) + " Finished, Used " + str(decimal) + " seconds. Average " + str(
                 ave) + " seconds each. ETA: " + str(etatomin) + " mins.")
             print()
             book.save("Data" + ".xls")
@@ -816,18 +774,16 @@ def excel_get_all_bugs():  # 204
             print('reset and xls saved!')
 
 
-def excel_get_we_need():  # 205
-    time.sleep(1)
+def excel_get_we_need(teams: list, season: str):  # 205
+
     number = 0
     sheetline = 0
     start = time.time()
-    #list1 = []
-    #TODO(YIFEI): THIS LIST IS REMOVED NEEDFIX
 
     while True:  # Todo(Yifei): What is this loop for?
-        while number < int(len(list1)):  # TODO(Yifei): Use for loop instead
+        while number < int(len(teams)):  # TODO(Yifei): Use for loop instead
 
-            teamloop = list1[number]
+            teamloop = teams[number]
             print(teamloop)
             number += 1
             teaminfoline = int(sheetline)
@@ -839,21 +795,13 @@ def excel_get_we_need():  # 205
             sheet6.write(sheetline, 5, "Highest")
             sheet6.write(sheetline, 6, "Result")
             sheet6.write(sheetline, 8, "Flag")
-
             sheetline += 1
-
-            r = urlopen(VEXDB_API_RANK + teamloop + VEX_SEASON)
-            text = r.read()
-
-            json_dict = json.loads(text)
-
+            json_dict = vexdb_json("rankings", {"team": teamloop, "season":season})
             output = []
-
             for r in json_dict["result"]:
                 line = "Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}" \
                     .format(r["team"], r["wins"], r["losses"], r["ap"], r["rank"], r["max_score"])
                 output.append(line)
-
             datateam = '{}'.format(r["team"])
             datawins = '{}'.format(r["wins"])
             datalosses = '{}'.format(r["losses"])
@@ -861,7 +809,6 @@ def excel_get_we_need():  # 205
             datarank = '{}'.format(r["rank"])
             datamaxscore = '{}'.format(r["max_score"])
             output.append(line)
-
             sheet6.write(sheetline, 0, "#" + datateam)
             sheet6.write(sheetline, 1, datawins)
             sheet6.write(sheetline, 2, datalosses)
@@ -1023,11 +970,11 @@ def excel_get_we_need():  # 205
             ave = (float(decimal) / (int(number)))
             ave = Decimal.from_float(ave).quantize(Decimal('0.0'))
 
-            eta = float(ave) * (int(len(list1) - (int(number))))
+            eta = float(ave) * (int(len(teams) - (int(number))))
             etatomin = (float(eta) / 60)
             etatomin = Decimal.from_float(etatomin).quantize(Decimal('0.0'))
 
-            print(str(number) + "/" + str(len(list1)) + " Finished, Used " + str(decimal) + " seconds. Average " + str(
+            print(str(number) + "/" + str(len(teams)) + " Finished, Used " + str(decimal) + " seconds. Average " + str(
                 ave) + " seconds each. ETA: " + str(etatomin) + " mins.")
             print()
             book.save("Data" + ".xls")
@@ -1038,18 +985,14 @@ def excel_get_we_need():  # 205
             print('\n reset and xls saved!')
 
 
-def excel_scan_world():
+def excel_scan_world(teams: list, season: str, sku: str):
     time.sleep(1)
     number = 0
     sheetline = 0
     start = time.time()
-    #list1 = [] # TODO(YIFEI): This list is removed NEEDFIX
-
     while True:
-
-        while number < int(len(list1)):
-
-            teamloop = list1[number]
+        while number < int(len(teams)):
+            teamloop = teams[number]
             print(teamloop)
             number += 1
             sheet5.write(sheetline, 0, "Team")
@@ -1059,12 +1002,8 @@ def excel_scan_world():
             sheet5.write(sheetline, 4, "Ranking")
             sheet5.write(sheetline, 5, "Highest")
             sheet5.write(sheetline, 6, "Result")
-
             sheetline += 1
-
-            r = urlopen(VEXDB_API_RANK + teamloop + VEX_SEASON + '&sku=RE-VRC-17-3805')
-            text = r.read()
-            json_dict = json.loads(text)
+            json_dict = vexdb_json("rankings", {"team":teamloop, "season": season, "sku": sku})
             output = []
 
             for r in json_dict["result"]:
@@ -1193,11 +1132,11 @@ def excel_scan_world():
             ave = (float(decimal) / (int(number)))
             ave = Decimal.from_float(ave).quantize(Decimal('0.0'))
 
-            eta = float(ave) * (int(len(list1) - (int(number))))
+            eta = float(ave) * (int(len(teams) - (int(number))))
             etatomin = (float(eta) / 60)
             etatomin = Decimal.from_float(etatomin).quantize(Decimal('0.0'))
 
-            print(str(number) + "/" + str(len(list1)) + " Finished, Used " + str(decimal) + " seconds. Average " + str(
+            print(str(number) + "/" + str(len(teams)) + " Finished, Used " + str(decimal) + " seconds. Average " + str(
                 ave) + " seconds each. ETA: " + str(etatomin) + " mins.")
             print()
             book.save("Data" + ".xls")
@@ -1261,7 +1200,7 @@ def get_all_data(name, season):
     return ranking_result, matches_result
 
 
-def time_is_out(teams: list): #TODO: NEED MORE FIX
+def time_is_out(red_teams: list, blue_teams: list): # TODO: NEED MORE FIX
 
     #GlobalVar.inputmode = str(input("Type in the preset value or 6 teams separate by ,\n"))
 
@@ -1387,7 +1326,6 @@ def team_skill(team, season):
     json_dict = vexdb_json("skills", {"team": team, "season":season }) #it should be globalvar teamsent
     skilltotal = 0
     totalattempts = 0
-
     for r in json_dict["result"]:
         skill = int(r["score"])
         attempt = int(r["attempts"])
@@ -1399,7 +1337,6 @@ def team_skill(team, season):
         skillave = int(skilltotal) / int(totalattempts)
     else:
         skillave = 0
-
     decimal = skillave
     decimal = Decimal.from_float(decimal).quantize(Decimal('0.0'))
     GlobalVar.skillave = decimal
@@ -1439,21 +1376,19 @@ def team_current(team, season, sku):  # can be part of teamsent()
 
 
 def teamap(team,season):
+
     aptotal = 0
     count = 0
-
     json_dict = vexdb_json("rankings", {"team":team, "season":season})#teamsent
     for r in json_dict["result"]:
         teammap = '{}'.format(r["ap"])
         count += 1
-
         if int(teammap) > 25:
             diff = (int(teammap) - 25) * 0.2
             teammap = 25 + float(diff)
             print("Balance over 25, " + str(diff))
         aptotal = int(aptotal) + int(teammap)
         GlobalVar.apave = int(aptotal) / int(count)
-
         if teammap == "" or teammap == "":
             print("break cuz blank")
             count -= 1
@@ -1464,18 +1399,17 @@ def teamap(team,season):
 def teamranking(team, season):
     GlobalVar.rankave = 0
     count = 0
-
+    rank_total = 0
     json_dict = vexdb_json("rankings", {"team": team, "season": season}) #teamsent
     for r in json_dict["result"]:
         team_ranking = '{}'.format(r["rank"])
         count += 1
-        ranktotal += int(team_ranking)
-        GlobalVar.rankave = float(ranktotal) / int(count)
-
-        if team_ranking == "" or team_ranking == "":
+        rank_total += int(team_ranking)
+        GlobalVar.rankave = float(rank_total) / int(count)
+        if team_ranking == "":
             print("break cuz blank")
             count -= 1
-            GlobalVar.rankave = float(ranktotal) / int(count)
+            GlobalVar.rankave = float(rank_total) / int(count)
             team_highest()
         GlobalVar.rankave = float(team_ranking) / int(count)
     team_highest()
@@ -1517,7 +1451,6 @@ def teampr(team, season):
         GlobalVar.oprave = float(GlobalVar.oprtotal) / int(count)
         dprtotal += float(teamdpr)
         GlobalVar.dprave = float(dprtotal) / int(count)
-
         if teamdpr == "" or teamopr == "":
             print("break cuz blank")
             count -= 1
@@ -1745,14 +1678,11 @@ def graphbubble():  # it should be part of "timeisout"
     except OSError:
         print("something is not right")
         pass
-    plt.xlabel(
-        "Skill / [Defensive]")
+    plt.xlabel("Skill / [Defensive]")
     plt.ylabel("AP / [Offensive]")
     plt.title(
         "Red: " + GlobalVar.teamr1 + " " + GlobalVar.teamr2 + " " + GlobalVar.teamr3 +
-        " Blue: " + GlobalVar.teamb1 + " " +
-        GlobalVar.teamb2 + " " + GlobalVar.teamb3,
-        loc="left")
+        " Blue: " + GlobalVar.teamb1 + " " + GlobalVar.teamb2 + " " + GlobalVar.teamb3,loc="left")
     plt.text(xmiddle, -0.02,
              "Team #, X: Skill, Y: AP, Z: Highest Score\n [Team #], X: Defensive Pts Y: Offensive Pts Z: Contribution",
              ha='center', color='white', bbox=dict(facecolor='darkslateblue', alpha=0.5))
@@ -1808,7 +1738,6 @@ def main():
             print(scan_team_matches(input("team number:")))
         elif mode == 2:
             print("Mode = Excels")
-            # sleep_timer = float(input("Set Sleep Time\n"))
             print(
                 "1.Scan Teams \n2.Scan Matches [Don't use this]\n3.Write Team Important Data\n4.Don't Ues This\n5.Can "
                 "Specific Match [PreSet World Championship]\n6.Get We Need")
@@ -1857,15 +1786,10 @@ def main():
             a = get_all_data(input1,input2)
             pprint.pprint(a[0])
             pprint.pprint(a[1])
-
         elif mode == 0:
             print("Thanks for using it!")
             time.sleep(0.3)
             quit()
-        else:
-            print("Mode Unknown")
-            time.sleep(1)
-
 
 if __name__ == '__main__':
         main()
