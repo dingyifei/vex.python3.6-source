@@ -1,4 +1,5 @@
 # coding=utf-8
+
 import json
 import os
 import pprint
@@ -390,15 +391,9 @@ def excel_get_all_data(teams: list, season: str):  # 203
                 sheet3.write(sheetline, 6, "Positive", STYLE_1)
             elif int(datawins) < int(datalosses):
                 sheet3.write(sheetline, 6, "Negative", STYLE_2)
-
             sheetline += 1
-
             # pprint.pprint(output)
-
-            r = urlopen(VEXDB_API_MATCHES + teamloop + VEX_SEASON)
-            text = r.read()
-            # pprint.pprint(json.loads(text))
-            json_dict = json.loads(text)
+            json_dict = vexdb_json("matches", {"team": teamloop, "season":season})
             # print('\n')
             output = []
             loop = -10000
@@ -607,9 +602,7 @@ def excel_get_all_bugs(teams:list, season: str):  # 204
 
             sheetline += 1
 
-            r = urlopen(VEXDB_API_MATCHES + teamloop + VEX_SEASON)
-            text = r.read()
-            json_dict = json.loads(text)
+            json_dict = vexdb_json("matches", {"team": teamloop, "season": season})
             output = []
 
             loop = -10000
@@ -823,9 +816,7 @@ def excel_get_we_need(teams: list, season: str):  # 205
 
             sheetline += 1
 
-            r = urlopen(VEXDB_API_MATCHES + teamloop + VEX_SEASON)  # TODO(Yifei): Turn this into a function
-            text = r.read()
-            json_dict = json.loads(text)
+            json_dict = vexdb_json("matches", {"team":teamloop, "season": season})
             output = []
             loop = -10000
             # 1-10000 For testing, should be 0
@@ -1033,9 +1024,7 @@ def excel_scan_world(teams: list, season: str, sku: str):
                 sheet5.write(sheetline, 6, "Negative", STYLE_2)
 
             sheetline += 1
-            r = urlopen(VEXDB_API_MATCHES + teamloop + VEX_SEASON)
-            text = r.read()
-            json_dict = json.loads(text)
+            json_dict = vexdb_json("matches", {"team":teamloop, "season": season})
             output = []
             loop = -10000
 
