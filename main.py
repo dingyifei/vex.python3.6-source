@@ -219,38 +219,27 @@ def vexdb_json(api_type: str, api_parameters: dict):
         if type(api_parameters) == dict:
             _keys = list(api_parameters.keys())
             _values = list(api_parameters.values())
-            _parameters_list = []
             if len(_keys) >= 1:
-                _parameters_list.append("?" + _keys[0] + "=" + _values[0])
+                _parameters += "?" + _keys[0] + "=" + _values[0]
                 if len(_keys) > 1:
                     for x in range(1, len(_keys)):
-                        _parameters_list.append("%" + _keys[x] + "=" + _values[x])
-            for x in range(0, len(_parameters_list)):
-                _parameters += _parameters_list[x]
+                        _parameters += "%" + _keys[x] + "=" + _values[x]
     else:
         _parameters = None
 
-    if api_type and _parameters != "":
-        json_dict = json.loads((urlopen("https://api.vexdb.io/v1/get_" + api_type + _parameters)).read())
-        if json_dict["status"] == 0:
-            print("SERVER_ERROR: " + "Error Code:" + json_dict["error_code"] + "Error Text" + json_dict["error_text"])
-            return None
-        if json_dict["size"] == 5000:
-            print("Warning: The zise of data is 5000, some data might be lost")
-            return json_dict
-        else:
-            return json_dict
-
-    if api_type and _parameters is None or "":
-        json_dict = json.loads((urlopen("https://api.vexdb.io/v1/get_" + api_type)).read())
-        if json_dict["status"] == 0:
-            print("SERVER_ERROR: " + "Error Code:" + json_dict["error_code"] + "Error Text" + json_dict["error_text"])
-            return None
-        if json_dict["size"] == 5000:
-            print("Warning: The zise of data is 5000, some data might be lost")
-            return json_dict
-        else:
-            return json_dict
+    if api_type != "":
+        if _parameters != "" or _parameters == None:
+            json_dict = json.loads((urlopen("https://api.vexdb.io/v1/get_" + api_type + _parameters)).read())
+            if json_dict["status"] == 0:
+                print("SERVER_ERROR: " + "Error Code:" + json_dict["error_code"] + "Error Text" + json_dict["error_text"])
+                return None        #TODO(YIFEI): A exception should throw here
+            if json_dict["size"] == 5000:
+                print("Warning: The zise of data is 5000, some data might be lost")   #TODO(YIFEI): A exception should throw here
+                return json_dict
+            else:
+                return json_dict
+    else:
+        #TODO(YIFEI): A exception should throw here
 
 # Note: Data always Come with "Status" (usually 1, if it is 0 then a error_text and a error_code should occur),
 # Size" (How many items are in the "result", and "result" which
