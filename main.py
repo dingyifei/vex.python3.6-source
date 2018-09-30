@@ -235,10 +235,6 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
                                 a = json_dict["result"][x][return_data[y]]
                                 output.append(a)
                 return output
-    # Note: Data always Come with "Status" (usually 1, if it is 0 then a error_text and a error_code should occur),
-    # Size" (How many items are in the "result", and "result" which
-    # contains the data we need. The result is a list of dictionaries.
-
 
 def team_list():
     # TODO(YIFEI): MAKE IT WORK
