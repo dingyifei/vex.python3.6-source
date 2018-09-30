@@ -213,7 +213,7 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
                 _parameters += "?" + _keys[0] + "=" + _values[0]
                 if len(_keys) > 1:
                     for x in range(1, len(_keys)):
-                        _parameters += "%" + _keys[x] + "=" + _values[x]
+                        _parameters += "&" + _keys[x] + "=" + _values[x]
     else:
         _parameters = None
 
@@ -227,10 +227,13 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
                     raise() # TODO: Another exception or use some trick to prevent 5000 limit
                 else:
                     if return_data[0] == "full":
-                        output = json_dict # TODO: This will change to json_dict["result"], more testing
-
-                    if return_data[0] != "full":  # TODO(YIFEI): This part still need to test, need exceptions
-                        output = json_dict["result"][return_data]
+                        output = json_dict
+                    if return_data[0] != "full":
+                        output = []
+                        for x in range(0, len(json_dict["result"])):
+                            for y in range(0, len(return_data)):
+                                a = json_dict["result"][x][return_data[y]]
+                                output.append(a)
                 return output
     # Note: Data always Come with "Status" (usually 1, if it is 0 then a error_text and a error_code should occur),
     # Size" (How many items are in the "result", and "result" which
