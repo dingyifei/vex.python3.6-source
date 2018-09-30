@@ -152,9 +152,6 @@ class GlobalVar:
     teamb3dpr = 0
 
     # Only teamcurrent and timeisout
-    # inputmode = ""
-
-    # Only teamcurrent and timeisout
     currentranking = 0
     currentwins = 0
     currentlosses = 0
@@ -192,7 +189,8 @@ class GlobalVar:
     ccwmave = 0
 
 
-def vexdb_json(api_type: str, api_parameters: dict):
+def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
+
     """
     It function accept a string "api_type" and a dictionary "api_parameters", the "api_type" should be
     one from _API_TYPE The dictionary's key are the _parameters from vexdb.io/the_data and the value should
@@ -202,7 +200,11 @@ def vexdb_json(api_type: str, api_parameters: dict):
     # API Type, _parameters, seasons can found on vexdb.io/the_data
     # TODO(Yifei): Multi thread, timeout retry,throw error correctly
 
+    if return_data is None:
+        return_data = ["full"]
     _parameters = ""
+    output = None
+
     if api_parameters:
         if type(api_parameters) == dict:
             _keys = list(api_parameters.keys())
@@ -219,18 +221,17 @@ def vexdb_json(api_type: str, api_parameters: dict):
         if _parameters != "" or _parameters is not None:
             json_dict = json.loads((urlopen("https://api.vexdb.io/v1/get_" + api_type + _parameters)).read())
             if json_dict["status"] == 0:
-                print(
-                    "SERVER_ERROR: " + "Error Code:" + json_dict["error_code"] + "Error Text" + json_dict["error_text"])
-                return None        # TODO(YIFEI): A exception should throw here
-            if json_dict["size"] == 5000:
-                print("Warning: The zise of data is 5000, some data might be lost")
-                # TODO(YIFEI): A exception should throw here
-                return json_dict
+                raise() # TODO: a exception
             else:
-                return json_dict
-    else:
-        raise()
-        # TODO(YIFEI): A exception should throw here
+                if json_dict["size"] == 5000:
+                    raise() # TODO: Another exception or use some trick to prevent 5000 limit
+                else:
+                    if return_data[0] == "full":
+                        output = json_dict # TODO: This will change to json_dict["result"], more testing
+
+                    if return_data[0] != "full":  # TODO(YIFEI): This part still need to test, need exceptions
+                        output = json_dict["result"][return_data]
+                return output
     # Note: Data always Come with "Status" (usually 1, if it is 0 then a error_text and a error_code should occur),
     # Size" (How many items are in the "result", and "result" which
     # contains the data we need. The result is a list of dictionaries.
@@ -1156,9 +1157,15 @@ def get_all_data(name, season):
     return ranking_result, matches_result
 
 
-def time_is_out(red_teams: list, blue_teams: list):  # TODO: NEED MORE FIX
+def time_is_out(red_teams: list, blue_teams: list, season: str):  # TODO: NEED MORE FIX
 
     # GlobalVar.inputmode = str(input("Type in the preset value or 6 teams separate by ,\n"))
+    for x in range(0, len(red_teams) - 1):  #TODO(YIFEI): Make it work
+        result = team_skill(red_teams[x], season)
+
+    for x in range(0, len(blue_teams) - 1):
+        result = team_skill(blue_teams[x], season)
+
 
     if str(GlobalVar.teamr1) != "":
         GlobalVar.teamname = GlobalVar.teamr1

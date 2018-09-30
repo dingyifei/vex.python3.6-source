@@ -4,8 +4,8 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/main.py" line="1179" />
-    <bookmark url="file://$PROJECT_DIR$/main.py" line="254" />
+    <bookmark url="file://$PROJECT_DIR$/main.py" line="1186" />
+    <bookmark url="file://$PROJECT_DIR$/main.py" line="255" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="939f3c6f-630f-48eb-bd4e-96eb0ce19c33" name="Default Changelist" comment="">
@@ -39,7 +39,7 @@
     <session id="-1830622007">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="28" />
+          <entry key="project.closed" value="29" />
           <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.11" value="1" />
           <entry key="project.open.time.16" value="1" />
@@ -70,13 +70,13 @@
         <counts>
           <entry key="Python Console" value="84" />
           <entry key="dummy" value="33" />
-          <entry key="py" value="10310" />
+          <entry key="py" value="11622" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="33" />
-          <entry key="Python" value="10394" />
+          <entry key="Python" value="11706" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -90,8 +90,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="1277" column="29" lean-forward="true" selection-start-line="1277" selection-start-column="29" selection-end-line="1277" selection-end-column="29" />
+            <state relative-caret-position="-17046">
+              <caret line="200" column="41" selection-start-line="200" selection-start-column="41" selection-end-line="200" selection-end-column="41" />
               <folding>
                 <element signature="e#16#27#0" expanded="true" />
               </folding>
@@ -174,7 +174,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-7" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
   </component>
@@ -198,20 +199,7 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="vex.python3.6-source" type="b2602c69:ProjectViewProjectNode" />
-              <item name="vex.python3.6-source" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="sqlite" />
@@ -293,7 +281,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4934877" weight="0.6695096" />
       <window_info id="Structure" order="1" sideWeight="0.5065123" side_tool="true" weight="0.10660981" />
@@ -310,14 +297,14 @@
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50159913" side_tool="true" weight="0.27647716" />
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.32887402" />
       <window_info anchor="bottom" id="Python Console" order="11" sideWeight="0.499002" weight="0.57079154" />
-      <window_info anchor="bottom" id="Inspection Results" order="12" visible="true" weight="0.22073579" />
+      <window_info active="true" anchor="bottom" id="Inspection Results" order="12" visible="true" weight="0.22073579" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" weight="0.32942432" />
       <window_info anchor="right" id="Database" order="4" weight="0.32942432" />
       <window_info anchor="right" x="0" y="0" width="465" height="926" id="Documentation" order="5" side_tool="true" weight="0.32984033" />
-      <window_info active="true" anchor="right" x="-81" y="454" width="1876" height="296" id="Find" order="6" visible="true" weight="0.56556505" />
+      <window_info anchor="right" x="-81" y="454" width="1876" height="296" id="Find" order="6" weight="0.56556505" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49643946" visible="true" weight="0.14072494" />
@@ -436,8 +423,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="1277" column="29" lean-forward="true" selection-start-line="1277" selection-start-column="29" selection-end-line="1277" selection-end-column="29" />
+        <state relative-caret-position="-17046">
+          <caret line="200" column="41" selection-start-line="200" selection-start-column="41" selection-end-line="200" selection-end-column="41" />
           <folding>
             <element signature="e#16#27#0" expanded="true" />
           </folding>
