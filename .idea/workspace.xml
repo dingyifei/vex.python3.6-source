@@ -4,8 +4,8 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/main.py" line="1204" />
-    <bookmark url="file://$PROJECT_DIR$/main.py" line="263" />
+    <bookmark url="file://$PROJECT_DIR$/main.py" line="1195" />
+    <bookmark url="file://$PROJECT_DIR$/main.py" line="265" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="939f3c6f-630f-48eb-bd4e-96eb0ce19c33" name="Default Changelist" comment="">
@@ -56,13 +56,13 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="md" value="1" />
-          <entry key="py" value="8" />
+          <entry key="py" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Markdown" value="1" />
-          <entry key="Python" value="8" />
+          <entry key="Python" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts" />
@@ -70,13 +70,13 @@
         <counts>
           <entry key="Python Console" value="84" />
           <entry key="dummy" value="33" />
-          <entry key="py" value="10052" />
+          <entry key="py" value="10187" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="33" />
-          <entry key="Python" value="10136" />
+          <entry key="Python" value="10271" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -90,8 +90,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-5247">
-              <caret line="227" column="26" lean-forward="true" selection-start-line="227" selection-start-column="26" selection-end-line="227" selection-end-column="26" />
+            <state relative-caret-position="501">
+              <caret line="1443" lean-forward="true" selection-start-line="1443" selection-end-line="1443" />
             </state>
           </provider>
         </entry>
@@ -171,8 +171,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
+    <option name="x" value="-7" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
   </component>
@@ -308,14 +307,14 @@
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50159913" side_tool="true" weight="0.27647716" />
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.32887402" />
       <window_info anchor="bottom" id="Python Console" order="11" sideWeight="0.499002" weight="0.57079154" />
-      <window_info anchor="bottom" id="Inspection Results" order="12" visible="true" weight="0.22073579" />
+      <window_info active="true" anchor="bottom" id="Inspection Results" order="12" visible="true" weight="0.22073579" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" weight="0.32942432" />
       <window_info anchor="right" id="Database" order="4" weight="0.32942432" />
       <window_info anchor="right" x="0" y="0" width="465" height="926" id="Documentation" order="5" side_tool="true" weight="0.32984033" />
-      <window_info active="true" anchor="right" x="-81" y="454" width="1876" height="296" id="Find" order="6" visible="true" weight="0.56556505" />
+      <window_info anchor="right" x="-81" y="454" width="1876" height="296" id="Find" order="6" weight="0.56556505" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49643946" visible="true" weight="0.14072494" />
@@ -415,10 +414,10 @@
         <state relative-caret-position="-10440" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$USER_HOME$/.PyCharm2018.2/system/python_stubs/-991083293/time.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5247">
-          <caret line="227" column="26" lean-forward="true" selection-start-line="227" selection-start-column="26" selection-end-line="227" selection-end-column="26" />
+        <state relative-caret-position="4343">
+          <caret line="402" lean-forward="true" selection-start-line="402" selection-end-line="402" />
         </state>
       </provider>
     </entry>
@@ -429,6 +428,13 @@
             <caret line="8" selection-start-line="8" selection-end-line="8" />
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="501">
+          <caret line="1443" lean-forward="true" selection-start-line="1443" selection-end-line="1443" />
         </state>
       </provider>
     </entry>

@@ -20,7 +20,6 @@ from urllib.request import urlopen
 # preload
 
 getcontext().prec = 6
-sleep_timer = 0
 book = xlwt.Workbook(encoding="utf-8")
 
 VEXDB_API_MATCHES = 'https://api.vexdb.io/v1/get_matches?team='
@@ -162,7 +161,7 @@ class GlobalVar:
     teamb3dpr = 0
 
     # Only teamcurrent and timeisout
-    #inputmode = ""
+    # inputmode = ""
 
     # Only teamcurrent and timeisout
     currentranking = 0
@@ -228,22 +227,24 @@ def vexdb_json(api_type: str, api_parameters: dict):
         _parameters = None
 
     if api_type != "":
-        if _parameters != "" or _parameters == None:
+        if _parameters != "" or _parameters is not None:
             json_dict = json.loads((urlopen("https://api.vexdb.io/v1/get_" + api_type + _parameters)).read())
             if json_dict["status"] == 0:
-                print("SERVER_ERROR: " + "Error Code:" + json_dict["error_code"] + "Error Text" + json_dict["error_text"])
-                return None        #TODO(YIFEI): A exception should throw here
+                print(
+                    "SERVER_ERROR: " + "Error Code:" + json_dict["error_code"] + "Error Text" + json_dict["error_text"])
+                return None        # TODO(YIFEI): A exception should throw here
             if json_dict["size"] == 5000:
-                print("Warning: The zise of data is 5000, some data might be lost")   #TODO(YIFEI): A exception should throw here
+                print("Warning: The zise of data is 5000, some data might be lost")
+                # TODO(YIFEI): A exception should throw here
                 return json_dict
             else:
                 return json_dict
     else:
-        #TODO(YIFEI): A exception should throw here
-
-# Note: Data always Come with "Status" (usually 1, if it is 0 then a error_text and a error_code should occur),
-# Size" (How many items are in the "result", and "result" which
-# contains the data we need. The result is a list of dictionaries.
+        raise()
+        # TODO(YIFEI): A exception should throw here
+    # Note: Data always Come with "Status" (usually 1, if it is 0 then a error_text and a error_code should occur),
+    # Size" (How many items are in the "result", and "result" which
+    # contains the data we need. The result is a list of dictionaries.
 
 
 def team_list():
@@ -254,7 +255,7 @@ def team_list():
         _team_list.append(_json_dict["result"][x]["number"])
 
 
-def scan_team_matches(name: object) -> object: #temperory
+def scan_team_matches(name: object) -> object:  # TODO: temperory
     _json_dict = vexdb_json("matches", {"season": "Turning%20Point", "team": name})
     output = []
     for r in _json_dict["result"]:
@@ -266,12 +267,12 @@ def scan_team_matches(name: object) -> object: #temperory
     return output
 
 
-def excel_scan_teams(teams:list, season:str):  # 201
+def excel_scan_teams(teams: list, season: str):  # 201
 
     start = time.time()
     number = 0
-    sheetline = 0
-    #list1 = [] # It is replace with the "teams" list
+    sheet_line = 0
+
     while True:
         while number < len(teams):
             teamloop = teams[number]
@@ -280,8 +281,8 @@ def excel_scan_teams(teams:list, season:str):  # 201
             print(teamloop)
             print('')
             number += 1
-            sheetline += 1
-            json_dict = vexdb_json("rankings", {"team": teamloop, "season":season})
+            sheet_line += 1
+            json_dict = vexdb_json("rankings", {"team": teamloop, "season": season})
             output = []
             for r in json_dict["result"]:
                 line = 'Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}' \
@@ -293,20 +294,19 @@ def excel_scan_teams(teams:list, season:str):  # 201
                 datarank = '{}'.format(r["rank"])
                 datamaxscore = '{}'.format(r["max_score"])
                 if int(datawins) > int(datalosses):
-                    sheet2.write(sheetline, 6, "Positive", STYLE_1)
+                    sheet2.write(sheet_line, 6, "Positive", STYLE_1)
                 elif int(datawins) < int(datalosses):
-                    sheet2.write(sheetline, 6, "Negative", STYLE_2)
+                    sheet2.write(sheet_line, 6, "Negative", STYLE_2)
                 output.append(line)
                 # ['sheet' + str(number)].write(1, 1,teamloop)
                 # ['sheet' + str(number)].write(2, 1,line )
-                sheet2.write(sheetline, 0, datateam)
-                sheet2.write(sheetline, 1, datawins)
-                sheet2.write(sheetline, 2, datalosses)
-                sheet2.write(sheetline, 3, dataap)
-                sheet2.write(sheetline, 4, datarank)
-                sheet2.write(sheetline, 5, datamaxscore)
-                sheetline += 1
-                time.sleep(sleep_timer)
+                sheet2.write(sheet_line, 0, datateam)
+                sheet2.write(sheet_line, 1, datawins)
+                sheet2.write(sheet_line, 2, datalosses)
+                sheet2.write(sheet_line, 3, dataap)
+                sheet2.write(sheet_line, 4, datarank)
+                sheet2.write(sheet_line, 5, datamaxscore)
+                sheet_line += 1
             # pprint.pprint(output)
             book.save("Data.xls")
             print('')
@@ -317,26 +317,21 @@ def excel_scan_teams(teams:list, season:str):  # 201
             eta = (float(ave) * (int(len(teams) - (int(number)))))
             etatomin = (float(eta) / 60)
             etatomin = Decimal.from_float(etatomin).quantize(Decimal('0.0'))
-
             print(str(number) + "/" + str(len(teams)) + " Finished, Used " + str(decimal) + " seconds. Average " + str(
                 ave) + " seconds each. ETA: " + str(etatomin) + " mins.")
-
-            print('\n wait ' + str(sleep_timer) + ' sec for next request to server...')
-
         if number >= 5:
             number = 0
-            sheetline = 1
+            sheet_line = 1
             print('\n reset and xls saved!')
 
 
 def excel_get_all_data(teams: list, season: str):  # 203
-    time.sleep(1)
     number = 0
     sheetline = 0
     start = time.time()
 
     # TODO(Yifei):This List is removed NEEDFIX
-    #list1 = []
+    # list1 = []
 
     while True:
 
@@ -354,7 +349,7 @@ def excel_get_all_data(teams: list, season: str):  # 203
             sheet3.write(sheetline, 6, "Result")
             sheet3.write(sheetline, 8, "Flag")
             sheetline += 1
-            json_dict = vexdb_json("ranking", {"team":teamloop, "season": season})
+            json_dict = vexdb_json("ranking", {"team": teamloop, "season": season})
             output = []
             for r in json_dict["result"]:
                 line = "Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}" \
@@ -382,7 +377,7 @@ def excel_get_all_data(teams: list, season: str):  # 203
                 sheet3.write(sheetline, 6, "Negative", STYLE_2)
             sheetline += 1
             # pprint.pprint(output)
-            json_dict = vexdb_json("matches", {"team": teamloop, "season":season})
+            json_dict = vexdb_json("matches", {"team": teamloop, "season": season})
             # print('\n')
             output = []
             loop = -10000
@@ -484,7 +479,6 @@ def excel_get_all_data(teams: list, season: str):  # 203
                     break
 
                 output.append(line)
-                time.sleep(sleep_timer)
 
             sheetline += 1
 
@@ -540,7 +534,7 @@ def excel_get_all_data(teams: list, season: str):  # 203
             print('reset and xls saved!')
 
 
-def excel_get_all_bugs(teams:list, season: str):  # 204
+def excel_get_all_bugs(teams: list, season: str):  # 204
 
     number = 0
     sheetline = 0
@@ -700,7 +694,6 @@ def excel_get_all_bugs(teams:list, season: str):  # 204
                     break
 
                 output.append(line)
-                time.sleep(sleep_timer)
 
             sheetline += 1
 
@@ -778,7 +771,7 @@ def excel_get_we_need(teams: list, season: str):  # 205
             sheet6.write(sheetline, 6, "Result")
             sheet6.write(sheetline, 8, "Flag")
             sheetline += 1
-            json_dict = vexdb_json("rankings", {"team": teamloop, "season":season})
+            json_dict = vexdb_json("rankings", {"team": teamloop, "season": season})
             output = []
             for r in json_dict["result"]:
                 line = "Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}" \
@@ -805,7 +798,7 @@ def excel_get_we_need(teams: list, season: str):  # 205
 
             sheetline += 1
 
-            json_dict = vexdb_json("matches", {"team":teamloop, "season": season})
+            json_dict = vexdb_json("matches", {"team": teamloop, "season": season})
             output = []
             loop = -10000
             # 1-10000 For testing, should be 0
@@ -913,7 +906,6 @@ def excel_get_we_need(teams: list, season: str):  # 205
                     break
 
                 output.append(line)
-                time.sleep(sleep_timer)
 
             sheetline += 1
             teaminfoline += 1
@@ -966,7 +958,6 @@ def excel_get_we_need(teams: list, season: str):  # 205
 
 
 def excel_scan_world(teams: list, season: str, sku: str):
-    time.sleep(1)
     number = 0
     sheetline = 0
     start = time.time()
@@ -983,7 +974,7 @@ def excel_scan_world(teams: list, season: str, sku: str):
             sheet5.write(sheetline, 5, "Highest")
             sheet5.write(sheetline, 6, "Result")
             sheetline += 1
-            json_dict = vexdb_json("rankings", {"team":teamloop, "season": season, "sku": sku})
+            json_dict = vexdb_json("rankings", {"team": teamloop, "season": season, "sku": sku})
             output = []
 
             for r in json_dict["result"]:
@@ -998,7 +989,7 @@ def excel_scan_world(teams: list, season: str, sku: str):
             datarank = '{}'.format(r["rank"])
             datamaxscore = '{}'.format(r["max_score"])
 
-            output.append(line)
+            # output.append(line) #Remove because I cant see the use of this
 
             sheet5.write(sheetline, 0, "#" + datateam)
             sheet5.write(sheetline, 1, datawins)
@@ -1013,7 +1004,7 @@ def excel_scan_world(teams: list, season: str, sku: str):
                 sheet5.write(sheetline, 6, "Negative", STYLE_2)
 
             sheetline += 1
-            json_dict = vexdb_json("matches", {"team":teamloop, "season": season})
+            json_dict = vexdb_json("matches", {"team": teamloop, "season": season})
             output = []
             loop = -10000
 
@@ -1093,8 +1084,6 @@ def excel_scan_world(teams: list, season: str, sku: str):
                     break
 
                 output.append(line)
-                time.sleep(0.1)
-
             sheetline += 1
             for x in range(0, 15):
                 sheet5.write(sheetline, x, "- - - - - - -", STYLE_BLACK)
@@ -1128,7 +1117,7 @@ def excel_scan_world(teams: list, season: str, sku: str):
 # Need to test when competition start
 
 
-def excel_team_matches(name, season): # TODO(YIFEI): Why excel? Value name change.
+def excel_team_matches(name, season):  # TODO(YIFEI): Why excel? Value name change.
 
     _json_dict = vexdb_json("matches", {"team": name, "season": season})
     output = []
@@ -1142,9 +1131,9 @@ def excel_team_matches(name, season): # TODO(YIFEI): Why excel? Value name chang
     return output
 
 
-def search_team_current_season(name, season): # TODO(YIFEI): Value name change.
+def search_team_current_season(name, season):  # TODO(YIFEI): Value name change.
 
-    json_dict = vexdb_json("rankings", {"team":name, "season": season})
+    json_dict = vexdb_json("rankings", {"team": name, "season": season})
     output = []
     for r in json_dict["result"]:
         line = "Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}" \
@@ -1178,9 +1167,9 @@ def get_all_data(name, season):
     return ranking_result, matches_result
 
 
-def time_is_out(red_teams: list, blue_teams: list): # TODO: NEED MORE FIX
+def time_is_out(red_teams: list, blue_teams: list):  # TODO: NEED MORE FIX
 
-    #GlobalVar.inputmode = str(input("Type in the preset value or 6 teams separate by ,\n"))
+    # GlobalVar.inputmode = str(input("Type in the preset value or 6 teams separate by ,\n"))
 
     # print(
     #     "TR1: " + GlobalVar.teamr1 + " TR2: " + GlobalVar.teamr2 + " TR3: " + GlobalVar.teamr3 + " || TB1: "
@@ -1301,7 +1290,7 @@ def time_is_out(red_teams: list, blue_teams: list): # TODO: NEED MORE FIX
 
 def team_skill(team, season):
 
-    json_dict = vexdb_json("skills", {"team": team, "season":season }) #it should be globalvar teamsent
+    json_dict = vexdb_json("skills", {"team": team, "season": season})  # it should be globalvar teamsent
     skilltotal = 0
     totalattempts = 0
     for r in json_dict["result"]:
@@ -1326,7 +1315,7 @@ def team_sent(team, season):
 
     count = 0
     GlobalVar.winsave = 0
-    json_dict = vexdb_json("rankings", {"season":season, "team": team}) # it should be teamsent
+    json_dict = vexdb_json("rankings", {"season": season, "team": team})  # it should be teamsent
     for r in json_dict["result"]:
         teamwins = '{}'.format(r["wins"])
         count += 1
@@ -1345,7 +1334,7 @@ def team_current(team, season, sku):  # can be part of teamsent()
     GlobalVar.currentranking = 0
     GlobalVar.currentwins = 0
     GlobalVar.currentlosses = 0
-    json_dict = vexdb_json("rankings", {"season":season, "team":team, "sku":sku})  # teamsent, sku constant, season
+    json_dict = vexdb_json("rankings", {"season": season, "team": team, "sku": sku})  # teamsent, sku constant, season
     for r in json_dict["result"]:
         GlobalVar.currentranking = '{}'.format(r["rank"])
         GlobalVar.currentwins = '{}'.format(r["wins"])
@@ -1357,7 +1346,7 @@ def teamap(team,season):
 
     aptotal = 0
     count = 0
-    json_dict = vexdb_json("rankings", {"team":team, "season":season})#teamsent
+    json_dict = vexdb_json("rankings", {"team":team, "season":season})  #teamsent
     for r in json_dict["result"]:
         teammap = '{}'.format(r["ap"])
         count += 1
@@ -1365,7 +1354,7 @@ def teamap(team,season):
             diff = (int(teammap) - 25) * 0.2
             teammap = 25 + float(diff)
             print("Balance over 25, " + str(diff))
-        aptotal = int(aptotal) + int(teammap)
+        aptotal += int(teammap)
         GlobalVar.apave = int(aptotal) / int(count)
         if teammap == "" or teammap == "":
             print("break cuz blank")
@@ -1378,18 +1367,18 @@ def teamranking(team, season):
     GlobalVar.rankave = 0
     count = 0
     rank_total = 0
-    json_dict = vexdb_json("rankings", {"team": team, "season": season}) #teamsent
+    json_dict = vexdb_json("rankings", {"team": team, "season": season})  #teamsent
     for r in json_dict["result"]:
         team_ranking = '{}'.format(r["rank"])
         count += 1
         rank_total += int(team_ranking)
-        GlobalVar.rankave = float(rank_total) / int(count)
+        GlobalVar.rankave = float(rank_total) / count
         if team_ranking == "":
             print("break cuz blank")
             count -= 1
-            GlobalVar.rankave = float(rank_total) / int(count)
+            GlobalVar.rankave = float(rank_total) / count
             team_highest()
-        GlobalVar.rankave = float(team_ranking) / int(count)
+        GlobalVar.rankave = float(team_ranking) / count
     team_highest()
 
 
@@ -1398,7 +1387,7 @@ def team_highest(team, season):
     highesttotal = 0
     GlobalVar.highestave = 0
     count = 0
-    json_dict = vexdb_json("rankings", {"team": team, "season": season}) #teamsent
+    json_dict = vexdb_json("rankings", {"team": team, "season": season})  #teamsent
     for r in json_dict["result"]:
         team_highest = '{}'.format(r["max_score"])
         count += 1
@@ -1407,9 +1396,9 @@ def team_highest(team, season):
         if team_highest == "":
             print("break cuz blank")
             count -= 1
-            GlobalVar.highestave = float(highesttotal) / int(count)
+            GlobalVar.highestave = float(highesttotal) / count
             teampr()
-        GlobalVar.highestave = float(highesttotal) / int(count)
+        GlobalVar.highestave = float(highesttotal) / count
     teampr()
 
 
@@ -1417,7 +1406,7 @@ def teampr(team, season):
 
     GlobalVar.oprtotal = 0
     dprtotal = 0
-    json_dict = vexdb_json("rankings", {"team": team, "season": season}) #teamsent
+    json_dict = vexdb_json("rankings", {"team": team, "season": season})  #teamsent
     count = 0
     for r in json_dict["result"]:
         teamopr = '{}'.format(r["opr"])
@@ -1426,9 +1415,9 @@ def teampr(team, season):
         teamdpr = (float(teamdpr) / 5)
         count += 1
         GlobalVar.oprtotal += float(teamopr)
-        GlobalVar.oprave = float(GlobalVar.oprtotal) / int(count)
+        GlobalVar.oprave = float(GlobalVar.oprtotal) / count
         dprtotal += float(teamdpr)
-        GlobalVar.dprave = float(dprtotal) / int(count)
+        GlobalVar.dprave = float(dprtotal) / count
         if teamdpr == "" or teamopr == "":
             print("break cuz blank")
             count -= 1
@@ -1447,7 +1436,7 @@ def teamccwm(team, season):
         teamccwm = '{}'.format(r["ccwm"])
         count += 1
         ccwmtotal += float(teamccwm)
-        GlobalVar.ccwmave = float(ccwmtotal) / int(count)
+        GlobalVar.ccwmave = float(ccwmtotal) / count
         if teamccwm == "" or teamccwm == "":
             print("break cuz blank")
             count -= 18
@@ -1652,7 +1641,6 @@ def graphbubble():  # it should be part of "timeisout"
     try:
         os.remove("graph/" + GlobalVar.inputmode + ".png")
         print("Previous deleted.")
-        time.sleep(1)
     except OSError:
         print("something is not right")
         pass
@@ -1700,56 +1688,45 @@ def answer():
         teambexist += 1
     if GlobalVar.teamb3skillout != 0:
         teambexist += 1
-
-    time.sleep(2)
     input("Press Any Key to Continue\n")
 
 
 def main():
     while True:
-        mode = int(input( #TODO(YIFEI): int??? exception
+        mode = int(input(  #TODO(YIFEI): int??? exception
             "Mode \n 1.Scan Team Matches \n 2.Excel Functions [Not Finished] \n 3.Search Team Season History  "
             "\n 8.Get Important Info For a Team \n 9.Change Log\n 0.Quit \n"))
         if mode == 1:
             print("Mode = Scan Team Matches")
-            time.sleep(0.3)
             print(scan_team_matches(input("team number:")))
         elif mode == 2:
             print("Mode = Excels")
             print(
                 "1.Scan Teams \n2.Scan Matches [Don't use this]\n3.Write Team Important Data\n4.Don't Ues This\n5.Can "
                 "Specific Match [PreSet World Championship]\n6.Get We Need")
-            time.sleep(0.3)
             excel_mode = int(input())
             if excel_mode == 1:
                 print("Mode = Scan Teams and Write to Excel")
-                time.sleep(0.3)
                 excel_scan_teams()
             elif excel_mode == 2:
                 print("Mode = Write Team Matches [Don't use this]")
-                time.sleep(0.3)
                 input1 = input('Team #?\n')
                 input2 = input('season #?\n')
                 pprint.pprint(excel_team_matches(input1, input2))
             elif excel_mode == 3:
                 print("Mode = Write Team Important Data in Excel")
-                time.sleep(0.3)
                 excel_get_all_data()
             elif excel_mode == 4:
                 print("Mode = Scan Bugged Team [It will crash]")
-                time.sleep(0.3)
                 excel_get_all_bugs()
             elif excel_mode == 5:
                 print("Mode = Scan World Championship")
-                time.sleep(0.3)
                 excel_scan_world()
             elif excel_mode == 6:
                 print("Mode = Scan We Need")
-                time.sleep(0.3)
                 excel_get_we_need()
         elif mode == 3:
             print("Mode = Search Team History : Current Season")
-            time.sleep(0.3)
             input1 = input('Team #?\n')
             input2 = input('season #?\n')
             pprint.pprint(search_team_current_season(input1, input2))
@@ -1766,7 +1743,6 @@ def main():
             pprint.pprint(a[1])
         elif mode == 0:
             print("Thanks for using it!")
-            time.sleep(0.3)
             quit()
 
 if __name__ == '__main__':
