@@ -20,13 +20,8 @@ from urllib.request import urlopen
 # preload
 
 getcontext().prec = 6
+
 book = xlwt.Workbook(encoding="utf-8")
-
-VEXDB_API_MATCHES = 'https://api.vexdb.io/v1/get_matches?team='
-VEXDB_API_RANK = 'https://api.vexdb.io/v1/get_rankings?team='
-VEX_SEASON = '&season=Turning%20Point'
-VEXDB_API_SKILL = 'https://api.vexdb.io/v1/get_skills?team='
-
 sheet1 = book.add_sheet("#Cover", cell_overwrite_ok=True)
 sheet2 = book.add_sheet("#Matches", cell_overwrite_ok=True)
 sheet3 = book.add_sheet("#Important Data", cell_overwrite_ok=True)
@@ -39,13 +34,11 @@ sheet9 = book.add_sheet("#Team Spot 3", cell_overwrite_ok=True)
 sheet10 = book.add_sheet("#Team Spot 4", cell_overwrite_ok=True)
 sheet11 = book.add_sheet("#Bugged Teams", cell_overwrite_ok=True)
 
-now = time.strftime("%c")
 time_now = "Last Update:" + time.strftime("%c")
 sheet1.write(2, 1, time_now)
 sheet1.write(3, 1,
              "Because of there are no data for these teams: 1119S, 7386A, 8000X, 8000Z, 19771B, 30638A, 36632A, "
              "37073A, 60900A, 76921B, 99556A, 99691E, 99691H are not include in the sheet #Important Data")
-
 STYLE_1 = xlwt.easyxf('pattern: pattern solid, fore_colour red;''font: colour white, bold True;')
 STYLE_2 = xlwt.easyxf('pattern: pattern solid, fore_colour blue;''font: colour white, bold True;')
 STYLE_3 = xlwt.easyxf('pattern: pattern solid, fore_colour pink;''font: colour white, bold True;')
@@ -79,8 +72,6 @@ class GlobalVar:
     teamb2 = ""
     teamb3 = ""
 
-    # Move to public
-    teamsent = ""
 
     # only used in teamskill and timeisout
     teamname = ""
@@ -189,8 +180,6 @@ class GlobalVar:
     teamb1currentlosses = 0
     teamb2currentlosses = 0
     teamb3currentlosses = 0
-
-    CONST_match = "&sku=RE-VRC-17-3805"  # Only used in Team current
 
     # the crap I don't want to locate
     winsave = 0
@@ -1171,12 +1160,7 @@ def time_is_out(red_teams: list, blue_teams: list):  # TODO: NEED MORE FIX
 
     # GlobalVar.inputmode = str(input("Type in the preset value or 6 teams separate by ,\n"))
 
-    # print(
-    #     "TR1: " + GlobalVar.teamr1 + " TR2: " + GlobalVar.teamr2 + " TR3: " + GlobalVar.teamr3 + " || TB1: "
-    #     + GlobalVar.teamb1 + " TB2: " + GlobalVar.teamb2 + " TB3: " + GlobalVar.teamb3)
-
     if str(GlobalVar.teamr1) != "":
-        GlobalVar.teamsent = GlobalVar.teamr1
         GlobalVar.teamname = GlobalVar.teamr1
         team_skill()
         GlobalVar.teamr1skillout = GlobalVar.skillave
@@ -1194,7 +1178,6 @@ def time_is_out(red_teams: list, blue_teams: list):  # TODO: NEED MORE FIX
         print("Team Red 1 is blank.")
 
     if str(GlobalVar.teamr2) != "":
-        GlobalVar.teamsent = GlobalVar.teamr2
         GlobalVar.teamname = GlobalVar.teamr2
         team_skill()
         GlobalVar.teamr2skillout = GlobalVar.skillave
@@ -1212,7 +1195,6 @@ def time_is_out(red_teams: list, blue_teams: list):  # TODO: NEED MORE FIX
         print("Team Red 2 is blank.")
 
     if str(GlobalVar.teamr3) != "":
-        GlobalVar.teamsent = GlobalVar.teamr3
         GlobalVar.teamname = GlobalVar.teamr3
         team_skill()
         GlobalVar.teamr3skillout = GlobalVar.skillave
@@ -1230,7 +1212,6 @@ def time_is_out(red_teams: list, blue_teams: list):  # TODO: NEED MORE FIX
         print("Team Red 3 is blank.")
 
     if str(GlobalVar.teamb1) != "":
-        GlobalVar.teamsent = GlobalVar.teamb1
         GlobalVar.teamname = GlobalVar.teamb1
         team_skill()
         GlobalVar.teamb1skillout = GlobalVar.skillave
@@ -1248,7 +1229,6 @@ def time_is_out(red_teams: list, blue_teams: list):  # TODO: NEED MORE FIX
         print("Team Blue 1 is blank.")
 
     if str(GlobalVar.teamb2) != "":
-        GlobalVar.teamsent = GlobalVar.teamb2
         GlobalVar.teamname = GlobalVar.teamb2
         team_skill()
         GlobalVar.teamb2skillout = GlobalVar.skillave
@@ -1266,7 +1246,6 @@ def time_is_out(red_teams: list, blue_teams: list):  # TODO: NEED MORE FIX
         print("Team Blue 2 is blank.")
 
     if str(GlobalVar.teamb3) != "":
-        GlobalVar.teamsent = GlobalVar.teamb3
         GlobalVar.teamname = GlobalVar.teamb3
         team_skill()
         GlobalVar.teamb3skillout = GlobalVar.skillave
@@ -1367,7 +1346,7 @@ def teamranking(team, season):
     GlobalVar.rankave = 0
     count = 0
     rank_total = 0
-    json_dict = vexdb_json("rankings", {"team": team, "season": season})  #teamsent
+    json_dict = vexdb_json("rankings", {"team": team, "season": season})  # teamsent
     for r in json_dict["result"]:
         team_ranking = '{}'.format(r["rank"])
         count += 1
@@ -1387,7 +1366,7 @@ def team_highest(team, season):
     highesttotal = 0
     GlobalVar.highestave = 0
     count = 0
-    json_dict = vexdb_json("rankings", {"team": team, "season": season})  #teamsent
+    json_dict = vexdb_json("rankings", {"team": team, "season": season})  # teamsent
     for r in json_dict["result"]:
         team_highest = '{}'.format(r["max_score"])
         count += 1
@@ -1443,7 +1422,7 @@ def teamccwm(team, season):
             break
 
 
-def graphbubble():  # it should be part of "timeisout"
+def graphbubble(file_name: str):  # it should be part of "timeisout"
     GlobalVar.teamr1skillout = float(GlobalVar.teamr1skillout) / 10
     GlobalVar.teamr2skillout = float(GlobalVar.teamr2skillout) / 10
     GlobalVar.teamr3skillout = float(GlobalVar.teamr3skillout) / 10
@@ -1638,8 +1617,8 @@ def graphbubble():  # it should be part of "timeisout"
     xaxis = float(xmax)
     xmiddle = (float(xaxis) / 2)
     # Add titles (main and on axis)
-    try:
-        os.remove("graph/" + GlobalVar.inputmode + ".png")
+    try: # TODO(YIFEI): It should raise error instead, remove without notice is BAD, also this try sucks
+        os.remove("graph/" + file_name + ".png")
         print("Previous deleted.")
     except OSError:
         print("something is not right")
@@ -1666,7 +1645,7 @@ def graphbubble():  # it should be part of "timeisout"
         GlobalVar.teamb3currentwins) + " L: " + str(GlobalVar.teamb3currentlosses) + " R: " + str(
         GlobalVar.teamb3currentranking), ha='left', va='top', color='white', fontsize='smaller',
              bbox=dict(facecolor='darkgreen', alpha=0.5))
-    plt.savefig("graph/" + GlobalVar.inputmode + ".png")
+    plt.savefig("graph/" + file_name + ".png")
     print("Graph poped and saved.")
     plt.show()
 
