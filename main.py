@@ -196,8 +196,6 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
     one from _API_TYPE The dictionary's key are the _parameters from vexdb.io/the_data and the value should
     also follow it.
     """
-
-    # API Type, _parameters, seasons can found on vexdb.io/the_data
     # TODO(Yifei): Multi thread, timeout retry,throw error correctly
 
     if return_data is None:
@@ -232,16 +230,13 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
                         output = []
                         for x in range(0, len(json_dict["result"])):
                             for y in range(0, len(return_data)):
-                                a = json_dict["result"][x][return_data[y]]
-                                output.append(a)
+                                output.append(json_dict["result"][x][return_data[y]])
                 return output
 
 def team_list():
     # TODO(YIFEI): MAKE IT WORK
-    _team_list = []
-    _json_dict = vexdb_json("teams", {"grade": "High School"})
-    for x in range(0, len(_json_dict["result"])):
-        _team_list.append(_json_dict["result"][x]["number"])
+    print(vexdb_json("teams", {"grade": "High School"},["number"]))
+    print(vexdb_json("matches", {"season":"Starstruck", "team":"8667A"}, ["sku"]))
 
 
 def scan_team_matches(name: object) -> object:  # TODO: temperory
@@ -315,7 +310,6 @@ def excel_scan_teams(teams: list, season: str):  # 201
 
 
 def excel_get_all_data(teams: list, season: str):  # 203
-    number = 0
     sheetline = 0
     start = time.time()
 
@@ -323,8 +317,7 @@ def excel_get_all_data(teams: list, season: str):  # 203
     # list1 = []
 
     while True:
-
-        while number < int(len(teams)):
+        for number in range(0, len(teams)):
             teamloop = teams[number]
             print(teamloop)
             number += 1
@@ -1101,6 +1094,7 @@ def excel_scan_world(teams: list, season: str, sku: str):
             number = 0
             sheetline = 1
             print('\n reset and xls saved!')
+            main()
 
 
 # Need to test when competition start
@@ -1162,8 +1156,10 @@ def time_is_out(red_teams: list, blue_teams: list, season: str):  # TODO: NEED M
     for x in range(0, len(red_teams) - 1):  #TODO(YIFEI): Make it work
         result = team_skill(red_teams[x], season)
 
+
     for x in range(0, len(blue_teams) - 1):
         result = team_skill(blue_teams[x], season)
+
 
 
     if str(GlobalVar.teamr1) != "":
