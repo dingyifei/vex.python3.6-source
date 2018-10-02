@@ -228,13 +228,12 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
                         output = json_dict
                     if return_data[0] != "full":
                         output = []
-                        for x in range(0, len(json_dict["result"])):
-                            for y in range(0, len(return_data)):
-                                output.append(json_dict["result"][x][return_data[y]])
+                        for x in json_dict["result"]:
+                            for y in return_data:
+                                output.append(x[y])
                 return output
 
-def team_list():
-    # TODO(YIFEI): MAKE IT WORK
+def team_list():  # For testing
     print(vexdb_json("teams", {"grade": "High School"},["number"]))
     print(vexdb_json("matches", {"season":"Starstruck", "team":"8667A"}, ["sku"]))
 
@@ -282,8 +281,6 @@ def excel_scan_teams(teams: list, season: str):  # 201
                 elif int(datawins) < int(datalosses):
                     sheet2.write(sheet_line, 6, "Negative", STYLE_2)
                 output.append(line)
-                # ['sheet' + str(number)].write(1, 1,teamloop)
-                # ['sheet' + str(number)].write(2, 1,line )
                 sheet2.write(sheet_line, 0, datateam)
                 sheet2.write(sheet_line, 1, datawins)
                 sheet2.write(sheet_line, 2, datalosses)
@@ -291,7 +288,6 @@ def excel_scan_teams(teams: list, season: str):  # 201
                 sheet2.write(sheet_line, 4, datarank)
                 sheet2.write(sheet_line, 5, datamaxscore)
                 sheet_line += 1
-            # pprint.pprint(output)
             book.save("Data.xls")
             print('')
             decimal = (time.time() - start)
@@ -301,12 +297,13 @@ def excel_scan_teams(teams: list, season: str):  # 201
             eta = (float(ave) * (int(len(teams) - (int(number)))))
             etatomin = (float(eta) / 60)
             etatomin = Decimal.from_float(etatomin).quantize(Decimal('0.0'))
-            print(str(number) + "/" + str(len(teams)) + " Finished, Used " + str(decimal) + " seconds. Average " + str(
-                ave) + " seconds each. ETA: " + str(etatomin) + " mins.")
+            print(str(number) + "/" + str(len(teams)) + " Finished, Used " + str(decimal) + " seconds. Average "
+                  + str(ave) + " seconds each. ETA: " + str(etatomin) + " mins.")
         if number >= 5:
             number = 0
             sheet_line = 1
             print('\n reset and xls saved!')
+            main()
 
 
 def excel_get_all_data(teams: list, season: str):  # 203
@@ -358,9 +355,7 @@ def excel_get_all_data(teams: list, season: str):  # 203
             elif int(datawins) < int(datalosses):
                 sheet3.write(sheetline, 6, "Negative", STYLE_2)
             sheetline += 1
-            # pprint.pprint(output)
             json_dict = vexdb_json("matches", {"team": teamloop, "season": season})
-            # print('\n')
             output = []
             loop = -10000
             # 1-10000 For testing, should be 0
@@ -1153,12 +1148,15 @@ def get_all_data(name, season):
 def time_is_out(red_teams: list, blue_teams: list, season: str):  # TODO: NEED MORE FIX
 
     # GlobalVar.inputmode = str(input("Type in the preset value or 6 teams separate by ,\n"))
-    for x in range(0, len(red_teams) - 1):  #TODO(YIFEI): Make it work
-        result = team_skill(red_teams[x], season)
+
+    for red_team in red_teams:  #TODO(YIFEI): Make it work
+        if red_team != "":
+            a_dict =  team_skill(red_team, season)
 
 
-    for x in range(0, len(blue_teams) - 1):
-        result = team_skill(blue_teams[x], season)
+    for blue_team in blue_teams:
+        if blue_team != "":
+            b_disc = team_skill(blue_team, season)
 
 
 
@@ -1271,56 +1269,62 @@ def time_is_out(red_teams: list, blue_teams: list, season: str):  # TODO: NEED M
 
 def team_skill(team, season):
 
-    json_dict = vexdb_json("skills", {"team": team, "season": season})  # it should be globalvar teamsent
-    skilltotal = 0
-    totalattempts = 0
-    for r in json_dict["result"]:
-        skill = int(r["score"])
-        attempt = int(r["attempts"])
-        if int(attempt) != 0:
-            totalattempts += 1
-        skilltotal += skill
+    attempts_total = 0
+    skill_total = 0
+    skill_ave = 0
 
-    if int(totalattempts) != 0:
-        skillave = int(skilltotal) / int(totalattempts)
-    else:
-        skillave = 0
-    decimal = skillave
-    decimal = Decimal.from_float(decimal).quantize(Decimal('0.0'))
-    GlobalVar.skillave = decimal
-    print(GlobalVar.teamname + ": " + str(GlobalVar.skillave))
-    team_sent()
+    for x in vexdb_json("skills", {"team": team, "season": season}, ["attempts"]):
+        if x != 0:
+            attempts_total += 1
+    for x in vexdb_json("skills", {"team": team, "season": season}, ["attempts"]):
+        skill_total += x
+    if attempts_total != 0:
+        skill_ave = skill_total / attempts_total
+    return(skill_ave)
 
 
 def team_sent(team, season):
 
-    count = 0
-    GlobalVar.winsave = 0
-    json_dict = vexdb_json("rankings", {"season": season, "team": team})  # it should be teamsent
-    for r in json_dict["result"]:
-        teamwins = '{}'.format(r["wins"])
-        count += 1
-        winstotal = teamwins + teamwins
-        if teamwins == "" or teamwins == "":
-            print("break cuz blank")
+    wins = vexdb_json("rankings", {"team" :team, "season": season}, ["wins"])
+    count = len(wins)
+    for x in wins:
+        if str(x) == "":
             count -= 1
-            GlobalVar.winsave = float(winstotal) / int(count)
-            teamap()
-        GlobalVar.winsave = float(winstotal) / int(count)
-    team_current()
+    return(sum(wins) / count)
+        # count = 0
+        # global_var.winsave = 0
+        # global_var.teamwins = 0
+        # global_var.winstotal = 0
+        # from urllib.request import urlopen
+        # r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' + global_var.teamsent + '&season=Turning%20Point')
+        #
+        # text = r.read()
+        #
+        # json_dict = json.loads(text)
+        # for r in json_dict["result"]:
+        #     line = '{}'.format(r["wins"])
+        #     global_var.teamwins = '{}'.format(r["wins"])
+        #     count += 1
+        #     global_var.winstotal = global_var.teamwins + global_var.teamwins
+        #
+        #     if global_var.teamwins == "" or global_var.teamwins == "":
+        #         print("break cuz blank")
+        #         count -= 1
+        #         global_var.winsave = float(global_var.winstotal) / int(count)
+        #         teamap()
+        #
+        #     global_var.winsave = float(global_var.winstotal) / int(count)
+        #
+        # teamcurrent()
 
 
 def team_current(team, season, sku):  # can be part of teamsent()
 
-    GlobalVar.currentranking = 0
-    GlobalVar.currentwins = 0
-    GlobalVar.currentlosses = 0
-    json_dict = vexdb_json("rankings", {"season": season, "team": team, "sku": sku})  # teamsent, sku constant, season
-    for r in json_dict["result"]:
-        GlobalVar.currentranking = '{}'.format(r["rank"])
-        GlobalVar.currentwins = '{}'.format(r["wins"])
-        GlobalVar.currentlosses = '{}'.format(r["losses"])
-    teamap()
+    for r in vexdb_json("rankings", {"season": season, "team": team, "sku": sku}): #TODO: No idea what it does, maybe only get the last part
+        current_ranking = '{}'.format(r["rank"])
+        current_wins = '{}'.format(r["wins"])
+        current_losses = '{}'.format(r["losses"])
+    return(current_ranking, current_wins, current_losses)
 
 
 def teamap(team,season):
