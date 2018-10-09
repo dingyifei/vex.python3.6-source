@@ -1331,8 +1331,7 @@ def teamap(team,season):
 
     aptotal = 0
     count = 0
-    json_dict = vexdb_json("rankings", {"team":team, "season":season})  #teamsent
-    for r in json_dict["result"]:
+    for r in vexdb_json("rankings", {"team":team, "season":season}):
         teammap = '{}'.format(r["ap"])
         count += 1
         if int(teammap) > 25:
