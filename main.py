@@ -6,8 +6,10 @@ import pprint
 import time
 import xlwt
 import matplotlib.pyplot as plt
+import configparser
 from decimal import getcontext, Decimal
 from urllib.request import urlopen
+
 
 # from math import pi
 # import webbrowser
@@ -1682,16 +1684,54 @@ def answer():
         teambexist += 1
     input("Press Any Key to Continue\n")
 
+def writeconfig():
+    config = configparser.ConfigParser()
+    team = input("CONFIG: team?\n")
+    config['DEFAULT'] = {'Team': '%s' % team}
+    #need to repeat asking for presets
+    config['COMPETITION'] = {'preset1': '', 'preset2': '', 'preset3': '', 'preset4': '', 'preset5': '', 'preset6': '',
+                             'preset7': '', 'preset8': '', 'preset9': ''}
+    with open('settings.ini', 'w') as configfile:
+        config.write(configfile)
+
+def getteam():
+    '''https://api.vexdb.io/v1/get_teams?sku=RE-VRC-18-5276'''
+
+    '''
+    _json_dict = vexdb_json("teams", {"sku": "RE-VRC-18-5276"})
+    output = []
+    for r in _json_dict["result"]:
+        line = '{}: '.format(r["number"])
+        output.append(line)
+    return output
+    '''
+    #error, connection issue?
+    '''
+    #old way
+     r = urlopen('https://api.vexdb.io/v1/get_teams?sku=RE-VRC-18-5276')
+    text = r.read()
+    pprint.pprint(json.loads(text))
+
+    json_dict = json.loads(text)
+
+    output = []
+    for r in json_dict["result"]:
+        line = "{},".format(r["number"])
+        output.append(line)
+    '''
+
+
 
 def main():
+    #print(vexdb_json("teams", {"grade": "High School"},["number"]))
+
     while True:
-        mode = int(input(  #TODO(YIFEI): int??? exception
-            "Mode \n 1.Scan Team Matches \n 2.Excel Functions [Not Finished] \n 3.Search Team Season History  "
-            "\n 8.Get Important Info For a Team \n 9.Change Log\n 0.Quit \n"))
-        if mode == 1:
+        mode = str(input(  #TODO(YIFEI): int??? exception
+            "Mode \n 1.Scan Team Matches \n 2.Excel Functions [Not Finished] \n 3.Search Team Season History \n 4.Graph \n 8.Get Important Info For a Team \n 9.Change Log\n config.Config\n 0.Quit \n"))
+        if mode== '1':
             print("Mode = Scan Team Matches")
             print(scan_team_matches(input("team number:")))
-        elif mode == 2:
+        elif mode == '2':
             print("Mode = Excels")
             print(
                 "1.Scan Teams \n2.Scan Matches [Don't use this]\n3.Write Team Important Data\n4.Don't Ues This\n5.Can "
@@ -1717,23 +1757,27 @@ def main():
             elif excel_mode == 6:
                 print("Mode = Scan We Need")
                 excel_get_we_need()
-        elif mode == 3:
+        elif mode == '3':
             print("Mode = Search Team History : Current Season")
             input1 = input('Team #?\n')
             input2 = input('season #?\n')
             pprint.pprint(search_team_current_season(input1, input2))
-        elif mode == 4:
+        elif mode == '4':
             print("Bubble!")
             time_is_out()
             answer()
-        elif mode == 8:
+        elif mode == '8':
             print("Mode = Get Important Data")
             input1 = input('Team #?\n')
             input2 = input('season #?\n')
             a = get_all_data(input1,input2)
             pprint.pprint(a[0])
             pprint.pprint(a[1])
-        elif mode == 0:
+        elif mode.lower() == 'config':
+            writeconfig()
+        elif mode.lower() == 'getteam':
+            getteam()
+        elif mode == '0':
             print("Thanks for using it!")
             quit()
 
