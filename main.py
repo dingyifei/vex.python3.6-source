@@ -1338,6 +1338,8 @@ def teamap(team,season):
             diff = (int(teammap) - 25) * 0.2
             teammap = 25 + float(diff)
             print("Balance over 25, " + str(diff))
+            '''这里的逻辑：去年的Auto基本得分就在20-30之间，但有些队太强/对手太弱，会拿到巨高的AP分，所以对25以上的做取20%处理
+            防止图画不出来。'''
         aptotal += int(teammap)
         GlobalVar.apave = int(aptotal) / int(count)
         if teammap == "" or teammap == "":
@@ -1377,8 +1379,9 @@ def team_highest(team, season):
         count += 1
         highesttotal += int(team_highest)
         GlobalVar.highestave = int(highesttotal) / count
-        if team_highest == "":
+        if team_highest == "" or team_highest == 0:
             print("break cuz blank")
+            '''数据库bug：就算那个队离开了/被DQ/各种原因没去，依旧会记录分数并写为空/0，所以要减掉奇怪的情况防止平均出错。'''
             count -= 1
             GlobalVar.highestave = float(highesttotal) / count
             teampr()
@@ -1404,6 +1407,7 @@ def teampr(team, season):
         GlobalVar.dprave = float(dprtotal) / count
         if teamdpr == "" or teamopr == "":
             print("break cuz blank")
+            '''同理，数据库bug：就算那个队离开了/被DQ/各种原因没去，依旧会计算分数并写为空/0，所以要减掉奇怪的情况防止平均出错。'''
             count -= 1
             teamccwm()
 
@@ -1421,9 +1425,11 @@ def teamccwm(team, season):
         count += 1
         ccwmtotal += float(teamccwm)
         GlobalVar.ccwmave = float(ccwmtotal) / count
-        if teamccwm == "" or teamccwm == "":
+        if teamccwm == "" or teamccwm == 0:
             print("break cuz blank")
-            count -= 18
+            '''同上'''
+            count -= 1
+            #这里手残 应该是1 写成18了
             break
 
 
@@ -1477,7 +1483,7 @@ def graphbubble(file_name: str):  # it should be part of "timeisout"
     GlobalVar.teamb2ranking = int(10 - int(GlobalVar.teamb2ranking))
     GlobalVar.teamb3ranking = int(10 - int(GlobalVar.teamb3ranking))
 
-    # /17
+    # /17，缩小数值这样就能表现在图中了
     GlobalVar.teamb1highest = round(
         float(int(GlobalVar.teamb1highest) / 17), 1)
     GlobalVar.teamb2highest = round(
