@@ -1156,7 +1156,7 @@ def time_is_out(red_teams: list, blue_teams: list, season: str):  # TODO: NEED M
 
     for blue_team in blue_teams:
         if blue_team != "":
-            b_disc = team_skill(blue_team, season)
+            b_dict = team_skill(blue_team, season)
 
 
 
