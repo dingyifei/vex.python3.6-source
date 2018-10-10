@@ -1342,7 +1342,7 @@ def teamap(team,season):
             防止图画不出来。'''
         aptotal += int(teammap)
         GlobalVar.apave = int(aptotal) / int(count)
-        if teammap == "" or teammap == "":
+        if teammap == "" or teammap == 0:
             print("break cuz blank")
             count -= 1
             teamranking()
@@ -1359,9 +1359,10 @@ def teamranking(team, season):
         count += 1
         rank_total += int(team_ranking)
         GlobalVar.rankave = float(rank_total) / count
-        if team_ranking == "":
+        if team_ranking == "" or team_ranking == 0:
             print("break cuz blank")
             count -= 1
+            '''同理'''
             GlobalVar.rankave = float(rank_total) / count
             team_highest()
         GlobalVar.rankave = float(team_ranking) / count
@@ -1405,7 +1406,7 @@ def teampr(team, season):
         GlobalVar.oprave = float(GlobalVar.oprtotal) / count
         dprtotal += float(teamdpr)
         GlobalVar.dprave = float(dprtotal) / count
-        if teamdpr == "" or teamopr == "":
+        if teamdpr == "" or teamdpr == 0 or teamopr == "" or teamopr == 0:
             print("break cuz blank")
             '''同理，数据库bug：就算那个队离开了/被DQ/各种原因没去，依旧会计算分数并写为空/0，所以要减掉奇怪的情况防止平均出错。'''
             count -= 1
@@ -1522,6 +1523,7 @@ def graphbubble(file_name: str):  # it should be part of "timeisout"
         GlobalVar.teamb2ccwm = 0.1
     if GlobalVar.teamb3ccwm < 0:
         GlobalVar.teamb3ccwm = 0.1
+    '''因为ccwm是z轴（气泡大小），0就没有气泡了'''
 
     # create data!
 
