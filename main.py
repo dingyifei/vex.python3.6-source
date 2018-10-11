@@ -193,6 +193,7 @@ class GlobalVar:
 
 def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
 
+
     """
     It function accept a string "api_type" and a dictionary "api_parameters", the "api_type" should be
     one from _API_TYPE The dictionary's key are the _parameters from vexdb.io/the_data and the value should
@@ -234,11 +235,11 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
                             for y in return_data:
                                 output.append(x[y])
                 return output
+#This is why I love Flynn's code
 
 def team_list():  # For testing
     print(vexdb_json("teams", {"grade": "High School"},["number"]))
     print(vexdb_json("matches", {"season":"Starstruck", "team":"8667A"}, ["sku"]))
-
 
 def scan_team_matches(name: object) -> object:  # TODO: temperory
     _json_dict = vexdb_json("matches", {"season": "Turning%20Point", "team": name})
@@ -250,7 +251,7 @@ def scan_team_matches(name: object) -> object:  # TODO: temperory
                                    r["blue1"], r["blue2"], r["blue3"], r["bluesit"], r["redscore"], r["bluescore"])
         output.append(line)
     return output
-
+#这是一个应急功能 着急的时候没人care图和excel
 
 def excel_scan_teams(teams: list, season: str):  # 201
 
@@ -307,635 +308,7 @@ def excel_scan_teams(teams: list, season: str):  # 201
             print('\n reset and xls saved!')
             main()
 
-
-def excel_get_all_data(teams: list, season: str):  # 203
-    sheetline = 0
-    start = time.time()
-
-    # TODO(Yifei):This List is removed NEEDFIX
-    # list1 = []
-
-    while True:
-        for number in range(0, len(teams)):
-            teamloop = teams[number]
-            print(teamloop)
-            number += 1
-            teaminfoline = int(sheetline)
-            sheet3.write(sheetline, 0, "Team")
-            sheet3.write(sheetline, 1, "Wins")
-            sheet3.write(sheetline, 2, "Losses")
-            sheet3.write(sheetline, 3, "AP")
-            sheet3.write(sheetline, 4, "Ranking")
-            sheet3.write(sheetline, 5, "Highest")
-            sheet3.write(sheetline, 6, "Result")
-            sheet3.write(sheetline, 8, "Flag")
-            sheetline += 1
-            json_dict = vexdb_json("ranking", {"team": teamloop, "season": season})
-            output = []
-            for r in json_dict["result"]:
-                line = "Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}" \
-                    .format(r["team"], r["wins"], r["losses"], r["ap"], r["rank"], r["max_score"])
-                output.append(line)
-
-            datateam = '{}'.format(r["team"])
-            datawins = '{}'.format(r["wins"])
-            datalosses = '{}'.format(r["losses"])
-            dataap = '{}'.format(r["ap"])
-            datarank = '{}'.format(r["rank"])
-            datamaxscore = '{}'.format(r["max_score"])
-            output.append(line)
-
-            sheet3.write(sheetline, 0, "#" + datateam)
-            sheet3.write(sheetline, 1, datawins)
-            sheet3.write(sheetline, 2, datalosses)
-            sheet3.write(sheetline, 3, dataap)
-            sheet3.write(sheetline, 4, datarank)
-            sheet3.write(sheetline, 5, datamaxscore)
-
-            if int(datawins) > int(datalosses):
-                sheet3.write(sheetline, 6, "Positive", STYLE_1)
-            elif int(datawins) < int(datalosses):
-                sheet3.write(sheetline, 6, "Negative", STYLE_2)
-            sheetline += 1
-            json_dict = vexdb_json("matches", {"team": teamloop, "season": season})
-            output = []
-            loop = -10000
-            # 1-10000 For testing, should be 0
-
-            sheet3.write(sheetline, 0, "Sku")
-            sheet3.write(sheetline, 1, "Match")
-            sheet3.write(sheetline, 2, "Red1")
-            sheet3.write(sheetline, 3, "Red2")
-            sheet3.write(sheetline, 4, "Red3")
-            sheet3.write(sheetline, 5, "RedSit")
-            sheet3.write(sheetline, 6, "Blue1")
-            sheet3.write(sheetline, 7, "Blue2")
-            sheet3.write(sheetline, 8, "Blue3")
-            sheet3.write(sheetline, 9, "BlueSit")
-            sheet3.write(sheetline, 10, "RedSco")
-            sheet3.write(sheetline, 11, "BlueSco")
-            sheet3.write(sheetline, 12, "Team LF")
-            sheet3.write(sheetline, 13, "Result")
-            sheet3.write(sheetline, 14, "Difficulty")
-            sheet3.write(sheetline, 15, "Status")
-            # sheet3.write(sheetline, 16, "Cur Sit")
-
-            sheetline += 1
-            win = 0
-            matches = 0
-            for r in json_dict["result"]:
-                matches += 1
-                line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = ' \
-                       '{} || Blue Alliance 1 = {} Blue Alliance 2 = {} Blue Alliance 3 = {} Blue Sit = {} || Red ' \
-                       'Score = {} Blue Score = {}'.format(r["sku"], r["matchnum"], r["round"], r["red1"], r["red2"],
-                                                           r["red3"], r["redsit"], r["blue1"], r["blue2"], r["blue3"],
-                                                           r["bluesit"], r["redscore"], r["bluescore"])
-                datasku = '{}'.format(r["sku"])
-                datamatchnum = '{}'.format(r["matchnum"])
-                datared1 = '{}'.format(r["red1"])
-                datared2 = '{}'.format(r["red2"])
-                datared3 = '{}'.format(r["red3"])
-                dataredsit = '{}'.format(r["redsit"])
-                datablue1 = '{}'.format(r["blue1"])
-                datablue2 = '{}'.format(r["blue2"])
-                datablue3 = '{}'.format(r["blue3"])
-                databluesit = '{}'.format(r["bluesit"])
-                dataredsc = '{}'.format(r["redscore"])
-                databluesc = '{}'.format(r["bluescore"])
-                # sheetline += 1
-                sheet3.write(sheetline, 0, datasku)
-                sheet3.write(sheetline, 1, datamatchnum)
-                sheet3.write(sheetline, 2, datared1, STYLE_RED)
-                sheet3.write(sheetline, 3, datared2, STYLE_RED)
-                sheet3.write(sheetline, 4, datared3, STYLE_RED)
-                sheet3.write(sheetline, 5, dataredsit, STYLE_RED)
-                sheet3.write(sheetline, 6, datablue1, STYLE_BLUE)
-                sheet3.write(sheetline, 7, datablue2, STYLE_BLUE)
-                sheet3.write(sheetline, 8, datablue3, STYLE_BLUE)
-                sheet3.write(sheetline, 9, databluesit, STYLE_BLUE)
-                sheet3.write(sheetline, 10, dataredsc, STYLE_RED)
-                sheet3.write(sheetline, 11, databluesc, STYLE_BLUE)
-                sheet3.write(sheetline, 12, datateam + " =", STYLE_B)
-
-                if int(dataredsc) > int(databluesc):
-                    sheet3.write(sheetline, 14, "Red", STYLE_1)
-                elif int(dataredsc) < int(databluesc):
-                    sheet3.write(sheetline, 14, "Blue", STYLE_2)
-
-                if int(dataredsc) + 20 < int(databluesc):
-                    sheet3.write(sheetline, 14, "Blue Easy", STYLE_4)
-                elif int(dataredsc) - 20 > int(databluesc):
-                    sheet3.write(sheetline, 14, "Red Easy", STYLE_3)
-
-                if datared1 == teamloop or datared2 == teamloop or datared3 == teamloop:
-                    if int(dataredsc) > int(databluesc):
-                        sheet3.write(sheetline, 13, "Win", STYLE_B)
-                        win += 1
-                    else:
-                        sheet3.write(sheetline, 13, "Lose", STYLE_BLACK)
-
-                elif datablue1 == teamloop or datablue2 == teamloop or datablue3 == teamloop:
-                    if int(dataredsc) < int(databluesc):
-                        sheet3.write(sheetline, 13, "Win", STYLE_B)
-                        win += 1
-                    else:
-                        sheet3.write(sheetline, 13, "Lose", STYLE_BLACK)
-
-                # To see if 0 = 0
-                if int(dataredsc) == 0 and int(databluesc) == 0:
-                    sheetline -= 1
-                    matches -= 1
-
-                elif int(dataredsc) == 0:
-                    sheet3.write(sheetline, 15, "Red DQ?", STYLE_BLACK)
-                elif int(databluesc) == 0:
-                    sheet3.write(sheetline, 15, "Blue DQ?", STYLE_BLACK)
-
-                sheetline += 1
-                loop += 1
-
-                if loop > 2:
-                    break
-
-                output.append(line)
-
-            sheetline += 1
-
-            teaminfoline += 1
-
-            decimal = (int(win) / int(matches))
-            flag = decimal * 100
-            flag = Decimal.from_float(flag).quantize(Decimal('0.0'))
-
-            if float(flag) >= 70:
-                sheet3.write(teaminfoline, 8, str(flag) + "%", STYLE_70)
-                for x in range(9, 21):
-                    sheet3.write(teaminfoline, x, "", STYLE_70)
-
-            elif float(flag) >= 50:
-                sheet3.write(teaminfoline, 8, str(flag) + "%", STYLE_50)
-                for x in range(9, 21):
-                    sheet3.write(teaminfoline, x, "", STYLE_50)
-
-            elif float(flag) >= 30:
-                sheet3.write(teaminfoline, 8, str(flag) + "%", STYLE_30)
-                for x in range(9, 21):
-                    sheet3.write(teaminfoline, x, "", STYLE_30)
-
-            else:
-                sheet3.write(teaminfoline, 8, str(flag) + "%", STYLE_0)
-                for x in range(9, 21):
-                    sheet3.write(teaminfoline, x, "", STYLE_0)
-            for x in range(0, 21):
-                sheet3.write(sheetline, x, "- - - - - - -", STYLE_BLACK)
-
-            sheetline += 1
-
-            decimal = (time.time() - start)
-            decimal = Decimal.from_float(decimal).quantize(Decimal('0.0'))
-
-            ave = (float(decimal) / (int(number)))
-            ave = Decimal.from_float(ave).quantize(Decimal('0.0'))
-
-            eta = (float(ave) * (int(len(teams) - (int(number)))))
-            etatomin = (float(eta) / 60)
-            etatomin = Decimal.from_float(etatomin).quantize(Decimal('0.0'))
-
-            print(str(number) + "/" + str(len(teams)) + " Finished, Used " + str(decimal) + " seconds. Average " + str(
-                ave) + " seconds each. ETA: " + str(etatomin) + " mins.")
-            print()
-            book.save("Data" + ".xls")
-
-        if number >= 5:
-            number = 0
-            sheetline = 1
-            print('')
-            print('reset and xls saved!')
-
-
-def excel_get_all_bugs(teams: list, season: str):  # 204
-
-    number = 0
-    sheetline = 0
-    start = time.time()
-
-    while True:
-        while number < int(len(teams)):
-            teamloop = teams[number]
-            print(teamloop)
-            number += 1
-            teaminfoline = int(sheetline)
-            sheet10.write(sheetline, 0, "Team")
-            sheet10.write(sheetline, 1, "Wins")
-            sheet10.write(sheetline, 2, "Losses")
-            sheet10.write(sheetline, 3, "AP")
-            sheet10.write(sheetline, 4, "Ranking")
-            sheet10.write(sheetline, 5, "Highest")
-            sheet10.write(sheetline, 6, "Result")
-            sheet10.write(sheetline, 8, "Flag")
-            sheetline += 1
-            json_dict = vexdb_json("rankings", {"team": teamloop, "season": season})
-            output = []
-
-            for r in json_dict["result"]:
-                line = "Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}" \
-                    .format(r["team"], r["wins"], r["losses"], r["ap"], r["rank"], r["max_score"])
-                output.append(line)
-
-            datateam = '{}'.format(r["team"])
-            datawins = '{}'.format(r["wins"])
-            datalosses = '{}'.format(r["losses"])
-            dataap = '{}'.format(r["ap"])
-            datarank = '{}'.format(r["rank"])
-            datamaxscore = '{}'.format(r["max_score"])
-            output.append(line)
-
-            sheet10.write(sheetline, 0, "#" + datateam)
-            sheet10.write(sheetline, 1, datawins)
-            sheet10.write(sheetline, 2, datalosses)
-            sheet10.write(sheetline, 3, dataap)
-            sheet10.write(sheetline, 4, datarank)
-            sheet10.write(sheetline, 5, datamaxscore)
-
-            if int(datawins) > int(datalosses):
-                sheet10.write(sheetline, 6, "Positive", STYLE_1)
-            elif int(datawins) < int(datalosses):
-                sheet10.write(sheetline, 6, "Negative", STYLE_2)
-
-            sheetline += 1
-
-            json_dict = vexdb_json("matches", {"team": teamloop, "season": season})
-            output = []
-
-            loop = -10000
-
-            # 1-10000 For testing, should be 0
-
-            sheet10.write(sheetline, 0, "Sku")
-            sheet10.write(sheetline, 1, "Match")
-            sheet10.write(sheetline, 2, "Red1")
-            sheet10.write(sheetline, 3, "Red2")
-            sheet10.write(sheetline, 4, "Red3")
-            sheet10.write(sheetline, 5, "RedSit")
-            sheet10.write(sheetline, 6, "Blue1")
-            sheet10.write(sheetline, 7, "Blue2")
-            sheet10.write(sheetline, 8, "Blue3")
-            sheet10.write(sheetline, 9, "BlueSit")
-            sheet10.write(sheetline, 10, "RedSco")
-            sheet10.write(sheetline, 11, "BlueSco")
-            sheet10.write(sheetline, 12, "Team LF")
-            sheet10.write(sheetline, 13, "Result")
-            sheet10.write(sheetline, 14, "Difficulty")
-            sheet10.write(sheetline, 15, "Status")
-            # sheet10.write(sheetline, 16, "Cur Sit")
-
-            sheetline += 1
-
-            win = 0
-            matches = 0
-
-            for r in json_dict["result"]:
-
-                matches += 1
-
-                line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = ' \
-                       '{} || Blue Alliance 1 = {} Blue Alliance 2 = {} Blue Alliance 3 = {} Blue Sit = {} || Red ' \
-                       'Score = {} Blue Score = {}' \
-                    .format(r["sku"], r["matchnum"], r["round"], r["red1"], r["red2"], r["red3"], r["redsit"],
-                            r["blue1"], r["blue2"], r["blue3"], r["bluesit"], r["redscore"], r["bluescore"])
-
-                datasku = '{}'.format(r["sku"])
-                datamatchnum = '{}'.format(r["matchnum"])
-                datared1 = '{}'.format(r["red1"])
-                datared2 = '{}'.format(r["red2"])
-                datared3 = '{}'.format(r["red3"])
-                dataredsit = '{}'.format(r["redsit"])
-                datablue1 = '{}'.format(r["blue1"])
-                datablue2 = '{}'.format(r["blue2"])
-                datablue3 = '{}'.format(r["blue3"])
-                databluesit = '{}'.format(r["bluesit"])
-                dataredsc = '{}'.format(r["redscore"])
-                databluesc = '{}'.format(r["bluescore"])
-
-                sheet10.write(sheetline, 0, datasku)
-                sheet10.write(sheetline, 1, datamatchnum)
-                sheet10.write(sheetline, 2, datared1, STYLE_RED)
-                sheet10.write(sheetline, 3, datared2, STYLE_RED)
-                sheet10.write(sheetline, 4, datared3, STYLE_RED)
-                sheet10.write(sheetline, 5, dataredsit, STYLE_RED)
-                sheet10.write(sheetline, 6, datablue1, STYLE_BLUE)
-                sheet10.write(sheetline, 7, datablue2, STYLE_BLUE)
-                sheet10.write(sheetline, 8, datablue3, STYLE_BLUE)
-                sheet10.write(sheetline, 9, databluesit, STYLE_BLUE)
-                sheet10.write(sheetline, 10, dataredsc, STYLE_RED)
-                sheet10.write(sheetline, 11, databluesc, STYLE_BLUE)
-                sheet10.write(sheetline, 12, datateam + " =", STYLE_B)
-
-                if int(dataredsc) > int(databluesc):
-                    sheet10.write(sheetline, 14, "Red", STYLE_1)
-                elif int(dataredsc) < int(databluesc):
-                    sheet10.write(sheetline, 14, "Blue", STYLE_2)
-
-                if int(dataredsc) + 20 < int(databluesc):
-                    sheet10.write(sheetline, 14, "Blue Easy", STYLE_4)
-                elif int(dataredsc) - 20 > int(databluesc):
-                    sheet10.write(sheetline, 14, "Red Easy", STYLE_3)
-
-                if datared1 == teamloop or datared2 == teamloop or datared3 == teamloop:
-                    if int(dataredsc) > int(databluesc):
-                        sheet10.write(sheetline, 13, "Win", STYLE_B)
-                        win += 1
-                    else:
-                        sheet10.write(sheetline, 13, "Lose", STYLE_BLACK)
-
-                elif datablue1 == teamloop or datablue2 == teamloop or datablue3 == teamloop:
-                    if int(dataredsc) < int(databluesc):
-                        sheet10.write(sheetline, 13, "Win", STYLE_B)
-                        win += 1
-                    else:
-                        sheet10.write(sheetline, 13, "Lose", STYLE_BLACK)
-
-                # To see if 0 = 0
-
-                if int(dataredsc) == 0 and int(databluesc) == 0:
-                    sheetline -= 1
-                    matches -= 1
-
-                elif int(dataredsc) == 0:
-                    sheet10.write(sheetline, 15, "Red DQ?", STYLE_BLACK)
-                elif int(databluesc) == 0:
-                    sheet10.write(sheetline, 15, "Blue DQ?", STYLE_BLACK)
-
-                sheetline += 1
-                loop += 1
-
-                if loop > 2:
-                    break
-
-                output.append(line)
-
-            sheetline += 1
-
-            teaminfoline += 1
-
-            decimal = (int(win) / int(matches))
-            flag = decimal * 100
-            flag = Decimal.from_float(flag).quantize(Decimal('0.0'))
-
-            if float(flag) >= 70:
-                sheet10.write(teaminfoline, 8, str(flag) + "%", STYLE_70)
-                for x in range(9, 21):
-                    sheet10.write(teaminfoline, x, "", STYLE_70)
-
-            elif float(flag) >= 50:
-                sheet10.write(teaminfoline, 8, str(flag) + "%", STYLE_50)
-                for x in range(9, 21):
-                    sheet10.write(teaminfoline, x, "", STYLE_50)
-
-            elif float(flag) >= 30:
-                sheet10.write(teaminfoline, 8, str(flag) + "%", STYLE_30)
-                for x in range(9, 21):
-                    sheet10.write(teaminfoline, x, "", STYLE_30)
-
-            else:
-                sheet10.write(teaminfoline, 8, str(flag) + "%", STYLE_0)
-                for x in range(9, 21):
-                    sheet10.write(teaminfoline, x, "", STYLE_0)
-            for x in range(0, 21):
-                sheet10.write(sheetline, x, "- - - - - - -", STYLE_BLACK)
-
-            sheetline += 1
-
-            decimal = (time.time() - start)
-            decimal = Decimal.from_float(decimal).quantize(Decimal('0.0'))
-
-            ave = (float(decimal) / (int(number)))
-            ave = Decimal.from_float(ave).quantize(Decimal('0.0'))
-
-            eta = float(ave) * (int(len(teams) - (int(number))))
-            etatomin = (float(eta) / 60)
-            etatomin = Decimal.from_float(etatomin).quantize(Decimal('0.0'))
-
-            print(str(number) + "/" + str(len(teams)) + " Finished, Used " + str(decimal) + " seconds. Average " + str(
-                ave) + " seconds each. ETA: " + str(etatomin) + " mins.")
-            print()
-            book.save("Data" + ".xls")
-
-        if number >= 5:
-            number = 0
-            sheetline = 1
-            print('')
-            print('reset and xls saved!')
-
-
-def excel_get_we_need(teams: list, season: str):  # 205
-
-    number = 0
-    sheetline = 0
-    start = time.time()
-
-    while True:  # Todo(Yifei): What is this loop for?
-        while number < int(len(teams)):  # TODO(Yifei): Use for loop instead
-
-            teamloop = teams[number]
-            print(teamloop)
-            number += 1
-            teaminfoline = int(sheetline)
-            sheet6.write(sheetline, 0, "Team")
-            sheet6.write(sheetline, 1, "Wins")
-            sheet6.write(sheetline, 2, "Losses")
-            sheet6.write(sheetline, 3, "AP")
-            sheet6.write(sheetline, 4, "Ranking")
-            sheet6.write(sheetline, 5, "Highest")
-            sheet6.write(sheetline, 6, "Result")
-            sheet6.write(sheetline, 8, "Flag")
-            sheetline += 1
-            json_dict = vexdb_json("rankings", {"team": teamloop, "season": season})
-            output = []
-            for r in json_dict["result"]:
-                line = "Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}" \
-                    .format(r["team"], r["wins"], r["losses"], r["ap"], r["rank"], r["max_score"])
-                output.append(line)
-            datateam = '{}'.format(r["team"])
-            datawins = '{}'.format(r["wins"])
-            datalosses = '{}'.format(r["losses"])
-            dataap = '{}'.format(r["ap"])
-            datarank = '{}'.format(r["rank"])
-            datamaxscore = '{}'.format(r["max_score"])
-            output.append(line)
-            sheet6.write(sheetline, 0, "#" + datateam)
-            sheet6.write(sheetline, 1, datawins)
-            sheet6.write(sheetline, 2, datalosses)
-            sheet6.write(sheetline, 3, dataap)
-            sheet6.write(sheetline, 4, datarank)
-            sheet6.write(sheetline, 5, datamaxscore)
-
-            if int(datawins) > int(datalosses):
-                sheet6.write(sheetline, 6, "Positive", STYLE_1)
-            elif int(datawins) < int(datalosses):
-                sheet6.write(sheetline, 6, "Negative", STYLE_2)
-
-            sheetline += 1
-
-            json_dict = vexdb_json("matches", {"team": teamloop, "season": season})
-            output = []
-            loop = -10000
-            # 1-10000 For testing, should be 0
-
-            sheet6.write(sheetline, 0, "Sku")
-            sheet6.write(sheetline, 1, "Match")
-            sheet6.write(sheetline, 2, "Red1")
-            sheet6.write(sheetline, 3, "Red2")
-            sheet6.write(sheetline, 4, "Red3")
-            sheet6.write(sheetline, 5, "RedSit")
-            sheet6.write(sheetline, 6, "Blue1")
-            sheet6.write(sheetline, 7, "Blue2")
-            sheet6.write(sheetline, 8, "Blue3")
-            sheet6.write(sheetline, 9, "BlueSit")
-            sheet6.write(sheetline, 10, "RedSco")
-            sheet6.write(sheetline, 11, "BlueSco")
-            sheet6.write(sheetline, 12, "Team LF")
-            sheet6.write(sheetline, 13, "Result")
-            sheet6.write(sheetline, 14, "Difficulty")
-            sheet6.write(sheetline, 15, "Status")
-            # sheet6.write(sheetline, 16, "Difference")
-
-            sheetline += 1
-
-            win = 0
-            matches = 0
-
-            for r in json_dict["result"]:
-
-                matches += 1
-
-                line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = ' \
-                       '{} || Blue Alliance 1 = {} Blue Alliance 2 = {} Blue Alliance 3 = {} Blue Sit = {} || Red ' \
-                       'Score = {} Blue Score = {}' \
-                    .format(r["sku"], r["matchnum"], r["round"], r["red1"], r["red2"], r["red3"], r["redsit"],
-                            r["blue1"], r["blue2"], r["blue3"], r["bluesit"], r["redscore"], r["bluescore"])
-
-                datasku = '{}'.format(r["sku"])
-                datamatchnum = '{}'.format(r["matchnum"])
-                datared1 = '{}'.format(r["red1"])
-                datared2 = '{}'.format(r["red2"])
-                datared3 = '{}'.format(r["red3"])
-                dataredsit = '{}'.format(r["redsit"])
-                datablue1 = '{}'.format(r["blue1"])
-                datablue2 = '{}'.format(r["blue2"])
-                datablue3 = '{}'.format(r["blue3"])
-                databluesit = '{}'.format(r["bluesit"])
-                dataredsc = '{}'.format(r["redscore"])
-                databluesc = '{}'.format(r["bluescore"])
-
-                # sheetline += 1
-
-                sheet6.write(sheetline, 0, datasku)
-                sheet6.write(sheetline, 1, datamatchnum)
-                sheet6.write(sheetline, 2, datared1, STYLE_RED)
-                sheet6.write(sheetline, 3, datared2, STYLE_RED)
-                sheet6.write(sheetline, 4, datared3, STYLE_RED)
-                sheet6.write(sheetline, 5, dataredsit, STYLE_RED)
-                sheet6.write(sheetline, 6, datablue1, STYLE_BLUE)
-                sheet6.write(sheetline, 7, datablue2, STYLE_BLUE)
-                sheet6.write(sheetline, 8, datablue3, STYLE_BLUE)
-                sheet6.write(sheetline, 9, databluesit, STYLE_BLUE)
-                sheet6.write(sheetline, 10, dataredsc, STYLE_RED)
-                sheet6.write(sheetline, 11, databluesc, STYLE_BLUE)
-                sheet6.write(sheetline, 12, datateam + " =", STYLE_B)
-
-                if int(dataredsc) > int(databluesc):
-                    sheet6.write(sheetline, 14, "Red", STYLE_1)
-                elif int(dataredsc) < int(databluesc):
-                    sheet6.write(sheetline, 14, "Blue", STYLE_2)
-
-                if int(dataredsc) + 20 < int(databluesc):
-                    sheet6.write(sheetline, 14, "Blue Easy", STYLE_4)
-                elif int(dataredsc) - 20 > int(databluesc):
-                    sheet6.write(sheetline, 14, "Red Easy", STYLE_3)
-
-                if datared1 == teamloop or datared2 == teamloop or datared3 == teamloop:
-                    if int(dataredsc) > int(databluesc):
-                        sheet6.write(sheetline, 13, "Win", STYLE_B)
-                        win += 1
-                    else:
-                        sheet6.write(sheetline, 13, "Lose", STYLE_BLACK)
-
-                elif datablue1 == teamloop or datablue2 == teamloop or datablue3 == teamloop:
-                    if int(dataredsc) < int(databluesc):
-                        sheet6.write(sheetline, 13, "Win", STYLE_B)
-                        win += 1
-                    else:
-                        sheet6.write(sheetline, 13, "Lose", STYLE_BLACK)
-
-                # To see if 0 = 0
-
-                if int(dataredsc) == 0 and int(databluesc) == 0:
-                    sheetline -= 1
-                    matches -= 1
-                elif int(dataredsc) == 0:
-                    sheet6.write(sheetline, 15, "Red DQ?", STYLE_BLACK)
-                elif int(databluesc) == 0:
-                    sheet6.write(sheetline, 15, "Blue DQ?", STYLE_BLACK)
-
-                sheetline += 1
-                loop += 1
-
-                if loop > 2:
-                    break
-
-                output.append(line)
-
-            sheetline += 1
-            teaminfoline += 1
-
-            decimal = (int(win) / int(matches))
-            flag = decimal * 100
-            flag = Decimal.from_float(flag).quantize(Decimal('0.0'))
-
-            if float(flag) >= 70:
-                sheet6.write(teaminfoline, 8, str(flag) + "%", STYLE_70)
-                for x in range(9, 21):
-                    sheet6.write(teaminfoline, x, "", STYLE_70)
-            elif float(flag) >= 50:
-                sheet6.write(teaminfoline, 8, str(flag) + "%", STYLE_50)
-                for x in range(9, 21):
-                    sheet6.write(teaminfoline, x, "", STYLE_50)
-            elif float(flag) >= 30:
-                sheet6.write(teaminfoline, 8, str(flag) + "%", STYLE_30)
-                for x in range(9, 21):
-                    sheet6.write(teaminfoline, x, "", STYLE_30)
-            else:
-                sheet6.write(teaminfoline, 8, str(flag) + "%", STYLE_0)
-                for x in range(9, 21):
-                    sheet6.write(teaminfoline, x, "", STYLE_0)
-
-            for x in range(0, 21):
-                sheet6.write(sheetline, x, "- - - - - - -", STYLE_BLACK)
-
-            sheetline += 1
-
-            decimal = (time.time() - start)
-            decimal = Decimal.from_float(decimal).quantize(Decimal('0.0'))
-
-            ave = (float(decimal) / (int(number)))
-            ave = Decimal.from_float(ave).quantize(Decimal('0.0'))
-
-            eta = float(ave) * (int(len(teams) - (int(number))))
-            etatomin = (float(eta) / 60)
-            etatomin = Decimal.from_float(etatomin).quantize(Decimal('0.0'))
-
-            print(str(number) + "/" + str(len(teams)) + " Finished, Used " + str(decimal) + " seconds. Average " + str(
-                ave) + " seconds each. ETA: " + str(etatomin) + " mins.")
-            print()
-            book.save("Data" + ".xls")
-
-        if number >= 5:
-            number = 0
-            sheetline = 1
-            print('\n reset and xls saved!')
-
-
+#TODO(BOTH) 把这个修好变成什么时候都能用就ok 从 excel_scan_world 更名为 excel_scan
 def excel_scan_world(teams: list, season: str, sku: str):
     number = 0
     sheetline = 0
@@ -1095,7 +468,6 @@ def excel_scan_world(teams: list, season: str, sku: str):
 
 
 # Need to test when competition start
-
 
 def excel_team_matches(name, season):  # TODO(YIFEI): Why excel? Value name change.
 
@@ -1687,12 +1059,21 @@ def answer():
 def writeconfig():
     config = configparser.ConfigParser()
     team = input("CONFIG: team?\n")
-    config['DEFAULT'] = {'Team': '%s' % team}
-    #need to repeat asking for presets
+    season = input("CONFIG: season?\n")
+    config['DEFAULT'] = {'Team': team, 'Season': season}
+    #TODO(YINGFENG): need to repeat asking for presets
     config['COMPETITION'] = {'preset1': '', 'preset2': '', 'preset3': '', 'preset4': '', 'preset5': '', 'preset6': '',
                              'preset7': '', 'preset8': '', 'preset9': ''}
     with open('settings.ini', 'w') as configfile:
         config.write(configfile)
+
+def readconfig(): #TODO(YINGFENG): 还有那些preset
+    config = configparser.ConfigParser()
+    config.read('settings.ini')
+    config.sections()
+    team = config.get('DEFAULT', 'team')
+    season = config.get('DEFAULT', 'season')
+    return season, team
 
 def getteam():
     '''https://api.vexdb.io/v1/get_teams?sku=RE-VRC-18-5276'''
@@ -1722,62 +1103,63 @@ def getteam():
 
 
 
+
+
 def main():
     #print(vexdb_json("teams", {"grade": "High School"},["number"]))
-
+    config = configparser.ConfigParser()
+    config.read('settings.ini')
+    config.sections()
+    team = config.get('DEFAULT', 'team')
+    season = config.get('DEFAULT', 'season')
+    #TODO(YINGFENG): 传参弄好就可以把这段删了 用 readconfig()
     while True:
-        mode = str(input(  #TODO(YIFEI): int??? exception
-            "Mode \n 1.Scan Team Matches \n 2.Excel Functions [Not Finished] \n 3.Search Team Season History \n 4.Graph \n 8.Get Important Info For a Team \n 9.Change Log\n config.Config\n 0.Quit \n"))
-        if mode== '1':
+        #with open('settings.ini', 'r') as configfile:
+
+        #readconfig() #too bad
+        #TODO(YINGFENG): how to 传参 .jpg
+        print(team)
+        print(season)
+
+        mode = int(input(  #TODO(YIFEI): int??? exception #TODO(YINGFENG): This is a mass now
+            "Mode \n 1.Scan Team Matches \n 2.Excel Functions [Not Finished] \n 3.Search Team Season History \n 4.Graph \n 8.Get Important Info For a Team \n 9.Change Log\n 5.Config\n 6.Team List\n 0.Quit \n"))
+        if mode == 1:
             print("Mode = Scan Team Matches")
             print(scan_team_matches(input("team number:")))
-        elif mode == '2':
+        elif mode == 2:
             print("Mode = Excels")
             print(
-                "1.Scan Teams \n2.Scan Matches [Don't use this]\n3.Write Team Important Data\n4.Don't Ues This\n5.Can "
-                "Specific Match [PreSet World Championship]\n6.Get We Need")
+                "1.Scan Teams \n 2.Excel_Scan")
             excel_mode = int(input())
             if excel_mode == 1:
                 print("Mode = Scan Teams and Write to Excel")
                 excel_scan_teams()
             elif excel_mode == 2:
                 print("Mode = Write Team Matches [Don't use this]")
-                input1 = input('Team #?\n')
-                input2 = input('season #?\n')
+                input1 = team
+                input2 = season
                 pprint.pprint(excel_team_matches(input1, input2))
-            elif excel_mode == 3:
-                print("Mode = Write Team Important Data in Excel")
-                excel_get_all_data()
-            elif excel_mode == 4:
-                print("Mode = Scan Bugged Team [It will crash]")
-                excel_get_all_bugs()
-            elif excel_mode == 5:
-                print("Mode = Scan World Championship")
-                excel_scan_world()
-            elif excel_mode == 6:
-                print("Mode = Scan We Need")
-                excel_get_we_need()
-        elif mode == '3':
+        elif mode == 3:
             print("Mode = Search Team History : Current Season")
-            input1 = input('Team #?\n')
-            input2 = input('season #?\n')
+            input1 = team
+            input2 = season
             pprint.pprint(search_team_current_season(input1, input2))
-        elif mode == '4':
+        elif mode == 4:
             print("Bubble!")
             time_is_out()
             answer()
-        elif mode == '8':
+        elif mode == 8:
             print("Mode = Get Important Data")
-            input1 = input('Team #?\n')
-            input2 = input('season #?\n')
-            a = get_all_data(input1,input2)
+            input1 = team
+            input2 = season
+            a = get_all_data(input1, input2)
             pprint.pprint(a[0])
             pprint.pprint(a[1])
-        elif mode.lower() == 'config':
+        elif mode == 5:
             writeconfig()
-        elif mode.lower() == 'getteam':
+        elif mode == 6:
             getteam()
-        elif mode == '0':
+        elif mode == 0:
             print("Thanks for using it!")
             quit()
 
