@@ -6,7 +6,6 @@ import os
 import pprint
 import time
 import xlwt
-#TODO(BOTH): replace xlwt with something else like whatever
 import matplotlib.pyplot as plt
 import configparser
 from decimal import getcontext, Decimal
@@ -311,7 +310,7 @@ def excel_scan_teams(teams: list, season: str):  # 201
             main()
 
 #TODO(BOTH) 把这个修好变成什么时候都能用就ok 从 excel_scan_world 更名为 excel_scan
-def excel_scan_world(teams: list, season: str, sku: str):
+def excel_scan(teams: list, season: str, sku: str):
     number = 0
     sheetline = 0
     start = time.time()
@@ -1077,7 +1076,7 @@ def readconfig(): #TODO(YINGFENG): 还有那些preset
     season = config.get('DEFAULT', 'season')
     return season, team
 
-def getteam():
+#def getteam():
     '''https://api.vexdb.io/v1/get_teams?sku=RE-VRC-18-5276'''
 
     '''
