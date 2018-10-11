@@ -2,3 +2,5 @@
 .idea/workspace.xml
 ./venv
 ./settings.ini
+.idea/misc.xml
+.idea/vex.python3.6.iml
