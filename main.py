@@ -1114,6 +1114,7 @@ def getteam():
 
 def main():
     #print(vexdb_json("teams", {"grade": "High School"},["number"]))
+    #TODO(YINGFENG):如果没有config，那么创建一个 newconfig()
     config = configparser.ConfigParser()
     config.read('settings.ini')
     config.sections()
