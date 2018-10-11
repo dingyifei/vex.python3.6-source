@@ -1117,7 +1117,7 @@ def main():
         team = config.get('DEFAULT', 'team')
         season = config.get('DEFAULT', 'season')
 
-    except:
+    except: #no error
         print("Cannot find settings.ini, so you are creating one.")
         writeconfig()
         config = configparser.ConfigParser()
@@ -1136,7 +1136,7 @@ def main():
         print(season)
 
         mode = int(input(  #TODO(YIFEI): int??? exception #TODO(YINGFENG): This is a mass now
-            "Mode \n 1.Scan Team Matches \n 2.Excel Functions [Not Finished] \n 3.Search Team Season History \n 4.Graph \n 8.Get Important Info For a Team \n 9.Change Log\n 5.Config\n 6.Team List\n 0.Quit \n"))
+            "Mode \n 1.Scan Team Matches \n 2.!Excel Functions \n 3.Search Team Season History \n 4.Graph \n 8.Get Important Info For a Team \n 9.Change Log\n 5.Config\n 6.Team List\n 0.Quit \n"))
         if mode == 1:
             print("Mode = Scan Team Matches")
             print(scan_team_matches(input("team number:")))
