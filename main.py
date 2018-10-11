@@ -1,11 +1,6 @@
 # coding=utf-8
 
-'''
-Bug:
-urllib.error.URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1045)>
-这个似乎是我本机的问题，你跑一下试试
-我用 https://repl.it/@HaoruiZhou/VEXSearchTeam 测试了，不是api的问题
-'''
+
 import json
 import os
 import pprint
@@ -1114,12 +1109,23 @@ def getteam():
 
 def main():
     #print(vexdb_json("teams", {"grade": "High School"},["number"]))
-    #TODO(YINGFENG):如果没有config，那么创建一个 newconfig()
-    config = configparser.ConfigParser()
-    config.read('settings.ini')
-    config.sections()
-    team = config.get('DEFAULT', 'team')
-    season = config.get('DEFAULT', 'season')
+
+    try:
+        config = configparser.ConfigParser()
+        config.read('settings.ini')
+        config.sections()
+        team = config.get('DEFAULT', 'team')
+        season = config.get('DEFAULT', 'season')
+
+    except:
+        print("Cannot find settings.ini, so you are creating one.")
+        writeconfig()
+        config = configparser.ConfigParser()
+        config.read('settings.ini')
+        config.sections()
+        team = config.get('DEFAULT', 'team')
+        season = config.get('DEFAULT', 'season')
+
     #TODO(YINGFENG): 传参弄好就可以把这段删了 用 readconfig()
     while True:
         #with open('settings.ini', 'r') as configfile:
