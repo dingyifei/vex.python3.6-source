@@ -1151,11 +1151,15 @@ def main():
         elif mode == 2:
             print("Mode = Excels")
             print(
-                "1.Scan Teams \n 2.Excel_Scan")
+                "1.Scan Teams \n2.Excel_Scan")
             excel_mode = int(input())
             if excel_mode == 1:
                 print("Mode = Scan Teams and Write to Excel")
-                excel_scan_teams()
+                #To Test
+                season = 'In The Zone'
+                sku = 'RE-VRC-17-3805'
+                teams = ['224S','224X','363A','1846C','2495X','6627A','6627B','6627C','6627D','6627X','6671X','7259A','7259C','7259D','7582X','7582Y','9364A','9364C','9364D','12014A','12014B','29027A','35211C','76607A','98268A']
+                excel_scan(teams,season,sku)
             elif excel_mode == 2:
                 print("Mode = Write Team Matches [Don't use this]")
                 input1 = team
