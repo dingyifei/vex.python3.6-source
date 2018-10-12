@@ -7,11 +7,13 @@ import matplotlib.pyplot as plt
 import configparser
 from decimal import getcontext, Decimal
 from urllib.request import urlopen
-
+import ssl
+ssl._create_default_http_context = ssl._create_unverified_context
+getcontext().prec = 6
 
 # preload
 
-getcontext().prec = 6
+#getcontext().prec = 6
 
 book = xlwt.Workbook(encoding="utf-8")
 sheet1 = book.add_sheet("#Cover", cell_overwrite_ok=True)
@@ -211,7 +213,7 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
 
     if api_type != "":
         if _parameters != "" or _parameters is not None:
-            json_dict = json.loads((urlopen("https://api.vexdb.io/v1/get_" + api_type + _parameters)).read())
+            json_dict = json.loads((urlopen("http://api.vexdb.io/v1/get_" + api_type + _parameters)).read())
             if json_dict["status"] == 0:
                 raise() # TODO: a exception
             else:
@@ -325,44 +327,44 @@ def excel_scan(teams: list, season: str, sku: str):
                     .format(r["team"], r["wins"], r["losses"], r["ap"], r["rank"], r["max_score"])
                 output.append(line)
 
-            datateam = '{}'.format(r["team"])
-            datawins = '{}'.format(r["wins"])
-            datalosses = '{}'.format(r["losses"])
-            dataap = '{}'.format(r["ap"])
-            datarank = '{}'.format(r["rank"])
-            datamaxscore = '{}'.format(r["max_score"])
+                datateam = '{}'.format(r["team"])
+                datawins = '{}'.format(r["wins"])
+                datalosses = '{}'.format(r["losses"])
+                dataap = '{}'.format(r["ap"])
+                datarank = '{}'.format(r["rank"])
+                datamaxscore = '{}'.format(r["max_score"])
 
-            # output.append(line) #Remove because I cant see the use of this
+                # output.append(line) #Remove because I cant see the use of this
 
-            sheet5.write(sheetline, 0, "#" + datateam)
-            sheet5.write(sheetline, 1, datawins)
-            sheet5.write(sheetline, 2, datalosses)
-            sheet5.write(sheetline, 3, dataap)
-            sheet5.write(sheetline, 4, datarank)
-            sheet5.write(sheetline, 5, datamaxscore)
+                sheet5.write(sheetline, 0, "#" + datateam)
+                sheet5.write(sheetline, 1, datawins)
+                sheet5.write(sheetline, 2, datalosses)
+                sheet5.write(sheetline, 3, dataap)
+                sheet5.write(sheetline, 4, datarank)
+                sheet5.write(sheetline, 5, datamaxscore)
 
-            if int(datawins) > int(datalosses):
-                sheet5.write(sheetline, 6, "Positive", STYLE_1)
-            elif int(datawins) < int(datalosses):
-                sheet5.write(sheetline, 6, "Negative", STYLE_2)
+                if int(datawins) > int(datalosses):
+                    sheet5.write(sheetline, 6, "Positive", STYLE_1)
+                elif int(datawins) < int(datalosses):
+                    sheet5.write(sheetline, 6, "Negative", STYLE_2)
 
-            sheetline += 1
-            json_dict = vexdb_json("matches", {"team": teamloop, "season": season})
-            output = []
-            loop = -10000
+                sheetline += 1
+                json_dict = vexdb_json("matches", {"team": teamloop, "season": season})
+                output = []
+                loop = -10000
 
-            sheet5.write(sheetline, 0, "Sku")
-            sheet5.write(sheetline, 1, "Match")
-            sheet5.write(sheetline, 2, "Red1")
-            sheet5.write(sheetline, 3, "Red2")
-            sheet5.write(sheetline, 4, "Red3")
-            sheet5.write(sheetline, 5, "RedSit")
-            sheet5.write(sheetline, 6, "Blue1")
-            sheet5.write(sheetline, 7, "Blue2")
-            sheet5.write(sheetline, 8, "Blue3")
-            sheet5.write(sheetline, 9, "BlueSit")
-            sheet5.write(sheetline, 10, "RedSco")
-            sheet5.write(sheetline, 11, "BlueSco")
+                sheet5.write(sheetline, 0, "Sku")
+                sheet5.write(sheetline, 1, "Match")
+                sheet5.write(sheetline, 2, "Red1")
+                sheet5.write(sheetline, 3, "Red2")
+                sheet5.write(sheetline, 4, "Red3")
+                sheet5.write(sheetline, 5, "RedSit")
+                sheet5.write(sheetline, 6, "Blue1")
+                sheet5.write(sheetline, 7, "Blue2")
+                sheet5.write(sheetline, 8, "Blue3")
+                sheet5.write(sheetline, 9, "BlueSit")
+                sheet5.write(sheetline, 10, "RedSco")
+                sheet5.write(sheetline, 11, "BlueSco")
 
             for r in json_dict["result"]:
                 line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = ' \
@@ -661,7 +663,7 @@ def team_sent(team, season):
         # global_var.teamwins = 0
         # global_var.winstotal = 0
         # from urllib.request import urlopen
-        # r = urlopen('https://api.vexdb.io/v1/get_rankings?team=' + global_var.teamsent + '&season=Turning%20Point')
+        # r = urlopen('http://api.vexdb.io/v1/get_rankings?team=' + global_var.teamsent + '&season=Turning%20Point')
         #
         # text = r.read()
         #
@@ -1067,7 +1069,7 @@ def readconfig(): #TODO(YINGFENG): 还有那些preset
     return season, team
 
 def getteam(sku):
-    '''https://api.vexdb.io/v1/get_teams?sku=RE-VRC-18-5276'''
+    '''http://api.vexdb.io/v1/get_teams?sku=RE-VRC-18-5276'''
 
     '''
     _json_dict = vexdb_json("teams", {"sku": "RE-VRC-18-5276"})
@@ -1080,7 +1082,7 @@ def getteam(sku):
     #error, connection issue?
 
     #old way
-    r = urlopen('https://api.vexdb.io/v1/get_teams?sku=RE-VRC-18-5276')
+    r = urlopen('http://api.vexdb.io/v1/get_teams?sku=RE-VRC-18-5276')
     # you can change the url
     text = r.read()
     pprint.pprint(json.loads(text))
@@ -1100,17 +1102,10 @@ def getteam(sku):
 
     return output
 
-def whatthecommit():
-    r = urlopen('http://whatthecommit.com/index.txt')
-    string = r.read()
-    string = str(string).replace("b'", "")
-    string = str(string).replace("'", "")
-    GlobalVar.response = str(string).replace(repr('\n'), "")
-
 def main():
     #print(vexdb_json("teams", {"grade": "High School"},["number"]))
 
-    #team_list()
+    team_list()
     try:
         config = configparser.ConfigParser()
         config.read('config.ini')
@@ -1149,7 +1144,7 @@ def main():
             if excel_mode == 1:
                 print("Mode = Scan Teams and Write to Excel")
                 #To Test
-                season = 'In The Zone'
+                season = 'In%20The%20Zone'
                 sku = 'RE-VRC-17-3805'
                 teams = ['224S','224X','363A','1846C','2495X','6627A','6627B','6627C','6627D','6627X','6671X','7259A','7259C','7259D','7582X','7582Y','9364A','9364C','9364D','12014A','12014B','29027A','35211C','76607A','98268A']
                 excel_scan(teams,season,sku)
@@ -1183,8 +1178,6 @@ def main():
             # TODO(YIFEI):please check flynn
         elif mode == 0:
             print("Thanks for using it!")
-            whatthecommit()
-            print('To commit: ' +str(GlobalVar.response) + ' from http://whatthecommit.com')
             quit()
 
 if __name__ == '__main__':
