@@ -1065,18 +1065,18 @@ def writeconfig():
     #TODO(YINGFENG): need to repeat asking for presets
     config['COMPETITION'] = {'preset1': '', 'preset2': '', 'preset3': '', 'preset4': '', 'preset5': '', 'preset6': '',
                              'preset7': '', 'preset8': '', 'preset9': ''}
-    with open('settings.ini', 'w') as configfile:
+    with open('config.ini', 'w') as configfile:
         config.write(configfile)
 
 def readconfig(): #TODO(YINGFENG): 还有那些preset
     config = configparser.ConfigParser()
-    config.read('settings.ini')
+    config.read('config.ini')
     config.sections()
     team = config.get('DEFAULT', 'team')
     season = config.get('DEFAULT', 'season')
     return season, team
 
-#def getteam():
+def getteam(sku):
     '''https://api.vexdb.io/v1/get_teams?sku=RE-VRC-18-5276'''
 
     '''
@@ -1088,21 +1088,27 @@ def readconfig(): #TODO(YINGFENG): 还有那些preset
     return output
     '''
     #error, connection issue?
-    '''
+
     #old way
-     r = urlopen('https://api.vexdb.io/v1/get_teams?sku=RE-VRC-18-5276')
+    r = urlopen('https://api.vexdb.io/v1/get_teams?sku=RE-VRC-18-5276')
+    # you can change the url
     text = r.read()
     pprint.pprint(json.loads(text))
 
     json_dict = json.loads(text)
 
     output = []
+    oldline = ''
     for r in json_dict["result"]:
         line = "{},".format(r["number"])
-        output.append(line)
-    '''
+        oldline = oldline + line
 
+        # output.append(line)
+    pprint.pprint(oldline)
+    output.append(oldline)
+    #TODO(YIFEI):please check flynn
 
+    return output
 
 
 
@@ -1111,23 +1117,23 @@ def main():
 
     try:
         config = configparser.ConfigParser()
-        config.read('settings.ini')
+        config.read('config.ini')
         config.sections()
         team = config.get('DEFAULT', 'team')
         season = config.get('DEFAULT', 'season')
 
     except: #no error
-        print("Cannot find settings.ini, so you are creating one.")
+        print("Cannot find config.ini, so you are creating one.")
         writeconfig()
         config = configparser.ConfigParser()
-        config.read('settings.ini')
+        config.read('config.ini')
         config.sections()
         team = config.get('DEFAULT', 'team')
         season = config.get('DEFAULT', 'season')
 
     #TODO(YINGFENG): 传参弄好就可以把这段删了 用 readconfig()
     while True:
-        #with open('settings.ini', 'r') as configfile:
+        #with open('config.ini', 'r') as configfile:
 
         #readconfig() #too bad
         #TODO(YINGFENG): how to 传参 .jpg
@@ -1171,7 +1177,10 @@ def main():
         elif mode == 5:
             writeconfig()
         elif mode == 6:
-            getteam()
+            #getteam()
+            sku = input("Match sku")
+            print(getteam(sku))
+            # TODO(YIFEI):please check flynn
         elif mode == 0:
             print("Thanks for using it!")
             quit()

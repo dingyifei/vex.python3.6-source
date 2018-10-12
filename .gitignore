@@ -9,4 +9,5 @@
 .idea/modules.xml
 .idea/other.xml
 .idea/vcs.xml
+./config.ini
 main.spec
