@@ -10,15 +10,11 @@ import matplotlib.pyplot as plt
 import configparser
 from decimal import getcontext, Decimal
 from urllib.request import urlopen
+import ssl
 
-
-# from math import pi
-# import webbrowser
-# import errno
-# import numpy as np
-# import seaborn as sns
-# import pandas as pd
-
+ssl._create_default_https_context = ssl._create_unverified_context
+getcontext().prec = 6
+#DO NOT DELETE
 
 # preload
 
