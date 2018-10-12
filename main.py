@@ -1,6 +1,3 @@
-# coding=utf-8
-
-
 import json
 import os
 import pprint
@@ -10,11 +7,7 @@ import matplotlib.pyplot as plt
 import configparser
 from decimal import getcontext, Decimal
 from urllib.request import urlopen
-import ssl
 
-ssl._create_default_https_context = ssl._create_unverified_context
-getcontext().prec = 6
-#DO NOT DELETE
 
 # preload
 
@@ -192,7 +185,6 @@ class GlobalVar:
 
 def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
 
-
     """
     It function accept a string "api_type" and a dictionary "api_parameters", the "api_type" should be
     one from _API_TYPE The dictionary's key are the _parameters from vexdb.io/the_data and the value should
@@ -234,10 +226,10 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
                             for y in return_data:
                                 output.append(x[y])
                 return output
-#This is why I love Flynn's code
+
 
 def team_list():  # For testing
-    print(vexdb_json("teams", {"grade": "High School"},["number"]))
+    #print(vexdb_json("teams", {"grade": "High%20School"}, ["number"]))
     print(vexdb_json("matches", {"season":"Starstruck", "team":"8667A"}, ["sku"]))
 
 def scan_team_matches(name: object) -> object:  # TODO: temperory
@@ -1118,6 +1110,7 @@ def whatthecommit():
 def main():
     #print(vexdb_json("teams", {"grade": "High School"},["number"]))
 
+    #team_list()
     try:
         config = configparser.ConfigParser()
         config.read('config.ini')
