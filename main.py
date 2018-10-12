@@ -191,6 +191,8 @@ class GlobalVar:
     highestave = 0
     ccwmave = 0
 
+    response = ''
+
 
 def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
 
@@ -1110,7 +1112,12 @@ def getteam(sku):
 
     return output
 
-
+def whatthecommit():
+    r = urlopen('http://whatthecommit.com/index.txt')
+    string = r.read()
+    string = str(string).replace("b'", "")
+    string = str(string).replace("'", "")
+    GlobalVar.response = str(string).replace(repr('\n'), "")
 
 def main():
     #print(vexdb_json("teams", {"grade": "High School"},["number"]))
@@ -1183,6 +1190,8 @@ def main():
             # TODO(YIFEI):please check flynn
         elif mode == 0:
             print("Thanks for using it!")
+            whatthecommit()
+            print('To commit: ' +str(GlobalVar.response) + ' from http://whatthecommit.com')
             quit()
 
 if __name__ == '__main__':
