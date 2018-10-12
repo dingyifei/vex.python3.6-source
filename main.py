@@ -319,7 +319,9 @@ def excel_scan(teams: list, season: str, sku: str):
             sheet5.write(sheetline, 5, "Highest")
             sheet5.write(sheetline, 6, "Result")
             sheetline += 1
-            json_dict = vexdb_json("rankings", {"team": teamloop, "season": season, "sku": sku})
+            #json_dict = vexdb_json("rankings", {"team": teamloop, "season": season, "sku": sku})
+
+            json_dict = vexdb_json("rankings", {"team": teamloop, "season": season})
             output = []
 
             for r in json_dict["result"]:
@@ -349,22 +351,24 @@ def excel_scan(teams: list, season: str, sku: str):
                     sheet5.write(sheetline, 6, "Negative", STYLE_2)
 
                 sheetline += 1
+
                 json_dict = vexdb_json("matches", {"team": teamloop, "season": season})
+
                 output = []
                 loop = -10000
 
-                sheet5.write(sheetline, 0, "Sku")
-                sheet5.write(sheetline, 1, "Match")
-                sheet5.write(sheetline, 2, "Red1")
-                sheet5.write(sheetline, 3, "Red2")
-                sheet5.write(sheetline, 4, "Red3")
-                sheet5.write(sheetline, 5, "RedSit")
-                sheet5.write(sheetline, 6, "Blue1")
-                sheet5.write(sheetline, 7, "Blue2")
-                sheet5.write(sheetline, 8, "Blue3")
-                sheet5.write(sheetline, 9, "BlueSit")
-                sheet5.write(sheetline, 10, "RedSco")
-                sheet5.write(sheetline, 11, "BlueSco")
+            sheet5.write(sheetline, 0, "Sku")
+            sheet5.write(sheetline, 1, "Match")
+            sheet5.write(sheetline, 2, "Red1")
+            sheet5.write(sheetline, 3, "Red2")
+            sheet5.write(sheetline, 4, "Red3")
+            sheet5.write(sheetline, 5, "RedSit")
+            sheet5.write(sheetline, 6, "Blue1")
+            sheet5.write(sheetline, 7, "Blue2")
+            sheet5.write(sheetline, 8, "Blue3")
+            sheet5.write(sheetline, 9, "BlueSit")
+            sheet5.write(sheetline, 10, "RedSco")
+            sheet5.write(sheetline, 11, "BlueSco")
 
             for r in json_dict["result"]:
                 line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = ' \
