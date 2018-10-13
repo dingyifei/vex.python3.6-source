@@ -321,7 +321,7 @@ def excel_scan(teams: list, season: str, sku: str):
             sheetline += 1
             #json_dict = vexdb_json("rankings", {"team": teamloop, "season": season, "sku": sku})
 
-            json_dict = vexdb_json("rankings", {"team": teamloop, "season": season})
+            json_dict = vexdb_json("rankings", {"team": teamloop, "season": season, 'sku': sku})
             output = []
 
             for r in json_dict["result"]:
@@ -1148,8 +1148,12 @@ def main():
             if excel_mode == 1:
                 print("Mode = Scan Teams and Write to Excel")
                 #To Test
-                season = 'In%20The%20Zone'
-                sku = 'RE-VRC-17-3805'
+                season = input('i/t')
+                if season == 'i':
+                    season = 'In%20The%20Zone'
+                else:
+                    season = 'Turning%20Point'
+                sku = input('sku? blank = all in the [season]')
                 teams = ['224S','224X','363A','1846C','2495X','6627A','6627B','6627C','6627D','6627X','6671X','7259A','7259C','7259D','7582X','7582Y','9364A','9364C','9364D','12014A','12014B','29027A','35211C','76607A','98268A']
                 excel_scan(teams,season,sku)
             elif excel_mode == 2:
