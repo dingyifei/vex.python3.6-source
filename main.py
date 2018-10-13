@@ -427,9 +427,10 @@ def excel_scan(teams: list, season: str, sku: str):
                         sheet5.write(sheetline, 13, "Lose", STYLE_BLACK)
 
                 sheetline += 1
+                #TODO(YINGFENG):之后调成每个line颜色不一样，这样就不用占用额外行数了，或者换xlsx，xls有6w行限制
                 loop += 1
 
-                if loop > 2:
+                if loop > 2: #最近两场比赛
                     break
 
                 output.append(line)
