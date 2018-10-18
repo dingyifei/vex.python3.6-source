@@ -215,10 +215,10 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
         if _parameters != "" or _parameters is not None:
             json_dict = json.loads((urlopen("http://api.vexdb.io/v1/get_" + api_type + _parameters)).read())
             if json_dict["status"] == 0:
-                raise() # TODO: a exception
+                raise(IOError) # TODO: a exception
             else:
                 if json_dict["size"] == 5000:
-                    raise() # TODO: Another exception or use some trick to prevent 5000 limit
+                    raise(IOError) # TODO: Another exception or use some trick to prevent 5000 limit
                 else:
                     if return_data[0] == "full":
                         output = json_dict
@@ -430,7 +430,7 @@ def excel_scan(teams: list, season: str, sku: str):
                 #TODO(YINGFENG):之后调成每个line颜色不一样，这样就不用占用额外行数了，或者换xlsx，xls有6w行限制
                 loop += 1
 
-                if loop > 2: #最近两场比赛
+                if loop > 10: #最近10场比赛
                     break
 
                 output.append(line)
@@ -1149,13 +1149,14 @@ def main():
             if excel_mode == 1:
                 print("Mode = Scan Teams and Write to Excel")
                 #To Test
-                season = input('i/t')
-                if season == 'i':
+                season = input('(I)n The Zone / (T)urning Point\n')
+                if season.lower() == 'i':
                     season = 'In%20The%20Zone'
                 else:
                     season = 'Turning%20Point'
-                sku = input('sku? blank = all in the [season]')
+                sku = input('sku? blank = all in the [season]\n')
                 teams = ['224S','224X','363A','1846C','2495X','6627A','6627B','6627C','6627D','6627X','6671X','7259A','7259C','7259D','7582X','7582Y','9364A','9364C','9364D','12014A','12014B','29027A','35211C','76607A','98268A']
+                #TODO(YINGFENG):调用 get_teams
                 excel_scan(teams,season,sku)
             elif excel_mode == 2:
                 print("Mode = Write Team Matches [Don't use this]")
