@@ -33,14 +33,15 @@ sheet1.write(2, 1, time_now)
 sheet1.write(3, 1,
              "Because of there are no data for these teams: 1119S, 7386A, 8000X, 8000Z, 19771B, 30638A, 36632A, "
              "37073A, 60900A, 76921B, 99556A, 99691E, 99691H are not include in the sheet #Important Data")
-STYLE_1 = xlwt.easyxf('pattern: pattern solid, fore_colour red;''font: colour white, bold True;')
-STYLE_2 = xlwt.easyxf('pattern: pattern solid, fore_colour blue;''font: colour white, bold True;')
-STYLE_3 = xlwt.easyxf('pattern: pattern solid, fore_colour pink;''font: colour white, bold True;')
-STYLE_4 = xlwt.easyxf('pattern: pattern solid, fore_colour pale_blue;''font: colour white, bold True;')
+
+STYLE_RED = xlwt.easyxf('pattern: pattern solid, fore_colour red;''font: colour white, bold True;')
+STYLE_BLUE = xlwt.easyxf('pattern: pattern solid, fore_colour blue;''font: colour white, bold True;')
+STYLE_LIGHTER_RED = xlwt.easyxf('pattern: pattern solid, fore_colour pink;''font: colour white, bold True;')
+STYLE_LIGHTER_BLUE = xlwt.easyxf('pattern: pattern solid, fore_colour pale_blue;''font: colour white, bold True;')
 STYLE_RED = xlwt.easyxf('font: colour red, bold True;')
 STYLE_BLUE = xlwt.easyxf('font: colour blue, bold True;')
 STYLE_BLACK = xlwt.easyxf('pattern: pattern solid, fore_colour black;''font: colour white, bold True;')
-STYLE_B = xlwt.easyxf('font: colour black, bold True;')
+STYLE_BOLD = xlwt.easyxf('font: colour black, bold True;')
 STYLE_70 = xlwt.easyxf('pattern: pattern solid, fore_colour red;''font: colour white, bold True;')
 STYLE_50 = xlwt.easyxf('pattern: pattern solid, fore_colour light_orange;''font: colour white, bold True;')
 STYLE_30 = xlwt.easyxf('pattern: pattern solid, fore_colour pale_blue;''font: colour white, bold True;')
@@ -273,9 +274,9 @@ def excel_scan_teams(teams: list, season: str):  # 201
                 datarank = '{}'.format(r["rank"])
                 datamaxscore = '{}'.format(r["max_score"])
                 if int(datawins) > int(datalosses):
-                    sheet2.write(sheet_line, 6, "Positive", STYLE_1)
+                    sheet2.write(sheet_line, 6, "Positive", STYLE_RED)
                 elif int(datawins) < int(datalosses):
-                    sheet2.write(sheet_line, 6, "Negative", STYLE_2)
+                    sheet2.write(sheet_line, 6, "Negative", STYLE_BLUE)
                 output.append(line)
                 sheet2.write(sheet_line, 0, datateam)
                 sheet2.write(sheet_line, 1, datawins)
@@ -346,9 +347,9 @@ def excel_scan(teams: list, season: str, sku: str):
                 sheet5.write(sheetline, 5, datamaxscore)
 
                 if int(datawins) > int(datalosses):
-                    sheet5.write(sheetline, 6, "Positive", STYLE_1)
+                    sheet5.write(sheetline, 6, "Positive", STYLE_RED)
                 elif int(datawins) < int(datalosses):
-                    sheet5.write(sheetline, 6, "Negative", STYLE_2)
+                    sheet5.write(sheetline, 6, "Negative", STYLE_BLUE)
 
                 sheetline += 1
 
@@ -403,26 +404,26 @@ def excel_scan(teams: list, season: str, sku: str):
                 sheet5.write(sheetline, 9, databluesit, STYLE_BLUE)
                 sheet5.write(sheetline, 10, dataredsc, STYLE_RED)
                 sheet5.write(sheetline, 11, databluesc, STYLE_BLUE)
-                sheet5.write(sheetline, 12, datateam + " =", STYLE_B)
+                sheet5.write(sheetline, 12, datateam + " =", STYLE_BOLD)
 
                 if int(dataredsc) > int(databluesc):
-                    sheet5.write(sheetline, 14, "Red", STYLE_1)
+                    sheet5.write(sheetline, 14, "Red", STYLE_RED)
                 elif int(dataredsc) < int(databluesc):
-                    sheet5.write(sheetline, 14, "Blue", STYLE_2)
+                    sheet5.write(sheetline, 14, "Blue", STYLE_BLUE)
 
                 if int(dataredsc) + 20 < int(databluesc):
-                    sheet5.write(sheetline, 14, "Blue Easy", STYLE_4)
+                    sheet5.write(sheetline, 14, "Blue Easy", STYLE_LIGHTER_BLUE)
                 elif int(dataredsc) - 20 > int(databluesc):
-                    sheet5.write(sheetline, 14, "Red Easy", STYLE_3)
+                    sheet5.write(sheetline, 14, "Red Easy", STYLE_LIGHTER_RED)
 
                 if datared1 == teamloop or datared2 == teamloop or datared3 == teamloop:
                     if int(dataredsc) > int(databluesc):
-                        sheet5.write(sheetline, 13, "Win", STYLE_B)
+                        sheet5.write(sheetline, 13, "Win", STYLE_BOLD)
                     else:
                         sheet5.write(sheetline, 13, "Lose", STYLE_BLACK)
                 elif datablue1 == teamloop or datablue2 == teamloop or datablue3 == teamloop:
                     if int(dataredsc) < int(databluesc):
-                        sheet5.write(sheetline, 13, "Win", STYLE_B)
+                        sheet5.write(sheetline, 13, "Win", STYLE_BOLD)
                     else:
                         sheet5.write(sheetline, 13, "Lose", STYLE_BLACK)
 
@@ -1189,6 +1190,7 @@ def main():
         elif mode == 0:
             print("Thanks for using it!")
             quit()
+
 
 if __name__ == '__main__':
         main()
