@@ -1056,10 +1056,16 @@ def answer():
     input("Press Any Key to Continue\n")
 
 def writeconfig():
+
     config = configparser.ConfigParser()
     team = input("CONFIG: team?\n")
     season = input("CONFIG: season?\n")
-    config['DEFAULT'] = {'Team': team, 'Season': season}
+    country = input("CONFIG: country?\n")
+    vex_program = input("CONFIG: program?\n")
+    grade = input("CONFIG: division?\n")
+    #TODO: not finished yet
+
+    config['DEFAULT'] = {'Team': team, 'Season': season, 'Country': country, 'Program': vex_program, 'Grade': grade}
     #TODO(YINGFENG): need to repeat asking for presets
     config['COMPETITION'] = {'preset1': '', 'preset2': '', 'preset3': '', 'preset4': '', 'preset5': '', 'preset6': '',
                              'preset7': '', 'preset8': '', 'preset9': ''}
@@ -1072,23 +1078,29 @@ def readconfig(): #TODO(YINGFENG): 还有那些preset
     config.sections()
     team = config.get('DEFAULT', 'team')
     season = config.get('DEFAULT', 'season')
+    #TODO: finish after writeconfig
     return season, team
 
 def getteam(sku):
-    '''http://api.vexdb.io/v1/get_teams?sku=RE-VRC-18-5276'''
+    #TODO: fix after finish readconfig
+    try:
+        _json_dict = vexdb_json("teams", {"sku": sku, "program": "VRC", "limit_number": "4999", "country": country})
 
-    '''
-    _json_dict = vexdb_json("teams", {"sku": "RE-VRC-18-5276"})
-    output = []
-    for r in _json_dict["result"]:
-        line = '{}: '.format(r["number"])
-        output.append(line)
-    return output
-    '''
-    #error, connection issue?
+        output = []
+        for r in _json_dict["result"]:
+            line = '{}: '.format(r["number"])
+            output.append(line)
+        return output
 
-    #old way
-    r = urlopen('http://api.vexdb.io/v1/get_teams?sku=RE-VRC-18-5276')
+    except OSError:
+        #shouldn't exist this error anymore
+        print("Overflow, Please input a match sku to limit it.")
+
+
+
+'''
+    sku = input("SKU? Format: RE-VRC-xx-xxxx")
+    r = urlopen('http://api.vexdb.io/v1/get_teams?sku=' + sku)
     # you can change the url
     text = r.read()
     pprint.pprint(json.loads(text))
@@ -1104,9 +1116,9 @@ def getteam(sku):
         # output.append(line)
     pprint.pprint(oldline)
     output.append(oldline)
-    #TODO(YIFEI):please check flynn
 
-    return output
+    return output'''
+
 
 def main():
     #print(vexdb_json("teams", {"grade": "High School"},["number"]))
