@@ -6,3 +6,4 @@ venv
 .idea
 graph
 *.xls
+.DS_Store
