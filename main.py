@@ -2,31 +2,37 @@ import json
 import os
 import pprint
 import time
+import openpyxl
 import xlwt
 import matplotlib.pyplot as plt
-import configparser
 from decimal import getcontext, Decimal
 from urllib.request import urlopen
 import ssl
+
 ssl._create_default_http_context = ssl._create_unverified_context
 getcontext().prec = 6
 
 # preload
 
-#getcontext().prec = 6
+# getcontext().prec = 6
 
-book = xlwt.Workbook(encoding="utf-8")
-sheet1 = book.add_sheet("#Cover", cell_overwrite_ok=True)
-sheet2 = book.add_sheet("#Matches", cell_overwrite_ok=True)
-sheet3 = book.add_sheet("#Important Data", cell_overwrite_ok=True)
-sheet4 = book.add_sheet("#Blank", cell_overwrite_ok=True)
-sheet5 = book.add_sheet("#For World", cell_overwrite_ok=True)
-sheet6 = book.add_sheet("#What We Need", cell_overwrite_ok=True)
-sheet7 = book.add_sheet("#Team Spot 1", cell_overwrite_ok=True)
-sheet8 = book.add_sheet("#Team Spot 2", cell_overwrite_ok=True)
-sheet9 = book.add_sheet("#Team Spot 3", cell_overwrite_ok=True)
-sheet10 = book.add_sheet("#Team Spot 4", cell_overwrite_ok=True)
-sheet11 = book.add_sheet("#Bugged Teams", cell_overwrite_ok=True)
+book = openpyxl.Workbook()
+
+sheets = list
+for x in range(0,10):
+     sheets.append(self, book.worksheets[x])
+
+sheet1 = book.worksheets[0]("#Cover", cell_overwrite_ok=True)
+sheet2 = book.worksheets[1]("#Matches", cell_overwrite_ok=True)
+sheet3 = book.worksheets[2]("#Important Data", cell_overwrite_ok=True)
+sheet4 = book.worksheets("#Blank", cell_overwrite_ok=True)
+sheet5 = book.worksheets("#For World", cell_overwrite_ok=True)
+sheet6 = book.worksheets("#What We Need", cell_overwrite_ok=True)
+sheet7 = book.worksheets("#Team Spot 1", cell_overwrite_ok=True)
+sheet8 = book.worksheets("#Team Spot 2", cell_overwrite_ok=True)
+sheet9 = book.worksheets("#Team Spot 3", cell_overwrite_ok=True)
+sheet10 = book.worksheets("#Team Spot 4", cell_overwrite_ok=True)
+sheet11 = book.worksheets("#Bugged Teams", cell_overwrite_ok=True)
 
 time_now = "Last Update:" + time.strftime("%c")
 sheet1.write(2, 1, time_now)
@@ -66,7 +72,6 @@ class GlobalVar:
     teamb1 = ""
     teamb2 = ""
     teamb3 = ""
-
 
     # only used in teamskill and timeisout
     teamname = ""
@@ -186,8 +191,7 @@ class GlobalVar:
     response = ''
 
 
-def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
-
+def vexdb_json(api_type: str, api_parameters: dict, return_data=None):
     """
     It function accept a string "api_type" and a dictionary "api_parameters", the "api_type" should be
     one from _API_TYPE The dictionary's key are the _parameters from vexdb.io/the_data and the value should
@@ -216,15 +220,15 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
         if _parameters != "" or _parameters is not None:
             json_dict = json.loads((urlopen("http://api.vexdb.io/v1/get_" + api_type + _parameters)).read())
             if json_dict["status"] == 0:
-                raise(IOError) # TODO: a exception
+                raise (IOError)  # TODO: a exception
             else:
                 if json_dict["size"] == 5000:
-                    raise(IOError) # TODO: Another exception or use some trick to prevent 5000 limit
+                    raise (IOError)  # TODO: Another exception or use some trick to prevent 5000 limit
                 else:
                     if return_data[0] == "full":
-                        output = json_dict
-                    if return_data[0] != "full":
-                        output = []
+                        output:dict = json_dict
+                    if return_data[0] != "full": # TODO(YIFEI): They should be both dict
+                        output:list = []
                         for x in json_dict["result"]:
                             for y in return_data:
                                 output.append(x[y])
@@ -232,8 +236,9 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
 
 
 def team_list():  # For testing
-    #print(vexdb_json("teams", {"grade": "High%20School"}, ["number"]))
-    print(vexdb_json("matches", {"season":"Starstruck", "team":"8667A"}, ["sku"]))
+    print(vexdb_json("teams", {"grade": "High%20School"}, ["number"]))
+    print(vexdb_json("matches", {"season": "Starstruck", "team": "8667A"}, ["sku"]))
+
 
 def scan_team_matches(name: object) -> object:  # TODO: temperory
     _json_dict = vexdb_json("matches", {"season": "Turning%20Point", "team": name})
@@ -245,7 +250,9 @@ def scan_team_matches(name: object) -> object:  # TODO: temperory
                                    r["blue1"], r["blue2"], r["blue3"], r["bluesit"], r["redscore"], r["bluescore"])
         output.append(line)
     return output
-#这是一个应急功能 着急的时候没人care图和excel
+
+
+# 这是一个应急功能 着急的时候没人care图和excel
 
 def excel_scan_teams(teams: list, season: str):  # 201
 
@@ -302,7 +309,8 @@ def excel_scan_teams(teams: list, season: str):  # 201
             print('\n reset and xls saved!')
             main()
 
-#TODO(BOTH) 把这个修好变成什么时候都能用就ok 从 excel_scan_world 更名为 excel_scan
+
+# 从 excel_scan_world 更名为 excel_scan
 def excel_scan(teams: list, season: str, sku: str):
     number = 0
     sheetline = 0
@@ -320,7 +328,7 @@ def excel_scan(teams: list, season: str, sku: str):
             sheet5.write(sheetline, 5, "Highest")
             sheet5.write(sheetline, 6, "Result")
             sheetline += 1
-            #json_dict = vexdb_json("rankings", {"team": teamloop, "season": season, "sku": sku})
+            # json_dict = vexdb_json("rankings", {"team": teamloop, "season": season, "sku": sku})
 
             json_dict = vexdb_json("rankings", {"team": teamloop, "season": season, 'sku': sku})
             output = []
@@ -428,10 +436,10 @@ def excel_scan(teams: list, season: str, sku: str):
                         sheet5.write(sheetline, 13, "Lose", STYLE_BLACK)
 
                 sheetline += 1
-                #TODO(YINGFENG):之后调成每个line颜色不一样，这样就不用占用额外行数了，或者换xlsx，xls有6w行限制
+                # TODO(YINGFENG):之后调成每个line颜色不一样，这样就不用占用额外行数了，或者换xlsx，xls有6w行限制
                 loop += 1
 
-                if loop > 10: #最近10场比赛
+                if loop > 10:  # 最近10场比赛
                     break
 
                 output.append(line)
@@ -468,7 +476,7 @@ def excel_scan(teams: list, season: str, sku: str):
 
 # Need to test when competition start
 
-def excel_team_matches(name, season):  # TODO(YIFEI): Why excel? Value name change.
+def excel_team_matches(name, season):  # TODO(YIFEI): Why excel?
 
     _json_dict = vexdb_json("matches", {"team": name, "season": season})
     output = []
@@ -482,7 +490,7 @@ def excel_team_matches(name, season):  # TODO(YIFEI): Why excel? Value name chan
     return output
 
 
-def search_team_current_season(name, season):  # TODO(YIFEI): Value name change.
+def search_team_current_season(name, season):  # TODO(YIFEI): name change.
 
     json_dict = vexdb_json("rankings", {"team": name, "season": season})
     output = []
@@ -494,11 +502,10 @@ def search_team_current_season(name, season):  # TODO(YIFEI): Value name change.
 
 
 def get_all_data(name, season):
-
     # print("This will show the recent three matches.")
     json_dict = vexdb_json("ranking", {"team": name, "season": season})
     ranking_result = []
-    for r in json_dict["result"]:
+    for r in json_dict["F"]:
         line = "Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}" \
             .format(r["team"], r["wins"], r["losses"], r["ap"], r["rank"], r["max_score"])
         ranking_result.append(line)
@@ -522,16 +529,13 @@ def time_is_out(red_teams: list, blue_teams: list, season: str):  # TODO: NEED M
 
     # GlobalVar.inputmode = str(input("Type in the preset value or 6 teams separate by ,\n"))
 
-    for red_team in red_teams:  #TODO(YIFEI): Make it work
+    for red_team in red_teams:  # TODO(YIFEI): Make it work
         if red_team != "":
-            a_dict =  team_skill(red_team, season)
-
+            a_dict = team_skill(red_team, season)
 
     for blue_team in blue_teams:
         if blue_team != "":
             b_dict = team_skill(blue_team, season)
-
-
 
     if str(GlobalVar.teamr1) != "":
         GlobalVar.teamname = GlobalVar.teamr1
@@ -550,40 +554,6 @@ def time_is_out(red_teams: list, blue_teams: list, season: str):  # TODO: NEED M
     else:
         print("Team Red 1 is blank.")
 
-    if str(GlobalVar.teamr2) != "":
-        GlobalVar.teamname = GlobalVar.teamr2
-        team_skill()
-        GlobalVar.teamr2skillout = GlobalVar.skillave
-        GlobalVar.teamr2wins = GlobalVar.winsave
-        GlobalVar.teamr2ap = GlobalVar.apave
-        GlobalVar.teamr2ranking = GlobalVar.rankave
-        GlobalVar.teamr2highest = GlobalVar.highestave
-        GlobalVar.teamr2ccwm = GlobalVar.ccwmave
-        GlobalVar.teamr2dpr = GlobalVar.dprave
-        GlobalVar.teamr2opr = GlobalVar.oprave
-        GlobalVar.teamr2currentranking = GlobalVar.currentranking
-        GlobalVar.teamr2currentwins = GlobalVar.currentwins
-        GlobalVar.teamr2currentlosses = GlobalVar.currentlosses
-    else:
-        print("Team Red 2 is blank.")
-
-    if str(GlobalVar.teamr3) != "":
-        GlobalVar.teamname = GlobalVar.teamr3
-        team_skill()
-        GlobalVar.teamr3skillout = GlobalVar.skillave
-        GlobalVar.teamr3wins = GlobalVar.winsave
-        GlobalVar.teamr3ap = GlobalVar.apave
-        GlobalVar.teamr3ranking = GlobalVar.rankave
-        GlobalVar.teamr3highest = GlobalVar.highestave
-        GlobalVar.teamr3ccwm = GlobalVar.ccwmave
-        GlobalVar.teamr3dpr = GlobalVar.dprave
-        GlobalVar.teamr3opr = GlobalVar.oprave
-        GlobalVar.teamr3currentranking = GlobalVar.currentranking
-        GlobalVar.teamr3currentwins = GlobalVar.currentwins
-        GlobalVar.teamr3currentlosses = GlobalVar.currentlosses
-    else:
-        print("Team Red 3 is blank.")
-
     if str(GlobalVar.teamb1) != "":
         GlobalVar.teamname = GlobalVar.teamb1
         team_skill()
@@ -601,47 +571,12 @@ def time_is_out(red_teams: list, blue_teams: list, season: str):  # TODO: NEED M
     else:
         print("Team Blue 1 is blank.")
 
-    if str(GlobalVar.teamb2) != "":
-        GlobalVar.teamname = GlobalVar.teamb2
-        team_skill()
-        GlobalVar.teamb2skillout = GlobalVar.skillave
-        GlobalVar.teamb2wins = GlobalVar.winsave
-        GlobalVar.teamb2ap = GlobalVar.apave
-        GlobalVar.teamb2ranking = GlobalVar.rankave
-        GlobalVar.teamb2highest = GlobalVar.highestave
-        GlobalVar.teamb2ccwm = GlobalVar.ccwmave
-        GlobalVar.teamb2dpr = GlobalVar.dprave
-        GlobalVar.teamb2opr = GlobalVar.oprave
-        GlobalVar.teamb2currentranking = GlobalVar.currentranking
-        GlobalVar.teamb2currentwins = GlobalVar.currentwins
-        GlobalVar.teamb2currentlosses = GlobalVar.currentlosses
-    else:
-        print("Team Blue 2 is blank.")
-
-    if str(GlobalVar.teamb3) != "":
-        GlobalVar.teamname = GlobalVar.teamb3
-        team_skill()
-        GlobalVar.teamb3skillout = GlobalVar.skillave
-        GlobalVar.teamr3wins = GlobalVar.winsave
-        GlobalVar.teamb3ap = GlobalVar.apave
-        GlobalVar.teamb3ranking = GlobalVar.rankave
-        GlobalVar.teamb3highest = GlobalVar.highestave
-        GlobalVar.teamb3ccwm = GlobalVar.ccwmave
-        GlobalVar.teamb3dpr = GlobalVar.dprave
-        GlobalVar.teamb3opr = GlobalVar.oprave
-        GlobalVar.teamb3currentranking = GlobalVar.currentranking
-        GlobalVar.teamb3currentwins = GlobalVar.currentwins
-        GlobalVar.teamb3currentlosses = GlobalVar.currentlosses
-    else:
-        print("Team Blue 3 is blank.")
-
     graphbubble()  # pass value use arg instead of global
 
     return None
 
 
 def team_skill(team, season):
-
     attempts_total = 0
     skill_total = 0
     skill_ave = 0
@@ -653,58 +588,32 @@ def team_skill(team, season):
         skill_total += x
     if attempts_total != 0:
         skill_ave = skill_total / attempts_total
-    return(skill_ave)
+    return (skill_ave)
 
 
 def team_sent(team, season):
-
-    wins = vexdb_json("rankings", {"team" :team, "season": season}, ["wins"])
+    wins = vexdb_json("rankings", {"team": team, "season": season}, ["wins"])
     count = len(wins)
     for x in wins:
         if str(x) == "":
             count -= 1
-    return(sum(wins) / count)
-        # count = 0
-        # global_var.winsave = 0
-        # global_var.teamwins = 0
-        # global_var.winstotal = 0
-        # from urllib.request import urlopen
-        # r = urlopen('http://api.vexdb.io/v1/get_rankings?team=' + global_var.teamsent + '&season=Turning%20Point')
-        #
-        # text = r.read()
-        #
-        # json_dict = json.loads(text)
-        # for r in json_dict["result"]:
-        #     line = '{}'.format(r["wins"])
-        #     global_var.teamwins = '{}'.format(r["wins"])
-        #     count += 1
-        #     global_var.winstotal = global_var.teamwins + global_var.teamwins
-        #
-        #     if global_var.teamwins == "" or global_var.teamwins == "":
-        #         print("break cuz blank")
-        #         count -= 1
-        #         global_var.winsave = float(global_var.winstotal) / int(count)
-        #         teamap()
-        #
-        #     global_var.winsave = float(global_var.winstotal) / int(count)
-        #
-        # teamcurrent()
+    return (sum(wins) / count)
 
 
 def team_current(team, season, sku):  # can be part of teamsent()
 
-    for r in vexdb_json("rankings", {"season": season, "team": team, "sku": sku}): #TODO: No idea what it does, maybe only get the last part
+    for r in vexdb_json("rankings", {"season": season, "team": team, "sku": sku}):
+        # TODO: No idea what it does, maybe only get the last part, 100% not working
         current_ranking = '{}'.format(r["rank"])
         current_wins = '{}'.format(r["wins"])
         current_losses = '{}'.format(r["losses"])
-    return(current_ranking, current_wins, current_losses)
+    return (current_ranking, current_wins, current_losses)
 
 
-def teamap(team,season):
-
+def teamap(team, season):
     aptotal = 0
     count = 0
-    for r in vexdb_json("rankings", {"team":team, "season":season}):
+    for r in vexdb_json("rankings", {"team": team, "season": season}):
         teammap = '{}'.format(r["ap"])
         count += 1
         if int(teammap) > 25:
@@ -716,7 +625,6 @@ def teamap(team,season):
         aptotal += int(teammap)
         GlobalVar.apave = int(aptotal) / int(count)
         if teammap == "" or teammap == 0:
-            print("break cuz blank")
             count -= 1
             teamranking()
     teamranking()
@@ -743,7 +651,6 @@ def teamranking(team, season):
 
 
 def team_highest(team, season):
-
     highesttotal = 0
     GlobalVar.highestave = 0
     count = 0
@@ -764,10 +671,9 @@ def team_highest(team, season):
 
 
 def teampr(team, season):
-
     GlobalVar.oprtotal = 0
     dprtotal = 0
-    json_dict = vexdb_json("rankings", {"team": team, "season": season})  #teamsent
+    json_dict = vexdb_json("rankings", {"team": team, "season": season})  # teamsent
     count = 0
     for r in json_dict["result"]:
         teamopr = '{}'.format(r["opr"])
@@ -789,10 +695,9 @@ def teampr(team, season):
 
 
 def teamccwm(team, season):
-
     ccwmtotal = 0
     GlobalVar.ccwmave = 0
-    json_dict = vexdb_json("rankings", {"team":team, "season": season}) # teamsent
+    json_dict = vexdb_json("rankings", {"team": team, "season": season})  # teamsent
     count = 0
     for r in json_dict["result"]:
         teamccwm = '{}'.format(r["ccwm"])
@@ -803,7 +708,7 @@ def teamccwm(team, season):
             print("break cuz blank")
             '''同上'''
             count -= 1
-            #这里手残 应该是1 写成18了
+            # 这里手残 应该是1 写成18了
             break
 
 
@@ -1003,17 +908,17 @@ def graphbubble(file_name: str):  # it should be part of "timeisout"
     xaxis = float(xmax)
     xmiddle = (float(xaxis) / 2)
     # Add titles (main and on axis)
-    try: # TODO(YIFEI): It should raise error instead, remove without notice is BAD, also this try sucks
+    try:  # TODO(YIFEI): It should raise error instead, remove without notice is BAD, also this try sucks
         os.remove("graph/" + file_name + ".png")
         print("Previous deleted.")
-    except OSError:
+    except IOError:
         print("something is not right")
         pass
     plt.xlabel("Skill / [Defensive]")
     plt.ylabel("AP / [Offensive]")
     plt.title(
         "Red: " + GlobalVar.teamr1 + " " + GlobalVar.teamr2 + " " + GlobalVar.teamr3 +
-        " Blue: " + GlobalVar.teamb1 + " " + GlobalVar.teamb2 + " " + GlobalVar.teamb3,loc="left")
+        " Blue: " + GlobalVar.teamb1 + " " + GlobalVar.teamb2 + " " + GlobalVar.teamb3, loc="left")
     plt.text(xmiddle, -0.02,
              "Team #, X: Skill, Y: AP, Z: Highest Score\n [Team #], X: Defensive Pts Y: Offensive Pts Z: Contribution",
              ha='center', color='white', bbox=dict(facecolor='darkslateblue', alpha=0.5))
@@ -1036,120 +941,22 @@ def graphbubble(file_name: str):  # it should be part of "timeisout"
     plt.show()
 
 
-def answer():
 
-    teamrexist = 0
-    teambexist = 0
-
-    if GlobalVar.teamr1skillout != 0:
-        teamrexist += 1
-    if GlobalVar.teamr2skillout != 0:
-        teamrexist += 1
-    if GlobalVar.teamr3skillout != 0:
-        teamrexist += 1
-    if GlobalVar.teamb1skillout != 0:
-        teambexist += 1
-    if GlobalVar.teamb2skillout != 0:
-        teambexist += 1
-    if GlobalVar.teamb3skillout != 0:
-        teambexist += 1
-    input("Press Any Key to Continue\n")
-
-def writeconfig():
-
-    config = configparser.ConfigParser()
-    team = input("CONFIG: team?\n")
-    season = input("CONFIG: season?\n")
-    country = input("CONFIG: country?\n")
-    vex_program = input("CONFIG: program?\n")
-    grade = input("CONFIG: division?\n")
-    #TODO: not finished yet
-
-    config['DEFAULT'] = {'Team': team, 'Season': season, 'Country': country, 'Program': vex_program, 'Grade': grade}
-    #TODO(YINGFENG): need to repeat asking for presets
-    config['COMPETITION'] = {'preset1': '', 'preset2': '', 'preset3': '', 'preset4': '', 'preset5': '', 'preset6': '',
-                             'preset7': '', 'preset8': '', 'preset9': ''}
-    with open('config.ini', 'w') as configfile:
-        config.write(configfile)
-
-def readconfig(): #TODO(YINGFENG): 还有那些preset
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-    config.sections()
-    team = config.get('DEFAULT', 'team')
-    season = config.get('DEFAULT', 'season')
-    #TODO: finish after writeconfig
-    return season, team
-
-def getteam(sku):
-    #TODO: fix after finish readconfig
-    try:
-        _json_dict = vexdb_json("teams", {"sku": sku, "program": "VRC", "limit_number": "4999", "country": country})
-
-        output = []
-        for r in _json_dict["result"]:
-            line = '{}: '.format(r["number"])
-            output.append(line)
-        return output
-
-    except OSError:
-        #shouldn't exist this error anymore
-        print("Overflow, Please input a match sku to limit it.")
-
-
-
-'''
-    sku = input("SKU? Format: RE-VRC-xx-xxxx")
-    r = urlopen('http://api.vexdb.io/v1/get_teams?sku=' + sku)
-    # you can change the url
-    text = r.read()
-    pprint.pprint(json.loads(text))
-
-    json_dict = json.loads(text)
-
+def getteam(sku, country):
+    # TODO: fix after finish readconfig
+    _json_dict = vexdb_json("teams", {"sku": sku, "program": "VRC", "limit_number": "4999", "country": country})
     output = []
-    oldline = ''
-    for r in json_dict["result"]:
-        line = "{},".format(r["number"])
-        oldline = oldline + line
-
-        # output.append(line)
-    pprint.pprint(oldline)
-    output.append(oldline)
-
-    return output'''
+    for r in _json_dict["result"]:
+        line = '{}: '.format(r["number"])
+        output.append(line)
+    return output
 
 
 def main():
-    #print(vexdb_json("teams", {"grade": "High School"},["number"]))
+    # team_list()
 
-    team_list()
-    try:
-        config = configparser.ConfigParser()
-        config.read('config.ini')
-        config.sections()
-        team = config.get('DEFAULT', 'team')
-        season = config.get('DEFAULT', 'season')
-
-    except: #no error
-        print("Cannot find config.ini, so you are creating one.")
-        writeconfig()
-        config = configparser.ConfigParser()
-        config.read('config.ini')
-        config.sections()
-        team = config.get('DEFAULT', 'team')
-        season = config.get('DEFAULT', 'season')
-
-    #TODO(YINGFENG): 传参弄好就可以把这段删了 用 readconfig()
     while True:
-        #with open('config.ini', 'r') as configfile:
-
-        #readconfig() #too bad
-        #TODO(YINGFENG): how to 传参 .jpg
-        print(team)
-        print(season)
-
-        mode = int(input(  #TODO(YIFEI): int??? exception #TODO(YINGFENG): This is a mass now
+        mode = int(input(  # TODO(YIFEI): int??? exception #TODO(YINGFENG): This is a mass now
             "Mode \n 1.Scan Team Matches \n 2.!Excel Functions \n 3.Search Team Season History \n 4.Graph \n 8.Get Important Info For a Team \n 9.Change Log\n 5.Config\n 6.Team List\n 0.Quit \n"))
         if mode == 1:
             print("Mode = Scan Team Matches")
@@ -1161,16 +968,18 @@ def main():
             excel_mode = int(input())
             if excel_mode == 1:
                 print("Mode = Scan Teams and Write to Excel")
-                #To Test
+                # To Test
                 season = input('(I)n The Zone / (T)urning Point\n')
                 if season.lower() == 'i':
                     season = 'In%20The%20Zone'
                 else:
                     season = 'Turning%20Point'
                 sku = input('sku? blank = all in the [season]\n')
-                teams = ['224S','224X','363A','1846C','2495X','6627A','6627B','6627C','6627D','6627X','6671X','7259A','7259C','7259D','7582X','7582Y','9364A','9364C','9364D','12014A','12014B','29027A','35211C','76607A','98268A']
-                #TODO(YINGFENG):调用 get_teams
-                excel_scan(teams,season,sku)
+                teams = ['224S', '224X', '363A', '1846C', '2495X', '6627A', '6627B', '6627C', '6627D', '6627X', '6671X',
+                         '7259A', '7259C', '7259D', '7582X', '7582Y', '9364A', '9364C', '9364D', '12014A', '12014B',
+                         '29027A', '35211C', '76607A', '98268A']
+                # TODO(YINGFENG):调用 get_teams
+                excel_scan(teams, season, sku)
             elif excel_mode == 2:
                 print("Mode = Write Team Matches [Don't use this]")
                 input1 = team
@@ -1192,10 +1001,8 @@ def main():
             a = get_all_data(input1, input2)
             pprint.pprint(a[0])
             pprint.pprint(a[1])
-        elif mode == 5:
-            writeconfig()
         elif mode == 6:
-            #getteam()
+            # getteam()
             sku = input("Match sku")
             print(getteam(sku))
             # TODO(YIFEI):please check flynn
@@ -1205,5 +1012,4 @@ def main():
 
 
 if __name__ == '__main__':
-        main()
-
+    main()
