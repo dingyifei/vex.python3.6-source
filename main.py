@@ -18,15 +18,8 @@ getcontext().prec = 6
 book = xlwt.Workbook(encoding="utf-8")
 sheet1 = book.add_sheet("#Cover", cell_overwrite_ok=True)
 sheet2 = book.add_sheet("#Matches", cell_overwrite_ok=True)
-sheet3 = book.add_sheet("#Important Data", cell_overwrite_ok=True)
-sheet4 = book.add_sheet("#Blank", cell_overwrite_ok=True)
-sheet5 = book.add_sheet("#For World", cell_overwrite_ok=True)
-sheet6 = book.add_sheet("#What We Need", cell_overwrite_ok=True)
-sheet7 = book.add_sheet("#Team Spot 1", cell_overwrite_ok=True)
-sheet8 = book.add_sheet("#Team Spot 2", cell_overwrite_ok=True)
-sheet9 = book.add_sheet("#Team Spot 3", cell_overwrite_ok=True)
-sheet10 = book.add_sheet("#Team Spot 4", cell_overwrite_ok=True)
-sheet11 = book.add_sheet("#Bugged Teams", cell_overwrite_ok=True)
+sheet3 = book.add_sheet("#Output", cell_overwrite_ok=True)
+
 
 time_now = "Last Update:" + time.strftime("%c")
 sheet1.write(2, 1, time_now)
@@ -331,13 +324,13 @@ def excel_scan(teams: list, season: str, sku: str):
             teamloop = teams[number]
             print(teamloop)
             number += 1
-            sheet5.write(sheetline, 0, "Team")
-            sheet5.write(sheetline, 1, "Wins")
-            sheet5.write(sheetline, 2, "Losses")
-            sheet5.write(sheetline, 3, "AP")
-            sheet5.write(sheetline, 4, "Ranking")
-            sheet5.write(sheetline, 5, "Highest")
-            sheet5.write(sheetline, 6, "Result")
+            sheet3.write(sheetline, 0, "Team")
+            sheet3.write(sheetline, 1, "Wins")
+            sheet3.write(sheetline, 2, "Losses")
+            sheet3.write(sheetline, 3, "AP")
+            sheet3.write(sheetline, 4, "Ranking")
+            sheet3.write(sheetline, 5, "Highest")
+            sheet3.write(sheetline, 6, "Result")
             sheetline += 1
             #json_dict = vexdb_json("rankings", {"team": teamloop, "season": season, "sku": sku})
 
@@ -358,17 +351,17 @@ def excel_scan(teams: list, season: str, sku: str):
 
                 # output.append(line) #Remove because I cant see the use of this
 
-                sheet5.write(sheetline, 0, "#" + datateam)
-                sheet5.write(sheetline, 1, datawins)
-                sheet5.write(sheetline, 2, datalosses)
-                sheet5.write(sheetline, 3, dataap)
-                sheet5.write(sheetline, 4, datarank)
-                sheet5.write(sheetline, 5, datamaxscore)
+                sheet3.write(sheetline, 0, "#" + datateam)
+                sheet3.write(sheetline, 1, datawins)
+                sheet3.write(sheetline, 2, datalosses)
+                sheet3.write(sheetline, 3, dataap)
+                sheet3.write(sheetline, 4, datarank)
+                sheet3.write(sheetline, 5, datamaxscore)
 
                 if int(datawins) > int(datalosses):
-                    sheet5.write(sheetline, 6, "Positive", STYLE_RED)
+                    sheet3.write(sheetline, 6, "Positive", STYLE_RED)
                 elif int(datawins) < int(datalosses):
-                    sheet5.write(sheetline, 6, "Negative", STYLE_BLUE)
+                    sheet3.write(sheetline, 6, "Negative", STYLE_BLUE)
 
                 sheetline += 1
 
@@ -377,18 +370,18 @@ def excel_scan(teams: list, season: str, sku: str):
                 output = []
                 loop = -10000
 
-            sheet5.write(sheetline, 0, "Sku")
-            sheet5.write(sheetline, 1, "Match")
-            sheet5.write(sheetline, 2, "Red1")
-            sheet5.write(sheetline, 3, "Red2")
-            sheet5.write(sheetline, 4, "Red3")
-            sheet5.write(sheetline, 5, "RedSit")
-            sheet5.write(sheetline, 6, "Blue1")
-            sheet5.write(sheetline, 7, "Blue2")
-            sheet5.write(sheetline, 8, "Blue3")
-            sheet5.write(sheetline, 9, "BlueSit")
-            sheet5.write(sheetline, 10, "RedSco")
-            sheet5.write(sheetline, 11, "BlueSco")
+            sheet3.write(sheetline, 0, "Sku")
+            sheet3.write(sheetline, 1, "Match")
+            sheet3.write(sheetline, 2, "Red1")
+            sheet3.write(sheetline, 3, "Red2")
+            sheet3.write(sheetline, 4, "Red3")
+            sheet3.write(sheetline, 5, "RedSit")
+            sheet3.write(sheetline, 6, "Blue1")
+            sheet3.write(sheetline, 7, "Blue2")
+            sheet3.write(sheetline, 8, "Blue3")
+            sheet3.write(sheetline, 9, "BlueSit")
+            sheet3.write(sheetline, 10, "RedSco")
+            sheet3.write(sheetline, 11, "BlueSco")
 
             for r in json_dict["result"]:
                 line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = ' \
@@ -411,40 +404,40 @@ def excel_scan(teams: list, season: str, sku: str):
 
                 sheetline += 1
 
-                sheet5.write(sheetline, 0, datasku)
-                sheet5.write(sheetline, 1, datamatchnum)
-                sheet5.write(sheetline, 2, datared1, STYLE_RED)
-                sheet5.write(sheetline, 3, datared2, STYLE_RED)
-                sheet5.write(sheetline, 4, datared3, STYLE_RED)
-                sheet5.write(sheetline, 5, dataredsit, STYLE_RED)
-                sheet5.write(sheetline, 6, datablue1, STYLE_BLUE)
-                sheet5.write(sheetline, 7, datablue2, STYLE_BLUE)
-                sheet5.write(sheetline, 8, datablue3, STYLE_BLUE)
-                sheet5.write(sheetline, 9, databluesit, STYLE_BLUE)
-                sheet5.write(sheetline, 10, dataredsc, STYLE_RED)
-                sheet5.write(sheetline, 11, databluesc, STYLE_BLUE)
-                sheet5.write(sheetline, 12, datateam + " =", STYLE_BOLD)
+                sheet3.write(sheetline, 0, datasku)
+                sheet3.write(sheetline, 1, datamatchnum)
+                sheet3.write(sheetline, 2, datared1, STYLE_RED)
+                sheet3.write(sheetline, 3, datared2, STYLE_RED)
+                sheet3.write(sheetline, 4, datared3, STYLE_RED)
+                sheet3.write(sheetline, 5, dataredsit, STYLE_RED)
+                sheet3.write(sheetline, 6, datablue1, STYLE_BLUE)
+                sheet3.write(sheetline, 7, datablue2, STYLE_BLUE)
+                sheet3.write(sheetline, 8, datablue3, STYLE_BLUE)
+                sheet3.write(sheetline, 9, databluesit, STYLE_BLUE)
+                sheet3.write(sheetline, 10, dataredsc, STYLE_RED)
+                sheet3.write(sheetline, 11, databluesc, STYLE_BLUE)
+                sheet3.write(sheetline, 12, datateam + " =", STYLE_BOLD)
 
                 if int(dataredsc) > int(databluesc):
-                    sheet5.write(sheetline, 14, "Red", STYLE_RED)
+                    sheet3.write(sheetline, 14, "Red", STYLE_RED)
                 elif int(dataredsc) < int(databluesc):
-                    sheet5.write(sheetline, 14, "Blue", STYLE_BLUE)
+                    sheet3.write(sheetline, 14, "Blue", STYLE_BLUE)
 
                 if int(dataredsc) + 20 < int(databluesc):
-                    sheet5.write(sheetline, 14, "Blue Easy", STYLE_LIGHTER_BLUE)
+                    sheet3.write(sheetline, 14, "Blue Easy", STYLE_LIGHTER_BLUE)
                 elif int(dataredsc) - 20 > int(databluesc):
-                    sheet5.write(sheetline, 14, "Red Easy", STYLE_LIGHTER_RED)
+                    sheet3.write(sheetline, 14, "Red Easy", STYLE_LIGHTER_RED)
 
                 if datared1 == teamloop or datared2 == teamloop or datared3 == teamloop:
                     if int(dataredsc) > int(databluesc):
-                        sheet5.write(sheetline, 13, "Win", STYLE_BOLD)
+                        sheet3.write(sheetline, 13, "Win", STYLE_BOLD)
                     else:
-                        sheet5.write(sheetline, 13, "Lose", STYLE_BLACK)
+                        sheet3.write(sheetline, 13, "Lose", STYLE_BLACK)
                 elif datablue1 == teamloop or datablue2 == teamloop or datablue3 == teamloop:
                     if int(dataredsc) < int(databluesc):
-                        sheet5.write(sheetline, 13, "Win", STYLE_BOLD)
+                        sheet3.write(sheetline, 13, "Win", STYLE_BOLD)
                     else:
-                        sheet5.write(sheetline, 13, "Lose", STYLE_BLACK)
+                        sheet3.write(sheetline, 13, "Lose", STYLE_BLACK)
 
                 sheetline += 1
                 #TODO(YINGFENG):之后调成每个line颜色不一样，这样就不用占用额外行数了，或者换xlsx，xls有6w行限制
@@ -456,11 +449,11 @@ def excel_scan(teams: list, season: str, sku: str):
                 output.append(line)
             sheetline += 1
             for x in range(0, 15):
-                sheet5.write(sheetline, x, "- - - - - - -", STYLE_BLACK)
+                sheet3.write(sheetline, x, "- - - - - - -", STYLE_BLACK)
 
             sheetline += 1
             for x in range(0, 15):
-                sheet5.write(sheetline, x, "- - - - - - -", STYLE_BLACK)
+                sheet3.write(sheetline, x, "- - - - - - -", STYLE_BLACK)
             sheetline += 1
 
             decimal = (time.time() - start)
