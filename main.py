@@ -187,6 +187,8 @@ class GlobalVar:
 
     team_list = ''
 
+def clr():
+    print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
 
 def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
 
@@ -231,7 +233,6 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
                             for y in return_data:
                                 output.append(x[y])
                 return output
-
 
 def team_list():  # For testing
     #print(vexdb_json("teams", {"grade": "High%20School"}, ["number"]))
@@ -520,7 +521,7 @@ def get_all_data(name, season):
     return ranking_result, matches_result
 
 
-def time_is_out(red_teams: list, blue_teams: list, season: str):  # TODO: NEED MORE FIX
+def graphing(red_teams: list, blue_teams: list, season: str):  # TODO: NEED MORE FIX
 
     # GlobalVar.inputmode = str(input("Type in the preset value or 6 teams separate by ,\n"))
 
@@ -1060,19 +1061,30 @@ def answer():
 def writeconfig():
 
     config = configparser.ConfigParser()
+    '''
     team = input("CONFIG: team?\n")
     season = input("CONFIG: season?\n")
     country = input("CONFIG: country?\n")
     vex_program = input("CONFIG: program?\n")
     grade = input("CONFIG: division?\n")
-    #TODO: not finished yet
-
+    '''
+    #TODO:要在该问的地方问
+    #目前就创建个文件
+    '''
     config['DEFAULT'] = {'Team': team, 'Season': season, 'Program': vex_program, 'Grade': grade}
-    #TODO(YINGFENG): need to repeat asking for presets
     config['COMPETITION'] = {'preset1': '', 'preset2': '', 'preset3': '', 'preset4': '', 'preset5': '', 'preset6': '',
                              'preset7': '', 'preset8': '', 'preset9': ''}
+    '''
     with open('config.ini', 'w') as configfile:
         config.write(configfile)
+
+
+def write_config(passing_name, passing_value):
+    config = configparser.ConfigParser()
+    config['GENERAL'] = {passing_name: passing_value}
+    with open('config.ini', 'w') as configfile:
+        config.write(configfile)
+
 
 def readconfig(): #TODO(YINGFENG): 还有那些preset
     config = configparser.ConfigParser()
@@ -1082,6 +1094,7 @@ def readconfig(): #TODO(YINGFENG): 还有那些preset
     season = config.get('DEFAULT', 'season')
     #TODO: finish after writeconfig
     return season, team
+
 
 def getteam(sku):
     #TODO: fix after finish readconfig
@@ -1098,36 +1111,15 @@ def getteam(sku):
 
 
         GlobalVar.team_list = output
-
+        passing_name = 'teamlist'
+        passing_value = output
+        write_config(passing_name, passing_value)
         #return output
         #no need
 
     except OSError:
         #shouldn't exist this error anymore
         print("Overflow, Please input a match sku to limit it.")
-
-
-
-'''
-    sku = input("SKU? Format: RE-VRC-xx-xxxx")
-    r = urlopen('http://api.vexdb.io/v1/get_teams?sku=' + sku)
-    # you can change the url
-    text = r.read()
-    pprint.pprint(json.loads(text))
-
-    json_dict = json.loads(text)
-
-    output = []
-    oldline = ''
-    for r in json_dict["result"]:
-        line = "{},".format(r["number"])
-        oldline = oldline + line
-
-        # output.append(line)
-    pprint.pprint(oldline)
-    output.append(oldline)
-
-    return output'''
 
 
 def main():
@@ -1138,7 +1130,6 @@ def main():
         config = configparser.ConfigParser()
         config.read('config.ini')
         config.sections()
-        team = config.get('DEFAULT', 'team')
         season = config.get('DEFAULT', 'season')
 
     except: #no error
@@ -1147,11 +1138,6 @@ def main():
         config = configparser.ConfigParser()
         config.read('config.ini')
         config.sections()
-        team = config.get('DEFAULT', 'team')
-        season = config.get('DEFAULT', 'season')
-
-    print(team)
-    print(season)
 
     #TODO(YINGFENG): 传参弄好就可以把这段删了 用 readconfig()
     while True:
@@ -1160,8 +1146,9 @@ def main():
         #readconfig() #too bad
         #TODO(YINGFENG): how to 传参 .jpg
 
-        mode = int(input(  #TODO(YIFEI): int??? exception #TODO(YINGFENG): This is a mass now
-            "Mode \n 1.Scan Team Matches \n 2.!Excel Functions \n 3.Search Team Season History \n 4.Graph \n 8.Get Important Info For a Team \n 9.Change Log\n 5.Config\n 6.Team List\n 0.Quit \n"))
+        mode = int(input(
+            "Mode \n 1.Scan Team Matches \n 2.!Excel Functions \n 3.Search Team Season History \n 4.Graph \n "
+            "8.Get One Team \n 9.Change Log\n 5.Config\n 6.Team List\n 0.Quit \n"))
         if mode == 1:
             print("Mode = Scan Team Matches")
             print(scan_team_matches(input("team number:")))
@@ -1185,21 +1172,21 @@ def main():
                 excel_scan(teams, season, sku)
             elif excel_mode == 2:
                 print("Mode = Write Team Matches [Don't use this]")
-                input1 = team
+                input1 = input("Team ?\n")
                 input2 = season
                 pprint.pprint(excel_team_matches(input1, input2))
         elif mode == 3:
             print("Mode = Search Team History : Current Season")
-            input1 = team
+            input1 = input("Team ?\n")
             input2 = season
             pprint.pprint(search_team_current_season(input1, input2))
         elif mode == 4:
-            print("Bubble!")
-            time_is_out()
+            print("Graphing")
+            graphing()
             answer()
         elif mode == 8:
-            print("Mode = Get Important Data")
-            input1 = team
+            print("Mode = Get One Team")
+            input1 = input("Team ?\n")
             input2 = season
             a = get_all_data(input1, input2)
             pprint.pprint(a[0])
@@ -1207,8 +1194,11 @@ def main():
         elif mode == 5:
             writeconfig()
         elif mode == 6:
-            sku = input("Match sku")
-            print(getteam(sku))
+            sku = input("Match sku\n")
+            getteam(sku)
+            clr()
+            print("Your team list is in your config.\nIf you want to change it, use the Team List function again.")
+            time.sleep(2)
         elif mode == 0:
             print("Thanks for using it!")
             quit()
@@ -1217,5 +1207,3 @@ def main():
 if __name__ == '__main__':
         main()
 
-
-#TODO: 把冒号去了
