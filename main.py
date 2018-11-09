@@ -185,6 +185,8 @@ class GlobalVar:
 
     response = ''
 
+    team_list = ''
+
 
 def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
 
@@ -1090,7 +1092,15 @@ def getteam(sku):
         for r in _json_dict["result"]:
             line = '{}: '.format(r["number"])
             output.append(line)
-        return output
+
+        output = [s.replace(':', '') for s in output]
+        output = [s.replace(' ', '') for s in output]
+
+
+        GlobalVar.team_list = output
+
+        #return output
+        #no need
 
     except OSError:
         #shouldn't exist this error anymore
@@ -1140,14 +1150,15 @@ def main():
         team = config.get('DEFAULT', 'team')
         season = config.get('DEFAULT', 'season')
 
+    print(team)
+    print(season)
+
     #TODO(YINGFENG): 传参弄好就可以把这段删了 用 readconfig()
     while True:
         #with open('config.ini', 'r') as configfile:
 
         #readconfig() #too bad
         #TODO(YINGFENG): how to 传参 .jpg
-        print(team)
-        print(season)
 
         mode = int(input(  #TODO(YIFEI): int??? exception #TODO(YINGFENG): This is a mass now
             "Mode \n 1.Scan Team Matches \n 2.!Excel Functions \n 3.Search Team Season History \n 4.Graph \n 8.Get Important Info For a Team \n 9.Change Log\n 5.Config\n 6.Team List\n 0.Quit \n"))
@@ -1168,9 +1179,10 @@ def main():
                 else:
                     season = 'Turning%20Point'
                 sku = input('sku? blank = all in the [season]\n')
-                teams = ['224S','224X','363A','1846C','2495X','6627A','6627B','6627C','6627D','6627X','6671X','7259A','7259C','7259D','7582X','7582Y','9364A','9364C','9364D','12014A','12014B','29027A','35211C','76607A','98268A']
+                print(team_list)
+                teams = GlobalVar.team_list
                 #TODO(YINGFENG):调用 get_teams
-                excel_scan(teams,season,sku)
+                excel_scan(teams, season, sku)
             elif excel_mode == 2:
                 print("Mode = Write Team Matches [Don't use this]")
                 input1 = team
@@ -1195,10 +1207,8 @@ def main():
         elif mode == 5:
             writeconfig()
         elif mode == 6:
-            #getteam()
             sku = input("Match sku")
             print(getteam(sku))
-            # TODO(YIFEI):please check flynn
         elif mode == 0:
             print("Thanks for using it!")
             quit()
