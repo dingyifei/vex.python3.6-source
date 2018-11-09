@@ -190,6 +190,8 @@ class GlobalVar:
 def clr():
     print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
 
+
+
 def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
 
     """
@@ -233,6 +235,20 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
                             for y in return_data:
                                 output.append(x[y])
                 return output
+
+def write_config(passing_name, passing_value):
+    config = configparser.ConfigParser()
+    config['GENERAL'] = {passing_name: passing_value}
+    with open('config.ini', 'w') as configfile:
+        config.write(configfile)
+
+def read_config(passing_name):
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+    config.sections()
+    passing_value = config.get('GENERAL', passing_name)
+    return passing_name, passing_value
+    #TODO
 
 def team_list():  # For testing
     #print(vexdb_json("teams", {"grade": "High%20School"}, ["number"]))
@@ -1071,17 +1087,10 @@ def writeconfig():
     #TODO:要在该问的地方问
     #目前就创建个文件
     '''
-    config['DEFAULT'] = {'Team': team, 'Season': season, 'Program': vex_program, 'Grade': grade}
+    config['GENERAL'] = {'Team': team, 'Season': season, 'Program': vex_program, 'Grade': grade}
     config['COMPETITION'] = {'preset1': '', 'preset2': '', 'preset3': '', 'preset4': '', 'preset5': '', 'preset6': '',
                              'preset7': '', 'preset8': '', 'preset9': ''}
     '''
-    with open('config.ini', 'w') as configfile:
-        config.write(configfile)
-
-
-def write_config(passing_name, passing_value):
-    config = configparser.ConfigParser()
-    config['GENERAL'] = {passing_name: passing_value}
     with open('config.ini', 'w') as configfile:
         config.write(configfile)
 
@@ -1090,8 +1099,8 @@ def readconfig(): #TODO(YINGFENG): 还有那些preset
     config = configparser.ConfigParser()
     config.read('config.ini')
     config.sections()
-    team = config.get('DEFAULT', 'team')
-    season = config.get('DEFAULT', 'season')
+    team = config.get('GENERAL', 'team')
+    season = config.get('GENERAL', 'season')
     #TODO: finish after writeconfig
     return season, team
 
@@ -1123,16 +1132,11 @@ def getteam(sku):
 
 
 def main():
-    #print(vexdb_json("teams", {"grade": "High School"},["number"]))
-
     team_list()
     try:
-        config = configparser.ConfigParser()
-        config.read('config.ini')
-        config.sections()
-        season = config.get('DEFAULT', 'season')
+        read_config(passing_name='season')
 
-    except: #no error
+    except:
         print("Cannot find config.ini, so you are creating one.")
         writeconfig()
         config = configparser.ConfigParser()
@@ -1141,11 +1145,6 @@ def main():
 
     #TODO(YINGFENG): 传参弄好就可以把这段删了 用 readconfig()
     while True:
-        #with open('config.ini', 'r') as configfile:
-
-        #readconfig() #too bad
-        #TODO(YINGFENG): how to 传参 .jpg
-
         mode = int(input(
             "Mode \n 1.Scan Team Matches \n 2.!Excel Functions \n 3.Search Team Season History \n 4.Graph \n "
             "8.Get One Team \n 9.Change Log\n 5.Config\n 6.Team List\n 0.Quit \n"))
