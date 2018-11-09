@@ -1065,7 +1065,7 @@ def writeconfig():
     grade = input("CONFIG: division?\n")
     #TODO: not finished yet
 
-    config['DEFAULT'] = {'Team': team, 'Season': season, 'Country': country, 'Program': vex_program, 'Grade': grade}
+    config['DEFAULT'] = {'Team': team, 'Season': season, 'Program': vex_program, 'Grade': grade}
     #TODO(YINGFENG): need to repeat asking for presets
     config['COMPETITION'] = {'preset1': '', 'preset2': '', 'preset3': '', 'preset4': '', 'preset5': '', 'preset6': '',
                              'preset7': '', 'preset8': '', 'preset9': ''}
@@ -1084,7 +1084,7 @@ def readconfig(): #TODO(YINGFENG): 还有那些preset
 def getteam(sku):
     #TODO: fix after finish readconfig
     try:
-        _json_dict = vexdb_json("teams", {"sku": sku, "program": "VRC", "limit_number": "4999", "country": country})
+        _json_dict = vexdb_json("teams", {"sku": sku, "program": "VRC", "limit_number": "4999"})
 
         output = []
         for r in _json_dict["result"]:
@@ -1207,3 +1207,5 @@ def main():
 if __name__ == '__main__':
         main()
 
+
+#TODO: 把冒号去了
