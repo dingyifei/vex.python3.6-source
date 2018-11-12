@@ -3,42 +3,33 @@ import os
 import pprint
 import time
 import openpyxl
-import xlwt
+from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font
 import matplotlib.pyplot as plt
 from decimal import getcontext, Decimal
 from urllib.request import urlopen
-import ssl
 
-ssl._create_default_http_context = ssl._create_unverified_context
+
 getcontext().prec = 6
 
-# preload
+def pyxl():
+    book = openpyxl.Workbook()
+    sheet_names = ["#Cover", "#Matches", "#Important Data", "#Blank", "#For World", "#What We Need", "#Team Spot 1",
+                   "#Team Spot 2", "#Team Spot 3", "#Team Spot 4", "#Bugged Teams"]
+    for x in sheet_names:
+        book.create_sheet(x)
+    del book["Sheet"]
+    BLACK_FILL = openpyxl.styles.fills.PatternFill(patternType="solid", fgColor=openpyxl.styles.Color(rgb="000000"))
 
-# getcontext().prec = 6
+    book[sheet_names[0]].cell(row=1, column=1).value = time.clock()
+    book[sheet_names[0]].cell(row=1,column=1).fill = BLACK_FILL
 
-book = openpyxl.Workbook()
+    # sheets["#Cover"].cell("A1").fill = PatternFill()
+    book.save("./test1.xlsx")
 
-sheets = list
-for x in range(0,10):
-     sheets.append(self, book.worksheets[x])
 
-sheet1 = book.worksheets[0]("#Cover", cell_overwrite_ok=True)
-sheet2 = book.worksheets[1]("#Matches", cell_overwrite_ok=True)
-sheet3 = book.worksheets[2]("#Important Data", cell_overwrite_ok=True)
-sheet4 = book.worksheets("#Blank", cell_overwrite_ok=True)
-sheet5 = book.worksheets("#For World", cell_overwrite_ok=True)
-sheet6 = book.worksheets("#What We Need", cell_overwrite_ok=True)
-sheet7 = book.worksheets("#Team Spot 1", cell_overwrite_ok=True)
-sheet8 = book.worksheets("#Team Spot 2", cell_overwrite_ok=True)
-sheet9 = book.worksheets("#Team Spot 3", cell_overwrite_ok=True)
-sheet10 = book.worksheets("#Team Spot 4", cell_overwrite_ok=True)
-sheet11 = book.worksheets("#Bugged Teams", cell_overwrite_ok=True)
 
-time_now = "Last Update:" + time.strftime("%c")
-sheet1.write(2, 1, time_now)
-sheet1.write(3, 1,
-             "Because of there are no data for these teams: 1119S, 7386A, 8000X, 8000Z, 19771B, 30638A, 36632A, "
-             "37073A, 60900A, 76921B, 99556A, 99691E, 99691H are not include in the sheet #Important Data")
+#             "Because of there are no data for these teams: 1119S, 7386A, 8000X, 8000Z, 19771B, 30638A, 36632A, "
+#            "37073A, 60900A, 76921B, 99556A, 99691E, 99691H are not include in the sheet #Important Data")
 
 STYLE_RED = xlwt.easyxf('pattern: pattern solid, fore_colour red;''font: colour white, bold True;')
 STYLE_BLUE = xlwt.easyxf('pattern: pattern solid, fore_colour blue;''font: colour white, bold True;')
@@ -956,7 +947,7 @@ def main():
     # team_list()
 
     while True:
-        mode = int(input(  # TODO(YIFEI): int??? exception #TODO(YINGFENG): This is a mass now
+        mode = int(input(
             "Mode \n 1.Scan Team Matches \n 2.!Excel Functions \n 3.Search Team Season History \n 4.Graph \n 8.Get Important Info For a Team \n 9.Change Log\n 5.Config\n 6.Team List\n 0.Quit \n"))
         if mode == 1:
             print("Mode = Scan Team Matches")
@@ -1005,10 +996,7 @@ def main():
             # getteam()
             sku = input("Match sku")
             print(getteam(sku))
-            # TODO(YIFEI):please check flynn
-        elif mode == 0:
-            print("Thanks for using it!")
-            quit()
+
 
 
 if __name__ == '__main__':
