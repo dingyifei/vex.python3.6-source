@@ -3,7 +3,7 @@ import os
 import pprint
 import time
 import openpyxl
-from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font
+from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font, colors, Color, fonts
 import matplotlib.pyplot as plt
 from decimal import getcontext, Decimal
 from urllib.request import urlopen
@@ -11,38 +11,51 @@ from urllib.request import urlopen
 
 getcontext().prec = 6
 
-def pyxl():
+def write_workbook(save_location: str):  # testing
+
+    class ExcelStyle:
+        RED_FILL = PatternFill(patternType="solid", fgColor=colors.RED)
+        BLUE_FILL = PatternFill(patternType="solid", fgColor=colors.BLUE)
+        GREEN_FILL = PatternFill(patternType="solid", fgColor=colors.GREEN)  # replace Light Red
+        YELLOW_FILL = PatternFill(patternType="solid", fgColor=colors.YELLOW)  # replace Light_Blue
+        BLACK_FILL = PatternFill(patternType="solid", fgColor=colors.BLACK)
+        BOLD_RED_FONT = Font("Calibri", size=11, color=colors.RED, bold=True)
+        BOLD_BLUE_FONT = Font("Calibri", size=11, color=colors.BLUE, bold=True)
+        BOLD_BLACK_FONT = Font("Calibri", size=11, color=colors.BLACK, bold=True)
+        BOLD_WHITE_FONT = Font("Calibri", size=11, color=colors.WHITE, bold=True)
+
+    # Initialize the workbook
     book = openpyxl.Workbook()
-    sheet_names = ["#Cover", "#Matches", "#Important Data", "#Blank", "#For World", "#What We Need", "#Team Spot 1",
-                   "#Team Spot 2", "#Team Spot 3", "#Team Spot 4", "#Bugged Teams"]
+    sheet_names = ("#Cover", "#Matches", "#Important Data", "#Blank", "#For World", "#What We Need", "#Team Spot 1",
+                   "#Team Spot 2", "#Team Spot 3", "#Team Spot 4", "#Bugged Teams")
+
+    match_columns = ("Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result")
+
     for x in sheet_names:
         book.create_sheet(x)
-    del book["Sheet"]
-    BLACK_FILL = openpyxl.styles.fills.PatternFill(patternType="solid", fgColor=openpyxl.styles.Color(rgb="000000"))
+    del book["Sheet"]  # I don't know how to solve this myth, it automatically generate sheets
+    book[sheet_names[0]].cell(row=1, column=1).value = "Last Change:" + str(time.localtime())
 
-    book[sheet_names[0]].cell(row=1, column=1).value = time.clock()
-    book[sheet_names[0]].cell(row=1,column=1).fill = BLACK_FILL
+    for x, y in enumerate(match_columns):
+        book[sheet_names[1]].cell(row=1, column=x + 1).value = y
+        book[sheet_names[1]].cell(row=1, column=x + 1).font = ExcelStyle.BOLD_BLACK_FONT
 
-    # sheets["#Cover"].cell("A1").fill = PatternFill()
-    book.save("./test1.xlsx")
+    book.save(save_location)
 
-
-
+    return True
 #             "Because of there are no data for these teams: 1119S, 7386A, 8000X, 8000Z, 19771B, 30638A, 36632A, "
 #            "37073A, 60900A, 76921B, 99556A, 99691E, 99691H are not include in the sheet #Important Data")
 
-STYLE_RED = xlwt.easyxf('pattern: pattern solid, fore_colour red;''font: colour white, bold True;')
-STYLE_BLUE = xlwt.easyxf('pattern: pattern solid, fore_colour blue;''font: colour white, bold True;')
-STYLE_LIGHTER_RED = xlwt.easyxf('pattern: pattern solid, fore_colour pink;''font: colour white, bold True;')
-STYLE_LIGHTER_BLUE = xlwt.easyxf('pattern: pattern solid, fore_colour pale_blue;''font: colour white, bold True;')
-STYLE_RED = xlwt.easyxf('font: colour red, bold True;')
-STYLE_BLUE = xlwt.easyxf('font: colour blue, bold True;')
-STYLE_BLACK = xlwt.easyxf('pattern: pattern solid, fore_colour black;''font: colour white, bold True;')
-STYLE_BOLD = xlwt.easyxf('font: colour black, bold True;')
-STYLE_70 = xlwt.easyxf('pattern: pattern solid, fore_colour red;''font: colour white, bold True;')
-STYLE_50 = xlwt.easyxf('pattern: pattern solid, fore_colour light_orange;''font: colour white, bold True;')
-STYLE_30 = xlwt.easyxf('pattern: pattern solid, fore_colour pale_blue;''font: colour white, bold True;')
-STYLE_0 = xlwt.easyxf('pattern: pattern solid, fore_colour bright_green;''font: colour black, bold True;')
+
+
+# STYLE_RED = xlwt.easyxf('pattern: pattern solid, fore_colour red;''font: colour white, bold True;')
+# STYLE_BLUE = xlwt.easyxf('pattern: pattern solid, fore_colour blue;''font: colour white, bold True;')
+# STYLE_LIGHTER_RED = xlwt.easyxf('pattern: pattern solid, fore_colour pink;''font: colour white, bold True;')
+# STYLE_LIGHTER_BLUE = xlwt.easyxf('pattern: pattern solid, fore_colour pale_blue;''font: colour white, bold True;')
+# STYLE_RED = xlwt.easyxf('font: colour red, bold True;')
+# STYLE_BLUE = xlwt.easyxf('font: colour blue, bold True;')
+# STYLE_BLACK = xlwt.easyxf('pattern: pattern solid, fore_colour black;''font: colour white, bold True;')
+# STYLE_BOLD = xlwt.easyxf('font: colour black, bold True;')
 
 sheet2.write(0, 0, "Team")
 sheet2.write(0, 1, "Wins")
