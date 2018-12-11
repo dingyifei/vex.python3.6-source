@@ -57,15 +57,6 @@ def write_workbook(save_location: str):  # testing
 # STYLE_BLACK = xlwt.easyxf('pattern: pattern solid, fore_colour black;''font: colour white, bold True;')
 # STYLE_BOLD = xlwt.easyxf('font: colour black, bold True;')
 
-sheet2.write(0, 0, "Team")
-sheet2.write(0, 1, "Wins")
-sheet2.write(0, 2, "Losses")
-sheet2.write(0, 3, "AP")
-sheet2.write(0, 4, "Ranking")
-sheet2.write(0, 5, "Highest")
-sheet2.write(0, 6, "Result")
-
-
 class GlobalVar:
     # used in graphbubble, graphred, timeisout
     teamr1 = ""
