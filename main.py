@@ -13,6 +13,27 @@ getcontext().prec = 6
 
 def write_workbook(save_location: str):  # testing
 
+    # 这是一个应急功能 着急的时候没人care图和excel
+    def teams_scan_excel(teams:list, season:str):
+        start = time.time()
+        sheet_line = 0
+
+        for row,team in enumerate(teams_scan(teams, season)):
+            for column, value in enumerate(team):
+                book[sheet_names[1]].cell(row = row + 1, column = column).value = value
+            if int(team[1]) > int(team[2]):
+                book[sheet_names[1]].cell(row = row + 1, column = 6).value = "Positive"
+                book[sheet_names[1]].cell(row = row + 1, column = 6).fill = ExcelStyle.RED_FILL
+            elif int(team[1]) < int(team[2]):
+                book[sheet_names[1]].cell(row = row + 1, column = 6).value = "Negative"
+                book[sheet_names[1]].cell(row = row + 1, column = 6).fill = ExcelStyle.BLUE_FILL
+            elif int(team[1]) == int(team[2]):
+                book[sheet_names[1]].cell(row = row + 1, column = 6).value = "Equal"
+                book[sheet_names[1]].cell(row = row + 1, column = 6).fill = ExcelStyle.BLACK_FILL
+            else:
+                book[sheet_names[1]].cell(row = row + 1, column = 6).value = "Error"
+                book[sheet_names[1]].cell(row = row + 1, column = 6).fill = ExcelStyle.GREEN_FILL
+            book[sheet_names[1]].cell(row=row + 1, column=6).font = ExcelStyle.BOLD_WHITE_FONT
     class ExcelStyle:
         RED_FILL = PatternFill(patternType="solid", fgColor=colors.RED)
         BLUE_FILL = PatternFill(patternType="solid", fgColor=colors.BLUE)
@@ -30,15 +51,19 @@ def write_workbook(save_location: str):  # testing
                    "#Team Spot 2", "#Team Spot 3", "#Team Spot 4", "#Bugged Teams")
 
     match_columns = ("Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result")
-
+    for_world_columns = ("Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result")
     for x in sheet_names:
         book.create_sheet(x)
     del book["Sheet"]  # I don't know how to solve this myth, it automatically generate sheets
     book[sheet_names[0]].cell(row=1, column=1).value = "Last Change:" + str(time.localtime())
 
-    for x, y in enumerate(match_columns):
+    for x, y in enumerate(match_columns): # Initialize Matches
         book[sheet_names[1]].cell(row=1, column=x + 1).value = y
         book[sheet_names[1]].cell(row=1, column=x + 1).font = ExcelStyle.BOLD_BLACK_FONT
+
+    for x,y in enumerate(for_world_columns): # Initialize "For World"
+        book[sheet_names[5]].cell(row=1, column=x + 1).value = y
+        book[sheet_names[5]].cell(row=1, column=x + 1).font = ExcelStyle.BOLD_BLACK_FONT
 
     book.save(save_location)
 
@@ -235,74 +260,23 @@ def team_list():  # For testing
     print(vexdb_json("matches", {"season": "Starstruck", "team": "8667A"}, ["sku"]))
 
 
-def scan_team_matches(name: object) -> object:  # TODO: temperory
-    _json_dict = vexdb_json("matches", {"season": "Turning%20Point", "team": name})
-    output = []
-    for r in _json_dict["result"]:
-        line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = {} || ' \
-               'Blue Alliance 1 = {} Blue Alliance 2 = {} Blue Alliance 3 = {} Blue Sit = {} || Red Score = {} Blue ' \
-               'Score = {}'.format(r["sku"], r["matchnum"], r["round"], r["red1"], r["red2"], r["red3"], r["redsit"],
-                                   r["blue1"], r["blue2"], r["blue3"], r["bluesit"], r["redscore"], r["bluescore"])
-        output.append(line)
-    return output
+def matches_scan(team: str, season: str):
+    out = []
+    for r in vexdb_json("matches", {"season": season, "team": team}):
+        out.append((str(r["sku"]), str(r["matchnum"]), str(r["round"]),
+               str(r["red1"]), str(r["red2"]), str(r["red3"]),
+               str(r["redsit"]),str(r["blue1"]), str(r["blue2"]),
+               str(r["blue3"]), str(r["bluesit"]), str(r["redscore"]),
+               str(r["bluescore"])))
+    return out
 
-
-# 这是一个应急功能 着急的时候没人care图和excel
-
-def excel_scan_teams(teams: list, season: str):  # 201
-
-    start = time.time()
-    number = 0
-    sheet_line = 0
-
-    while True:
-        while number < len(teams):
-            teamloop = teams[number]
-            # ['sheet_%d' % sheetnb].write = book.add_sheet(teamloop, cell_overwrite_ok= True)
-            print('')
-            print(teamloop)
-            print('')
-            number += 1
-            sheet_line += 1
-            json_dict = vexdb_json("rankings", {"team": teamloop, "season": season})
-            output = []
-            for r in json_dict["result"]:
-                line = 'Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}' \
-                    .format(r["team"], r["wins"], r["losses"], r["ap"], r["rank"], r["max_score"])
-                datateam = '{}'.format(r["team"])
-                datawins = '{}'.format(r["wins"])
-                datalosses = '{}'.format(r["losses"])
-                dataap = '{}'.format(r["ap"])
-                datarank = '{}'.format(r["rank"])
-                datamaxscore = '{}'.format(r["max_score"])
-                if int(datawins) > int(datalosses):
-                    sheet2.write(sheet_line, 6, "Positive", STYLE_RED)
-                elif int(datawins) < int(datalosses):
-                    sheet2.write(sheet_line, 6, "Negative", STYLE_BLUE)
-                output.append(line)
-                sheet2.write(sheet_line, 0, datateam)
-                sheet2.write(sheet_line, 1, datawins)
-                sheet2.write(sheet_line, 2, datalosses)
-                sheet2.write(sheet_line, 3, dataap)
-                sheet2.write(sheet_line, 4, datarank)
-                sheet2.write(sheet_line, 5, datamaxscore)
-                sheet_line += 1
-            book.save("Data.xls")
-            print('')
-            decimal = (time.time() - start)
-            decimal = Decimal.from_float(decimal).quantize(Decimal('0.0'))
-            ave = (float(decimal) / (int(number)))
-            ave = Decimal.from_float(ave).quantize(Decimal('0.0'))
-            eta = (float(ave) * (int(len(teams) - (int(number)))))
-            etatomin = (float(eta) / 60)
-            etatomin = Decimal.from_float(etatomin).quantize(Decimal('0.0'))
-            print(str(number) + "/" + str(len(teams)) + " Finished, Used " + str(decimal) + " seconds. Average "
-                  + str(ave) + " seconds each. ETA: " + str(etatomin) + " mins.")
-        if number >= 5:
-            number = 0
-            sheet_line = 1
-            print('\n reset and xls saved!')
-            main()
+def teams_scan(teams: list, season: str):
+    out = []
+    for x, team in enumerate(teams):
+        for r in vexdb_json("rankings", {"team": team, "season": season}):
+            out.append((str(r["team"]), str(r["wins"]), str(r["losses"]),
+                        str(r["ap"]), str(r["rank"]), str(r["max_score"])))
+    return out
 
 
 # 从 excel_scan_world 更名为 excel_scan
@@ -315,13 +289,7 @@ def excel_scan(teams: list, season: str, sku: str):
             teamloop = teams[number]
             print(teamloop)
             number += 1
-            sheet5.write(sheetline, 0, "Team")
-            sheet5.write(sheetline, 1, "Wins")
-            sheet5.write(sheetline, 2, "Losses")
-            sheet5.write(sheetline, 3, "AP")
-            sheet5.write(sheetline, 4, "Ranking")
-            sheet5.write(sheetline, 5, "Highest")
-            sheet5.write(sheetline, 6, "Result")
+
             sheetline += 1
             # json_dict = vexdb_json("rankings", {"team": teamloop, "season": season, "sku": sku})
 
@@ -339,8 +307,6 @@ def excel_scan(teams: list, season: str, sku: str):
                 dataap = '{}'.format(r["ap"])
                 datarank = '{}'.format(r["rank"])
                 datamaxscore = '{}'.format(r["max_score"])
-
-                # output.append(line) #Remove because I cant see the use of this
 
                 sheet5.write(sheetline, 0, "#" + datateam)
                 sheet5.write(sheetline, 1, datawins)
@@ -955,7 +921,7 @@ def main():
             "Mode \n 1.Scan Team Matches \n 2.!Excel Functions \n 3.Search Team Season History \n 4.Graph \n 8.Get Important Info For a Team \n 9.Change Log\n 5.Config\n 6.Team List\n 0.Quit \n"))
         if mode == 1:
             print("Mode = Scan Team Matches")
-            print(scan_team_matches(input("team number:")))
+            print(matches_scan(input("team number:")))
         elif mode == 2:
             print("Mode = Excels")
             print(
