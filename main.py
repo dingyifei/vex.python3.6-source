@@ -14,13 +14,10 @@ getcontext().prec = 6
 def write_workbook(save_location: str):  # testing
 
     # 这是一个应急功能 着急的时候没人care图和excel
-    def teams_scan_excel(teams:list, season:str):
-        start = time.time()
-        sheet_line = 0
-
-        for row,team in enumerate(teams_scan(teams, season)):
+    def rankings_excel(teams:list, season:str, start_row: int = 0, start_column: int = 0):
+        for row,team in enumerate(rankings_scan(teams, season)):
             for column, value in enumerate(team):
-                book[sheet_names[1]].cell(row = row + 1, column = column).value = value
+                book[sheet_names[1]].cell(row = row + 1, column = column).value = value # 90% it is not going to work, maybe column +1 or something
             if int(team[1]) > int(team[2]):
                 book[sheet_names[1]].cell(row = row + 1, column = 6).value = "Positive"
                 book[sheet_names[1]].cell(row = row + 1, column = 6).fill = ExcelStyle.RED_FILL
@@ -34,6 +31,31 @@ def write_workbook(save_location: str):  # testing
                 book[sheet_names[1]].cell(row = row + 1, column = 6).value = "Error"
                 book[sheet_names[1]].cell(row = row + 1, column = 6).fill = ExcelStyle.GREEN_FILL
             book[sheet_names[1]].cell(row=row + 1, column=6).font = ExcelStyle.BOLD_WHITE_FONT
+    def matches_excel(team: str, season: str, start_row: int = 0, start_column: int = 0):
+        for row, matche in enumerate(matches_scan(team, season)):
+            for column, value in enumerate(matche):
+                book[sheet_names[1]].cell(row = start_row + row, column = start_column + column)
+            if int(dataredsc) > int(databluesc):
+                sheet5.write(sheetline, 14, "Red", STYLE_RED)
+            elif int(dataredsc) < int(databluesc):
+                sheet5.write(sheetline, 14, "Blue", STYLE_BLUE)
+
+            if int(dataredsc) + 20 < int(databluesc):
+                sheet5.write(sheetline, 14, "Blue Easy", STYLE_LIGHTER_BLUE)
+            elif int(dataredsc) - 20 > int(databluesc):
+                sheet5.write(sheetline, 14, "Red Easy", STYLE_LIGHTER_RED)
+
+            if datared1 == teamloop or datared2 == teamloop or datared3 == teamloop:
+                if int(dataredsc) > int(databluesc):
+                    sheet5.write(sheetline, 13, "Win", STYLE_BOLD)
+                else:
+                    sheet5.write(sheetline, 13, "Lose", STYLE_BLACK)
+            elif datablue1 == teamloop or datablue2 == teamloop or datablue3 == teamloop:
+                if int(dataredsc) < int(databluesc):
+                    sheet5.write(sheetline, 13, "Win", STYLE_BOLD)
+                else:
+                    sheet5.write(sheetline, 13, "Lose", STYLE_BLACK)
+
     class ExcelStyle:
         RED_FILL = PatternFill(patternType="solid", fgColor=colors.RED)
         BLUE_FILL = PatternFill(patternType="solid", fgColor=colors.BLUE)
@@ -47,23 +69,17 @@ def write_workbook(save_location: str):  # testing
 
     # Initialize the workbook
     book = openpyxl.Workbook()
-    sheet_names = ("#Cover", "#Matches", "#Important Data", "#Blank", "#For World", "#What We Need", "#Team Spot 1",
-                   "#Team Spot 2", "#Team Spot 3", "#Team Spot 4", "#Bugged Teams")
+    sheet_names = ("#Cover", "#Rankings", "#Important Data", "#For World", "#Bugged Teams")
 
-    match_columns = ("Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result")
-    for_world_columns = ("Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result")
+    rankings_columns = ("Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result")
     for x in sheet_names:
         book.create_sheet(x)
     del book["Sheet"]  # I don't know how to solve this myth, it automatically generate sheets
     book[sheet_names[0]].cell(row=1, column=1).value = "Last Change:" + str(time.localtime())
 
-    for x, y in enumerate(match_columns): # Initialize Matches
+    for x, y in enumerate(rankings_columns): # Initialize Matches
         book[sheet_names[1]].cell(row=1, column=x + 1).value = y
         book[sheet_names[1]].cell(row=1, column=x + 1).font = ExcelStyle.BOLD_BLACK_FONT
-
-    for x,y in enumerate(for_world_columns): # Initialize "For World"
-        book[sheet_names[5]].cell(row=1, column=x + 1).value = y
-        book[sheet_names[5]].cell(row=1, column=x + 1).font = ExcelStyle.BOLD_BLACK_FONT
 
     book.save(save_location)
 
@@ -270,37 +286,28 @@ def matches_scan(team: str, season: str):
                str(r["bluescore"])))
     return out
 
-def teams_scan(teams: list, season: str):
+def rankings_scan(teams: list, season: str, sku:str):
     out = []
     for x, team in enumerate(teams):
-        for r in vexdb_json("rankings", {"team": team, "season": season}):
+        for r in vexdb_json("rankings", {"team": team, "season": season, "sku": sku}):
             out.append((str(r["team"]), str(r["wins"]), str(r["losses"]),
                         str(r["ap"]), str(r["rank"]), str(r["max_score"])))
     return out
-
 
 # 从 excel_scan_world 更名为 excel_scan
 def excel_scan(teams: list, season: str, sku: str):
     number = 0
     sheetline = 0
-    start = time.time()
+
     while True:
         while number < int(len(teams)):
             teamloop = teams[number]
             print(teamloop)
             number += 1
-
             sheetline += 1
-            # json_dict = vexdb_json("rankings", {"team": teamloop, "season": season, "sku": sku})
-
             json_dict = vexdb_json("rankings", {"team": teamloop, "season": season, 'sku': sku})
-            output = []
 
             for r in json_dict["result"]:
-                line = "Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}" \
-                    .format(r["team"], r["wins"], r["losses"], r["ap"], r["rank"], r["max_score"])
-                output.append(line)
-
                 datateam = '{}'.format(r["team"])
                 datawins = '{}'.format(r["wins"])
                 datalosses = '{}'.format(r["losses"])
@@ -324,7 +331,6 @@ def excel_scan(teams: list, season: str, sku: str):
 
                 json_dict = vexdb_json("matches", {"team": teamloop, "season": season})
 
-                output = []
                 loop = -10000
 
             sheet5.write(sheetline, 0, "Sku")
@@ -341,11 +347,6 @@ def excel_scan(teams: list, season: str, sku: str):
             sheet5.write(sheetline, 11, "BlueSco")
 
             for r in json_dict["result"]:
-                line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = ' \
-                       '{} || Blue Alliance 1 = {} Blue Alliance 2 = {} Blue Alliance 3 = {} Blue Sit = {} || Red ' \
-                       'Score = {} Blue Score = {}' \
-                    .format(r["sku"], r["matchnum"], r["round"], r["red1"], r["red2"], r["red3"], r["redsit"],
-                            r["blue1"], r["blue2"], r["blue3"], r["bluesit"], r["redscore"], r["bluescore"])
                 datasku = '{}'.format(r["sku"])
                 datamatchnum = '{}'.format(r["matchnum"])
                 datared1 = '{}'.format(r["red1"])
@@ -397,13 +398,11 @@ def excel_scan(teams: list, season: str, sku: str):
                         sheet5.write(sheetline, 13, "Lose", STYLE_BLACK)
 
                 sheetline += 1
-                # TODO(YINGFENG):之后调成每个line颜色不一样，这样就不用占用额外行数了，或者换xlsx，xls有6w行限制
+
                 loop += 1
 
                 if loop > 10:  # 最近10场比赛
                     break
-
-                output.append(line)
             sheetline += 1
             for x in range(0, 15):
                 sheet5.write(sheetline, x, "- - - - - - -", STYLE_BLACK)
@@ -413,26 +412,6 @@ def excel_scan(teams: list, season: str, sku: str):
                 sheet5.write(sheetline, x, "- - - - - - -", STYLE_BLACK)
             sheetline += 1
 
-            decimal = (time.time() - start)
-            decimal = Decimal.from_float(decimal).quantize(Decimal('0.0'))
-
-            ave = (float(decimal) / (int(number)))
-            ave = Decimal.from_float(ave).quantize(Decimal('0.0'))
-
-            eta = float(ave) * (int(len(teams) - (int(number))))
-            etatomin = (float(eta) / 60)
-            etatomin = Decimal.from_float(etatomin).quantize(Decimal('0.0'))
-
-            print(str(number) + "/" + str(len(teams)) + " Finished, Used " + str(decimal) + " seconds. Average " + str(
-                ave) + " seconds each. ETA: " + str(etatomin) + " mins.")
-            print()
-            book.save("Data" + ".xls")
-
-        if number >= 5:
-            number = 0
-            sheetline = 1
-            print('\n reset and xls saved!')
-            main()
 
 
 
@@ -619,7 +598,6 @@ def teamccwm(team, season):
             print("break cuz blank")
             '''同上'''
             count -= 1
-            # 这里手残 应该是1 写成18了
             break
 
 
@@ -821,9 +799,7 @@ def graphbubble(file_name: str):  # it should be part of "timeisout"
     # Add titles (main and on axis)
     try:  # TODO(YIFEI): It should raise error instead, remove without notice is BAD, also this try sucks
         os.remove("graph/" + file_name + ".png")
-        print("Previous deleted.")
     except IOError:
-        print("something is not right")
         pass
     plt.xlabel("Skill / [Defensive]")
     plt.ylabel("AP / [Offensive]")
