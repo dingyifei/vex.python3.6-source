@@ -435,56 +435,6 @@ def excel_scan(teams: list, season: str, sku: str):
             main()
 
 
-# Need to test when competition start
-
-def excel_team_matches(name, season):  # TODO(YIFEI): Why excel?
-
-    _json_dict = vexdb_json("matches", {"team": name, "season": season})
-    output = []
-    for r in _json_dict["result"]:
-        line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = {} || ' \
-               'Blue Alliance 1 = {} Blue Alliance 2 = {} Blue Alliance 3 = {} Blue Sit = {} || Red Score = {} Blue ' \
-               'Score = {}' \
-            .format(r["sku"], r["matchnum"], r["round"], r["red1"], r["red2"], r["red3"], r["redsit"], r["blue1"],
-                    r["blue2"], r["blue3"], r["bluesit"], r["redscore"], r["bluescore"])
-        output.append(line)
-    return output
-
-
-def search_team_current_season(name, season):  # TODO(YIFEI): name change.
-
-    json_dict = vexdb_json("rankings", {"team": name, "season": season})
-    output = []
-    for r in json_dict["result"]:
-        line = "Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}" \
-            .format(r["team"], r["wins"], r["losses"], r["ap"], r["rank"], r["max_score"])
-        output.append(line)
-    return output
-
-
-def get_all_data(name, season):
-    # print("This will show the recent three matches.")
-    json_dict = vexdb_json("ranking", {"team": name, "season": season})
-    ranking_result = []
-    for r in json_dict["F"]:
-        line = "Team = {} Wins = {} Losses = {} AP = {} Ranking in Current Match = {} Highest Score = {}" \
-            .format(r["team"], r["wins"], r["losses"], r["ap"], r["rank"], r["max_score"])
-        ranking_result.append(line)
-    json_dict = vexdb_json("matches", {"team": name, "season": season})
-    matches_result = []
-    loop = 0
-    for r in json_dict["result"]:
-        line = '{}: Match{} Round{} || Red Alliance 1 = {} Red Alliance 2 = {} Red Alliance 3 = {} Red Sit = {} || ' \
-               'Blue Alliance 1 = {} Blue Alliance 2 = {} Blue Alliance 3 = {} Blue Sit = {} || Red Score = {} Blue ' \
-               'Score = {}' \
-            .format(r["sku"], r["matchnum"], r["round"], r["red1"], r["red2"], r["red3"], r["redsit"], r["blue1"],
-                    r["blue2"], r["blue3"], r["bluesit"], r["redscore"], r["bluescore"])
-        loop += 1
-        if loop > 2:
-            break
-        matches_result.append(line)
-    return ranking_result, matches_result
-
 
 def time_is_out(red_teams: list, blue_teams: list, season: str):  # TODO: NEED MORE FIX
 
