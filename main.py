@@ -8,53 +8,72 @@ import matplotlib.pyplot as plt
 from decimal import getcontext, Decimal
 from urllib.request import urlopen
 
-
 getcontext().prec = 6
+
 
 def write_workbook(save_location: str):  # testing
 
     # 这是一个应急功能 着急的时候没人care图和excel
-    def rankings_excel(teams:list, season:str, start_row: int = 0, start_column: int = 0):
-        for row,team in enumerate(rankings_scan(teams, season)):
+    def rankings_excel(teams: list, season: str, start_row: int = 0, start_column: int = 0):
+        rankings_columns = ("Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result")
+        for x, y in enumerate(rankings_columns):  # Initialize Matches
+            book[sheet_names[1]].cell(row=1, column=x + 1).value = y
+            book[sheet_names[1]].cell(row=1, column=x + 1).font = ExcelStyle.BOLD_BLACK_FONT
+
+        for row, team in enumerate(rankings_scan(teams, season)):
             for column, value in enumerate(team):
-                book[sheet_names[1]].cell(row = row + 1, column = column).value = value # 90% it is not going to work, maybe column +1 or something
+                book[sheet_names[1]].cell(row=row + 1,
+                                          column=column).value = value  # 90% it is not going to work, maybe column +1 or something
             if int(team[1]) > int(team[2]):
-                book[sheet_names[1]].cell(row = row + 1, column = 6).value = "Positive"
-                book[sheet_names[1]].cell(row = row + 1, column = 6).fill = ExcelStyle.RED_FILL
+                book[sheet_names[1]].cell(row=row + 1, column=6).value = "Positive"
+                book[sheet_names[1]].cell(row=row + 1, column=6).fill = ExcelStyle.RED_FILL
             elif int(team[1]) < int(team[2]):
-                book[sheet_names[1]].cell(row = row + 1, column = 6).value = "Negative"
-                book[sheet_names[1]].cell(row = row + 1, column = 6).fill = ExcelStyle.BLUE_FILL
+                book[sheet_names[1]].cell(row=row + 1, column=6).value = "Negative"
+                book[sheet_names[1]].cell(row=row + 1, column=6).fill = ExcelStyle.BLUE_FILL
             elif int(team[1]) == int(team[2]):
-                book[sheet_names[1]].cell(row = row + 1, column = 6).value = "Equal"
-                book[sheet_names[1]].cell(row = row + 1, column = 6).fill = ExcelStyle.BLACK_FILL
+                book[sheet_names[1]].cell(row=row + 1, column=6).value = "Equal"
+                book[sheet_names[1]].cell(row=row + 1, column=6).fill = ExcelStyle.BLACK_FILL
             else:
-                book[sheet_names[1]].cell(row = row + 1, column = 6).value = "Error"
-                book[sheet_names[1]].cell(row = row + 1, column = 6).fill = ExcelStyle.GREEN_FILL
+                book[sheet_names[1]].cell(row=row + 1, column=6).value = "Error"
+                book[sheet_names[1]].cell(row=row + 1, column=6).fill = ExcelStyle.GREEN_FILL
             book[sheet_names[1]].cell(row=row + 1, column=6).font = ExcelStyle.BOLD_WHITE_FONT
+
     def matches_excel(team: str, season: str, start_row: int = 0, start_column: int = 0):
-        for row, matche in enumerate(matches_scan(team, season)):
-            for column, value in enumerate(matche):
-                book[sheet_names[1]].cell(row = start_row + row, column = start_column + column)
-            if int(dataredsc) > int(databluesc):
-                sheet5.write(sheetline, 14, "Red", STYLE_RED)
-            elif int(dataredsc) < int(databluesc):
-                sheet5.write(sheetline, 14, "Blue", STYLE_BLUE)
+        for row, match in enumerate(matches_scan(team, season)):
+            for column, value in enumerate(match):
+                book[sheet_names[1]].cell(row=start_row + row, column=start_column + column)
+            if int(match[10]) > int(match[11]):
+                book[sheet_names[1]].cell(row=row + 1, column=start_column + 14).value = "Red"
+                book[sheet_names[1]].cell(row=row + 1, column=start_column + 14).fill = ExcelStyle.RED_FILL
+            elif int(match[10]) < int(match[11]):
+                book[sheet_names[1]].cell(row=row + 1, column=start_column + 14).value = "Blue"
+                book[sheet_names[1]].cell(row=row + 1, column=start_column + 14).fill = ExcelStyle.BLUE_FILL
+            if int(match[10]) + 20 < int(match[11]):
+                book[sheet_names[1]].cell(row=row + 1, column=start_column + 14).value = "Blue Easy"
+                book[sheet_names[1]].cell(row=row + 1, column=start_column + 14).fill = ExcelStyle.GREEN_FILL
+            elif int(match[10]) - 20 > int(match[11]):
+                book[sheet_names[1]].cell(row=row + 1, column=start_column + 14).value = "Red Easy"
+                book[sheet_names[1]].cell(row=row + 1, column=start_column + 14).fill = ExcelStyle.YELLOW_FILL
 
-            if int(dataredsc) + 20 < int(databluesc):
-                sheet5.write(sheetline, 14, "Blue Easy", STYLE_LIGHTER_BLUE)
-            elif int(dataredsc) - 20 > int(databluesc):
-                sheet5.write(sheetline, 14, "Red Easy", STYLE_LIGHTER_RED)
+            book[sheet_names[1]].cell(row=row + 1, column=start_column + 14).font = ExcelStyle.BOLD_WHITE_FONT
 
-            if datared1 == teamloop or datared2 == teamloop or datared3 == teamloop:
-                if int(dataredsc) > int(databluesc):
-                    sheet5.write(sheetline, 13, "Win", STYLE_BOLD)
+            if match[2] == team or match[3] == team or match[4] == team:
+                if int(match[10]) > int(match[11]):
+                    book[sheet_names[1]].cell(row=row + 1, column=start_column + 13).value = "Win"
+                    book[sheet_names[1]].cell(row=row + 1, column=start_column + 13).font = ExcelStyle.BOLD_BLACK_FONT
                 else:
-                    sheet5.write(sheetline, 13, "Lose", STYLE_BLACK)
-            elif datablue1 == teamloop or datablue2 == teamloop or datablue3 == teamloop:
-                if int(dataredsc) < int(databluesc):
-                    sheet5.write(sheetline, 13, "Win", STYLE_BOLD)
+                    book[sheet_names[1]].cell(row=row + 1, column=start_column + 13).value = "Lose"
+                    book[sheet_names[1]].cell(row=row + 1, column=start_column + 13).font = ExcelStyle.BOLD_WHITE_FONT
+                    book[sheet_names[1]].cell(row=row + 1, column=start_column + 13).fill = ExcelStyle.BLACK_FILL
+            elif match[6] == team or match[7] == team or match[8] == team:
+                if int(match[10]) < int(match[11]):
+                    book[sheet_names[1]].cell(row=row + 1, column=start_column + 13).value = "Win"
+                    book[sheet_names[1]].cell(row=row + 1, column=start_column + 13).font = ExcelStyle.BOLD_BLACK_FONT
+
                 else:
-                    sheet5.write(sheetline, 13, "Lose", STYLE_BLACK)
+                    book[sheet_names[1]].cell(row=row + 1, column=start_column + 13).value = "Lose"
+                    book[sheet_names[1]].cell(row=row + 1, column=start_column + 13).font = ExcelStyle.BOLD_WHITE_FONT
+                    book[sheet_names[1]].cell(row=row + 1, column=start_column + 13).fill = ExcelStyle.BLACK_FILL
 
     class ExcelStyle:
         RED_FILL = PatternFill(patternType="solid", fgColor=colors.RED)
@@ -71,22 +90,18 @@ def write_workbook(save_location: str):  # testing
     book = openpyxl.Workbook()
     sheet_names = ("#Cover", "#Rankings", "#Important Data", "#For World", "#Bugged Teams")
 
-    rankings_columns = ("Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result")
     for x in sheet_names:
         book.create_sheet(x)
     del book["Sheet"]  # I don't know how to solve this myth, it automatically generate sheets
     book[sheet_names[0]].cell(row=1, column=1).value = "Last Change:" + str(time.localtime())
 
-    for x, y in enumerate(rankings_columns): # Initialize Matches
-        book[sheet_names[1]].cell(row=1, column=x + 1).value = y
-        book[sheet_names[1]].cell(row=1, column=x + 1).font = ExcelStyle.BOLD_BLACK_FONT
-
     book.save(save_location)
 
     return True
+
+
 #             "Because of there are no data for these teams: 1119S, 7386A, 8000X, 8000Z, 19771B, 30638A, 36632A, "
 #            "37073A, 60900A, 76921B, 99556A, 99691E, 99691H are not include in the sheet #Important Data")
-
 
 
 # STYLE_RED = xlwt.easyxf('pattern: pattern solid, fore_colour red;''font: colour white, bold True;')
@@ -262,9 +277,9 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data=None):
                     raise (IOError)  # TODO: Another exception or use some trick to prevent 5000 limit
                 else:
                     if return_data[0] == "full":
-                        output:dict = json_dict
-                    if return_data[0] != "full": # TODO(YIFEI): They should be both dict
-                        output:list = []
+                        output: dict = json_dict
+                    if return_data[0] != "full":  # TODO(YIFEI): They should be both dict
+                        output: list = []
                         for x in json_dict["result"]:
                             for y in return_data:
                                 output.append(x[y])
@@ -280,19 +295,21 @@ def matches_scan(team: str, season: str):
     out = []
     for r in vexdb_json("matches", {"season": season, "team": team}):
         out.append((str(r["sku"]), str(r["matchnum"]), str(r["round"]),
-               str(r["red1"]), str(r["red2"]), str(r["red3"]),
-               str(r["redsit"]),str(r["blue1"]), str(r["blue2"]),
-               str(r["blue3"]), str(r["bluesit"]), str(r["redscore"]),
-               str(r["bluescore"])))
+                    str(r["red1"]), str(r["red2"]), str(r["red3"]),
+                    str(r["redsit"]), str(r["blue1"]), str(r["blue2"]),
+                    str(r["blue3"]), str(r["bluesit"]), str(r["redscore"]),
+                    str(r["bluescore"])))
     return out
 
-def rankings_scan(teams: list, season: str, sku:str):
+
+def rankings_scan(teams: list, season: str, sku: str):
     out = []
     for x, team in enumerate(teams):
         for r in vexdb_json("rankings", {"team": team, "season": season, "sku": sku}):
             out.append((str(r["team"]), str(r["wins"]), str(r["losses"]),
                         str(r["ap"]), str(r["rank"]), str(r["max_score"])))
     return out
+
 
 # 从 excel_scan_world 更名为 excel_scan
 def excel_scan(teams: list, season: str, sku: str):
@@ -411,8 +428,6 @@ def excel_scan(teams: list, season: str, sku: str):
             for x in range(0, 15):
                 sheet5.write(sheetline, x, "- - - - - - -", STYLE_BLACK)
             sheetline += 1
-
-
 
 
 def time_is_out(red_teams: list, blue_teams: list, season: str):  # TODO: NEED MORE FIX
@@ -828,7 +843,6 @@ def graphbubble(file_name: str):  # it should be part of "timeisout"
     plt.show()
 
 
-
 def getteam(sku, country):
     # TODO: fix after finish readconfig
     _json_dict = vexdb_json("teams", {"sku": sku, "program": "VRC", "limit_number": "4999", "country": country})
@@ -892,7 +906,6 @@ def main():
             # getteam()
             sku = input("Match sku")
             print(getteam(sku))
-
 
 
 if __name__ == '__main__':
