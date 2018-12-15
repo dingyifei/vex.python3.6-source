@@ -218,7 +218,7 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data = None):
                 raise(IOError) # TODO: a exception
             else:
                 if json_dict["size"] == 5000:
-                    raise(IOError) # TODO: Another exception or use some trick to prevent 5000 limit
+                    raise(IOError)
                 else:
                     if return_data[0] == "full":
                         output = json_dict
@@ -314,7 +314,10 @@ def excel_scan_teams(teams: list, season: str):  # 201
             print('\n reset and xls saved!')
             main()
 
+
 #TODO(BOTH) 把这个修好变成什么时候都能用就ok 从 excel_scan_world 更名为 excel_scan
+
+
 def excel_scan(teams: list, season: str, sku: str):
     number = 0
     sheetline = 0
@@ -1127,7 +1130,7 @@ def getteam(sku):
 def main():
     team_list()
     try:
-        read_config(passing_name='season')
+        read_config(passing_name='teamlist')
 
     except:
         print("Cannot find config.ini, so you are creating one.")
@@ -1154,14 +1157,16 @@ def main():
                 #To Test
                 season = input('(I)n The Zone / (T)urning Point\n')
                 if season.lower() == 'i':
-                    season = 'In%20The%20Zone'
+                    season = 'In The Zone'
+
                 else:
-                    season = 'Turning%20Point'
-                sku = input('sku? blank = all in the [season]\n')
-                print(team_list)
-                teams = GlobalVar.team_list
-                #TODO(YINGFENG):调用 get_teams
-                excel_scan(teams, season, sku)
+                    season = 'Turning Point'
+                sku = input('sku? blank = all ' + season + '\n')
+                #print(team_list)
+                #teams = GlobalVar.team_list
+
+                read_config(passing_name='teamlist')
+                excel_scan(season, sku)
             elif excel_mode == 2:
                 print("Mode = Write Team Matches [Don't use this]")
                 input1 = input("Team ?\n")
