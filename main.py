@@ -14,7 +14,7 @@ getcontext().prec = 6
 def write_workbook(save_location: str):  # testing
 
     # 这是一个应急功能 着急的时候没人care图和excel
-    def rankings_excel(teams: list, season: str, start_row: int = 0, start_column: int = 0):
+    def rankings_excel(teams: list, season: str, start_row: int = 1, start_column: int = 1):
         rankings_columns = ("Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result")
         for x, y in enumerate(rankings_columns):  # Initialize Matches
             book[sheet_names[1]].cell(row=1, column=x + 1).value = y
@@ -22,23 +22,29 @@ def write_workbook(save_location: str):  # testing
 
         for row, team in enumerate(rankings_scan(teams, season)):
             for column, value in enumerate(team):
-                book[sheet_names[1]].cell(row=row + 1,
-                                          column=column).value = value  # 90% it is not going to work, maybe column +1 or something
+                book[sheet_names[1]].cell(row=row + start_row, column=6 + start_column).value = value
             if int(team[1]) > int(team[2]):
-                book[sheet_names[1]].cell(row=row + 1, column=6).value = "Positive"
-                book[sheet_names[1]].cell(row=row + 1, column=6).fill = ExcelStyle.RED_FILL
+                book[sheet_names[1]].cell(row=row + start_row + 1, column=6 + start_column).value = "Positive"
+                book[sheet_names[1]].cell(row=row + start_row + 1, column=6 + start_column).fill = ExcelStyle.RED_FILL
             elif int(team[1]) < int(team[2]):
-                book[sheet_names[1]].cell(row=row + 1, column=6).value = "Negative"
-                book[sheet_names[1]].cell(row=row + 1, column=6).fill = ExcelStyle.BLUE_FILL
+                book[sheet_names[1]].cell(row=row + start_row + 1, column=6 + start_column).value = "Negative"
+                book[sheet_names[1]].cell(row=row + start_row + 1, column=6 + start_column).fill = ExcelStyle.BLUE_FILL
             elif int(team[1]) == int(team[2]):
-                book[sheet_names[1]].cell(row=row + 1, column=6).value = "Equal"
-                book[sheet_names[1]].cell(row=row + 1, column=6).fill = ExcelStyle.BLACK_FILL
+                book[sheet_names[1]].cell(row=row + start_row + 1, column=6 + start_column).value = "Equal"
+                book[sheet_names[1]].cell(row=row + start_row, column=6 + start_column).fill = ExcelStyle.BLACK_FILL
             else:
-                book[sheet_names[1]].cell(row=row + 1, column=6).value = "Error"
-                book[sheet_names[1]].cell(row=row + 1, column=6).fill = ExcelStyle.GREEN_FILL
-            book[sheet_names[1]].cell(row=row + 1, column=6).font = ExcelStyle.BOLD_WHITE_FONT
+                book[sheet_names[1]].cell(row=row + start_row + 1, column=6 + start_column).value = "Error"
+                book[sheet_names[1]].cell(row=row + start_row + 1, column=6 + start_column).fill = ExcelStyle.GREEN_FILL
+            book[sheet_names[1]].cell(row=row + 1, column=6 + start_column).font = ExcelStyle.BOLD_WHITE_FONT
 
-    def matches_excel(team: str, season: str, start_row: int = 0, start_column: int = 0):
+    def matches_excel(team: str, season: str, start_row: int = 1, start_column: int = 1):
+        matches_columns = (
+            "Sku", "Match", "Red1", "Red2", "Red3", "RedSit", "Blue1", "Blue2", "Blue3", "BlueSit", "RedSco", "BlueSco"
+        )
+        for x, y in enumerate(matches_columns):  # Initialize Matches
+            book[sheet_names[1]].cell(row=1, column=x + 1).value = y
+            book[sheet_names[1]].cell(row=1, column=x + 1).font = ExcelStyle.BOLD_BLACK_FONT
+
         for row, match in enumerate(matches_scan(team, season)):
             for column, value in enumerate(match):
                 book[sheet_names[1]].cell(row=start_row + row, column=start_column + column)
@@ -69,7 +75,6 @@ def write_workbook(save_location: str):  # testing
                 if int(match[10]) < int(match[11]):
                     book[sheet_names[1]].cell(row=row + 1, column=start_column + 13).value = "Win"
                     book[sheet_names[1]].cell(row=row + 1, column=start_column + 13).font = ExcelStyle.BOLD_BLACK_FONT
-
                 else:
                     book[sheet_names[1]].cell(row=row + 1, column=start_column + 13).value = "Lose"
                     book[sheet_names[1]].cell(row=row + 1, column=start_column + 13).font = ExcelStyle.BOLD_WHITE_FONT
@@ -94,153 +99,12 @@ def write_workbook(save_location: str):  # testing
         book.create_sheet(x)
     del book["Sheet"]  # I don't know how to solve this myth, it automatically generate sheets
     book[sheet_names[0]].cell(row=1, column=1).value = "Last Change:" + str(time.localtime())
-
+    rankings_excel(teams=["35211C"], season="Turning%20Point")
     book.save(save_location)
-
     return True
-
 
 #             "Because of there are no data for these teams: 1119S, 7386A, 8000X, 8000Z, 19771B, 30638A, 36632A, "
 #            "37073A, 60900A, 76921B, 99556A, 99691E, 99691H are not include in the sheet #Important Data")
-
-
-# STYLE_RED = xlwt.easyxf('pattern: pattern solid, fore_colour red;''font: colour white, bold True;')
-# STYLE_BLUE = xlwt.easyxf('pattern: pattern solid, fore_colour blue;''font: colour white, bold True;')
-# STYLE_LIGHTER_RED = xlwt.easyxf('pattern: pattern solid, fore_colour pink;''font: colour white, bold True;')
-# STYLE_LIGHTER_BLUE = xlwt.easyxf('pattern: pattern solid, fore_colour pale_blue;''font: colour white, bold True;')
-# STYLE_RED = xlwt.easyxf('font: colour red, bold True;')
-# STYLE_BLUE = xlwt.easyxf('font: colour blue, bold True;')
-# STYLE_BLACK = xlwt.easyxf('pattern: pattern solid, fore_colour black;''font: colour white, bold True;')
-# STYLE_BOLD = xlwt.easyxf('font: colour black, bold True;')
-
-class GlobalVar:
-    # used in graphbubble, graphred, timeisout
-    teamr1 = ""
-    teamr2 = ""
-    teamr3 = ""
-
-    # used in graphbubble, graphblue, timeisout
-    teamb1 = ""
-    teamb2 = ""
-    teamb3 = ""
-
-    # only used in teamskill and timeisout
-    teamname = ""
-
-    # used in graphbubble, graphred, timeisout
-    teamr1wins = 0
-    teamr2wins = 0
-    teamr3wins = 0
-
-    # used in graphbubble, graphblue, timeisout
-    teamb1wins = 0
-    teamb2wins = 0
-    teamb3wins = 0
-
-    # used in teamskill and timeisout
-    skillave = 0
-
-    # used in answer, graphbubble, graphred, timeisout
-    teamr1skillout = 0
-    teamr2skillout = 0
-    teamr3skillout = 0
-    teamb1skillout = 0
-    teamb2skillout = 0
-    teamb3skillout = 0
-
-    # only graphbubble, graphred, and timeisout
-    teamr1ap = 0
-    teamr2ap = 0
-    teamr3ap = 0
-
-    # only graphbubble, graphblue, and timeisout
-    teamb1ap = 0
-    teamb2ap = 0
-    teamb3ap = 0
-
-    # only graphbubble, graphred, and timeisout
-    teamr1ranking = 0
-    teamr2ranking = 0
-    teamr3ranking = 0
-
-    # only graphbubble, graphblue, and timeisout
-    teamb1ranking = 0
-    teamb2ranking = 0
-    teamb3ranking = 0
-
-    # only graphbubble, graphred, and timeisout
-    teamr1highest = 0
-    teamr2highest = 0
-    teamr3highest = 0
-
-    # only graphbubble, graphblue, and timeisout
-    teamb1highest = 0
-    teamb2highest = 0
-    teamb3highest = 0
-
-    # only graphbubble and timeisout
-    teamr1ccwm = 0
-    teamr2ccwm = 0
-    teamr3ccwm = 0
-    teamb1ccwm = 0
-    teamb2ccwm = 0
-    teamb3ccwm = 0
-
-    # only graphbubble and timeisout
-    teamr1opr = 0
-    teamr2opr = 0
-    teamr3opr = 0
-    teamb1opr = 0
-    teamb2opr = 0
-    teamb3opr = 0
-
-    # only graphbubble and timeisout
-    teamr1dpr = 0
-    teamr2dpr = 0
-    teamr3dpr = 0
-    teamb1dpr = 0
-    teamb2dpr = 0
-    teamb3dpr = 0
-
-    # Only teamcurrent and timeisout
-    currentranking = 0
-    currentwins = 0
-    currentlosses = 0
-
-    # only graphbubble and timeisout
-    teamr1currentranking = 0
-    teamr2currentranking = 0
-    teamr3currentranking = 0
-    teamb1currentranking = 0
-    teamb2currentranking = 0
-    teamb3currentranking = 0
-
-    # only graphbubble and timeisout
-    teamr1currentwins = 0
-    teamr2currentwins = 0
-    teamr3currentwins = 0
-    teamb1currentwins = 0
-    teamb2currentwins = 0
-    teamb3currentwins = 0
-    teamr1currentlosses = 0
-    teamr2currentlosses = 0
-    teamr3currentlosses = 0
-    teamb1currentlosses = 0
-    teamb2currentlosses = 0
-    teamb3currentlosses = 0
-
-    # the crap I don't want to locate
-    winsave = 0
-    apave = 0
-    oprave = 0
-    oprtotal = 0
-    dprave = 0
-    rankave = 0
-    highestave = 0
-    ccwmave = 0
-
-    response = ''
-
 
 def vexdb_json(api_type: str, api_parameters: dict, return_data=None):
     """
@@ -278,7 +142,7 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data=None):
                 else:
                     if return_data[0] == "full":
                         output: dict = json_dict
-                    if return_data[0] != "full":  # TODO(YIFEI): They should be both dict
+                    if return_data[0] != "full":
                         output: list = []
                         for x in json_dict["result"]:
                             for y in return_data:
@@ -287,560 +151,28 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data=None):
 
 
 def team_list():  # For testing
-    print(vexdb_json("teams", {"grade": "High%20School"}, ["number"]))
+    #print(vexdb_json("teams", {"grade": "High%20School"}, ["number"]))
     print(vexdb_json("matches", {"season": "Starstruck", "team": "8667A"}, ["sku"]))
 
 
 def matches_scan(team: str, season: str):
     out = []
     for r in vexdb_json("matches", {"season": season, "team": team}):
-        out.append((str(r["sku"]), str(r["matchnum"]), str(r["round"]),
+        out.append([str(r["sku"]), str(r["matchnum"]), str(r["round"]),
                     str(r["red1"]), str(r["red2"]), str(r["red3"]),
                     str(r["redsit"]), str(r["blue1"]), str(r["blue2"]),
                     str(r["blue3"]), str(r["bluesit"]), str(r["redscore"]),
-                    str(r["bluescore"])))
+                    str(r["bluescore"])])
     return out
 
 
-def rankings_scan(teams: list, season: str, sku: str):
+def rankings_scan(teams: list, season: str):
     out = []
     for x, team in enumerate(teams):
-        for r in vexdb_json("rankings", {"team": team, "season": season, "sku": sku}):
-            out.append((str(r["team"]), str(r["wins"]), str(r["losses"]),
-                        str(r["ap"]), str(r["rank"]), str(r["max_score"])))
+        for r in vexdb_json("rankings", {"team": team, "season": season})["result"]:
+            a = {"team": r["team"], "wins": r["wins"], "losses": r["losses"], "ap": r["ap"], "rank": r["rank"], "max_score":r["max_score"]}
+            out.append(a)
     return out
-
-
-# 从 excel_scan_world 更名为 excel_scan
-def excel_scan(teams: list, season: str, sku: str):
-    number = 0
-    sheetline = 0
-
-    while True:
-        while number < int(len(teams)):
-            teamloop = teams[number]
-            print(teamloop)
-            number += 1
-            sheetline += 1
-            json_dict = vexdb_json("rankings", {"team": teamloop, "season": season, 'sku': sku})
-
-            for r in json_dict["result"]:
-                datateam = '{}'.format(r["team"])
-                datawins = '{}'.format(r["wins"])
-                datalosses = '{}'.format(r["losses"])
-                dataap = '{}'.format(r["ap"])
-                datarank = '{}'.format(r["rank"])
-                datamaxscore = '{}'.format(r["max_score"])
-
-                sheet5.write(sheetline, 0, "#" + datateam)
-                sheet5.write(sheetline, 1, datawins)
-                sheet5.write(sheetline, 2, datalosses)
-                sheet5.write(sheetline, 3, dataap)
-                sheet5.write(sheetline, 4, datarank)
-                sheet5.write(sheetline, 5, datamaxscore)
-
-                if int(datawins) > int(datalosses):
-                    sheet5.write(sheetline, 6, "Positive", STYLE_RED)
-                elif int(datawins) < int(datalosses):
-                    sheet5.write(sheetline, 6, "Negative", STYLE_BLUE)
-
-                sheetline += 1
-
-                json_dict = vexdb_json("matches", {"team": teamloop, "season": season})
-
-                loop = -10000
-
-            sheet5.write(sheetline, 0, "Sku")
-            sheet5.write(sheetline, 1, "Match")
-            sheet5.write(sheetline, 2, "Red1")
-            sheet5.write(sheetline, 3, "Red2")
-            sheet5.write(sheetline, 4, "Red3")
-            sheet5.write(sheetline, 5, "RedSit")
-            sheet5.write(sheetline, 6, "Blue1")
-            sheet5.write(sheetline, 7, "Blue2")
-            sheet5.write(sheetline, 8, "Blue3")
-            sheet5.write(sheetline, 9, "BlueSit")
-            sheet5.write(sheetline, 10, "RedSco")
-            sheet5.write(sheetline, 11, "BlueSco")
-
-            for r in json_dict["result"]:
-                datasku = '{}'.format(r["sku"])
-                datamatchnum = '{}'.format(r["matchnum"])
-                datared1 = '{}'.format(r["red1"])
-                datared2 = '{}'.format(r["red2"])
-                datared3 = '{}'.format(r["red3"])
-                dataredsit = '{}'.format(r["redsit"])
-                datablue1 = '{}'.format(r["blue1"])
-                datablue2 = '{}'.format(r["blue2"])
-                datablue3 = '{}'.format(r["blue3"])
-                databluesit = '{}'.format(r["bluesit"])
-                dataredsc = '{}'.format(r["redscore"])
-                databluesc = '{}'.format(r["bluescore"])
-
-                sheetline += 1
-
-                sheet5.write(sheetline, 0, datasku)
-                sheet5.write(sheetline, 1, datamatchnum)
-                sheet5.write(sheetline, 2, datared1, STYLE_RED)
-                sheet5.write(sheetline, 3, datared2, STYLE_RED)
-                sheet5.write(sheetline, 4, datared3, STYLE_RED)
-                sheet5.write(sheetline, 5, dataredsit, STYLE_RED)
-                sheet5.write(sheetline, 6, datablue1, STYLE_BLUE)
-                sheet5.write(sheetline, 7, datablue2, STYLE_BLUE)
-                sheet5.write(sheetline, 8, datablue3, STYLE_BLUE)
-                sheet5.write(sheetline, 9, databluesit, STYLE_BLUE)
-                sheet5.write(sheetline, 10, dataredsc, STYLE_RED)
-                sheet5.write(sheetline, 11, databluesc, STYLE_BLUE)
-                sheet5.write(sheetline, 12, datateam + " =", STYLE_BOLD)
-
-                if int(dataredsc) > int(databluesc):
-                    sheet5.write(sheetline, 14, "Red", STYLE_RED)
-                elif int(dataredsc) < int(databluesc):
-                    sheet5.write(sheetline, 14, "Blue", STYLE_BLUE)
-
-                if int(dataredsc) + 20 < int(databluesc):
-                    sheet5.write(sheetline, 14, "Blue Easy", STYLE_LIGHTER_BLUE)
-                elif int(dataredsc) - 20 > int(databluesc):
-                    sheet5.write(sheetline, 14, "Red Easy", STYLE_LIGHTER_RED)
-
-                if datared1 == teamloop or datared2 == teamloop or datared3 == teamloop:
-                    if int(dataredsc) > int(databluesc):
-                        sheet5.write(sheetline, 13, "Win", STYLE_BOLD)
-                    else:
-                        sheet5.write(sheetline, 13, "Lose", STYLE_BLACK)
-                elif datablue1 == teamloop or datablue2 == teamloop or datablue3 == teamloop:
-                    if int(dataredsc) < int(databluesc):
-                        sheet5.write(sheetline, 13, "Win", STYLE_BOLD)
-                    else:
-                        sheet5.write(sheetline, 13, "Lose", STYLE_BLACK)
-
-                sheetline += 1
-
-                loop += 1
-
-                if loop > 10:  # 最近10场比赛
-                    break
-            sheetline += 1
-            for x in range(0, 15):
-                sheet5.write(sheetline, x, "- - - - - - -", STYLE_BLACK)
-
-            sheetline += 1
-            for x in range(0, 15):
-                sheet5.write(sheetline, x, "- - - - - - -", STYLE_BLACK)
-            sheetline += 1
-
-
-def time_is_out(red_teams: list, blue_teams: list, season: str):  # TODO: NEED MORE FIX
-
-    # GlobalVar.inputmode = str(input("Type in the preset value or 6 teams separate by ,\n"))
-
-    for red_team in red_teams:  # TODO(YIFEI): Make it work
-        if red_team != "":
-            a_dict = team_skill(red_team, season)
-
-    for blue_team in blue_teams:
-        if blue_team != "":
-            b_dict = team_skill(blue_team, season)
-
-    if str(GlobalVar.teamr1) != "":
-        GlobalVar.teamname = GlobalVar.teamr1
-        team_skill()
-        GlobalVar.teamr1skillout = GlobalVar.skillave
-        GlobalVar.teamr1wins = GlobalVar.winsave
-        GlobalVar.teamr1ap = GlobalVar.apave
-        GlobalVar.teamr1ranking = GlobalVar.rankave
-        GlobalVar.teamr1highest = GlobalVar.highestave
-        GlobalVar.teamr1ccwm = GlobalVar.ccwmave
-        GlobalVar.teamr1dpr = GlobalVar.dprave
-        GlobalVar.teamr1opr = GlobalVar.oprave
-        GlobalVar.teamr1currentranking = GlobalVar.currentranking
-        GlobalVar.teamr1currentwins = GlobalVar.currentwins
-        GlobalVar.teamr1currentlosses = GlobalVar.currentlosses
-    else:
-        print("Team Red 1 is blank.")
-
-    if str(GlobalVar.teamb1) != "":
-        GlobalVar.teamname = GlobalVar.teamb1
-        team_skill()
-        GlobalVar.teamb1skillout = GlobalVar.skillave
-        GlobalVar.teamb1wins = GlobalVar.winsave
-        GlobalVar.teamb1ap = GlobalVar.apave
-        GlobalVar.teamb1ranking = GlobalVar.rankave
-        GlobalVar.teamb1highest = GlobalVar.highestave
-        GlobalVar.teamb1ccwm = GlobalVar.ccwmave
-        GlobalVar.teamb1dpr = GlobalVar.dprave
-        GlobalVar.teamb1opr = GlobalVar.oprave
-        GlobalVar.teamb1currentranking = GlobalVar.currentranking
-        GlobalVar.teamb1currentwins = GlobalVar.currentwins
-        GlobalVar.teamb1currentlosses = GlobalVar.currentlosses
-    else:
-        print("Team Blue 1 is blank.")
-
-    graphbubble()  # pass value use arg instead of global
-
-    return None
-
-
-def team_skill(team, season):
-    attempts_total = 0
-    skill_total = 0
-    skill_ave = 0
-
-    for x in vexdb_json("skills", {"team": team, "season": season}, ["attempts"]):
-        if x != 0:
-            attempts_total += 1
-    for x in vexdb_json("skills", {"team": team, "season": season}, ["attempts"]):
-        skill_total += x
-    if attempts_total != 0:
-        skill_ave = skill_total / attempts_total
-    return (skill_ave)
-
-
-def team_sent(team, season):
-    wins = vexdb_json("rankings", {"team": team, "season": season}, ["wins"])
-    count = len(wins)
-    for x in wins:
-        if str(x) == "":
-            count -= 1
-    return (sum(wins) / count)
-
-
-def team_current(team, season, sku):  # can be part of teamsent()
-
-    for r in vexdb_json("rankings", {"season": season, "team": team, "sku": sku}):
-        # TODO: No idea what it does, maybe only get the last part, 100% not working
-        current_ranking = '{}'.format(r["rank"])
-        current_wins = '{}'.format(r["wins"])
-        current_losses = '{}'.format(r["losses"])
-    return (current_ranking, current_wins, current_losses)
-
-
-def teamap(team, season):
-    aptotal = 0
-    count = 0
-    for r in vexdb_json("rankings", {"team": team, "season": season}):
-        teammap = '{}'.format(r["ap"])
-        count += 1
-        if int(teammap) > 25:
-            diff = (int(teammap) - 25) * 0.2
-            teammap = 25 + float(diff)
-            print("Balance over 25, " + str(diff))
-            '''这里的逻辑：去年的Auto基本得分就在20-30之间，但有些队太强/对手太弱，会拿到巨高的AP分，所以对25以上的做取20%处理
-            防止图画不出来。'''
-        aptotal += int(teammap)
-        GlobalVar.apave = int(aptotal) / int(count)
-        if teammap == "" or teammap == 0:
-            count -= 1
-            teamranking()
-    teamranking()
-
-
-def teamranking(team, season):
-    GlobalVar.rankave = 0
-    count = 0
-    rank_total = 0
-    json_dict = vexdb_json("rankings", {"team": team, "season": season})  # teamsent
-    for r in json_dict["result"]:
-        team_ranking = '{}'.format(r["rank"])
-        count += 1
-        rank_total += int(team_ranking)
-        GlobalVar.rankave = float(rank_total) / count
-        if team_ranking == "" or team_ranking == 0:
-            print("break cuz blank")
-            count -= 1
-            '''同理'''
-            GlobalVar.rankave = float(rank_total) / count
-            team_highest()
-        GlobalVar.rankave = float(team_ranking) / count
-    team_highest()
-
-
-def team_highest(team, season):
-    highesttotal = 0
-    GlobalVar.highestave = 0
-    count = 0
-    json_dict = vexdb_json("rankings", {"team": team, "season": season})  # teamsent
-    for r in json_dict["result"]:
-        team_highest = '{}'.format(r["max_score"])
-        count += 1
-        highesttotal += int(team_highest)
-        GlobalVar.highestave = int(highesttotal) / count
-        if team_highest == "" or team_highest == 0:
-            print("break cuz blank")
-            '''数据库bug：就算那个队离开了/被DQ/各种原因没去，依旧会记录分数并写为空/0，所以要减掉奇怪的情况防止平均出错。'''
-            count -= 1
-            GlobalVar.highestave = float(highesttotal) / count
-            teampr()
-        GlobalVar.highestave = float(highesttotal) / count
-    teampr()
-
-
-def teampr(team, season):
-    GlobalVar.oprtotal = 0
-    dprtotal = 0
-    json_dict = vexdb_json("rankings", {"team": team, "season": season})  # teamsent
-    count = 0
-    for r in json_dict["result"]:
-        teamopr = '{}'.format(r["opr"])
-        teamdpr = '{}'.format(r["dpr"])
-        teamopr = (float(teamopr) / 5)
-        teamdpr = (float(teamdpr) / 5)
-        count += 1
-        GlobalVar.oprtotal += float(teamopr)
-        GlobalVar.oprave = float(GlobalVar.oprtotal) / count
-        dprtotal += float(teamdpr)
-        GlobalVar.dprave = float(dprtotal) / count
-        if teamdpr == "" or teamdpr == 0 or teamopr == "" or teamopr == 0:
-            print("break cuz blank")
-            '''同理，数据库bug：就算那个队离开了/被DQ/各种原因没去，依旧会计算分数并写为空/0，所以要减掉奇怪的情况防止平均出错。'''
-            count -= 1
-            teamccwm()
-
-        teamccwm()
-
-
-def teamccwm(team, season):
-    ccwmtotal = 0
-    GlobalVar.ccwmave = 0
-    json_dict = vexdb_json("rankings", {"team": team, "season": season})  # teamsent
-    count = 0
-    for r in json_dict["result"]:
-        teamccwm = '{}'.format(r["ccwm"])
-        count += 1
-        ccwmtotal += float(teamccwm)
-        GlobalVar.ccwmave = float(ccwmtotal) / count
-        if teamccwm == "" or teamccwm == 0:
-            print("break cuz blank")
-            '''同上'''
-            count -= 1
-            break
-
-
-def graphbubble(file_name: str):  # it should be part of "timeisout"
-    GlobalVar.teamr1skillout = float(GlobalVar.teamr1skillout) / 10
-    GlobalVar.teamr2skillout = float(GlobalVar.teamr2skillout) / 10
-    GlobalVar.teamr3skillout = float(GlobalVar.teamr3skillout) / 10
-    GlobalVar.teamr1ap = round(float(GlobalVar.teamr1ap) / 5, 1)
-    GlobalVar.teamr2ap = round(float(GlobalVar.teamr2ap) / 5, 1)
-    GlobalVar.teamr3ap = round(float(GlobalVar.teamr3ap) / 5, 1)
-    # The Formula
-    GlobalVar.teamr1ranking = int(10 - int(GlobalVar.teamr1ranking))
-    GlobalVar.teamr2ranking = int(10 - int(GlobalVar.teamr2ranking))
-    GlobalVar.teamr3ranking = int(10 - int(GlobalVar.teamr3ranking))
-
-    # /17
-    GlobalVar.teamr1highest = round(float(int(GlobalVar.teamr1highest) / 17), 1)
-    GlobalVar.teamr2highest = round(float(int(GlobalVar.teamr2highest) / 17), 1)
-    GlobalVar.teamr3highest = round(float(int(GlobalVar.teamr3highest) / 17), 1)
-
-    if int(GlobalVar.teamr1ranking) < 0:
-        GlobalVar.teamr1ranking = 0
-    if int(GlobalVar.teamr2ranking) < 0:
-        GlobalVar.teamr2ranking = 0
-    if int(GlobalVar.teamr3ranking) < 0:
-        GlobalVar.teamr3ranking = 0
-
-    # Check
-    print("Skill " + str(GlobalVar.teamr1skillout) + " " + str(GlobalVar.teamr2skillout) + " " + str(
-        GlobalVar.teamr3skillout))
-    print("Season Wins " + str(GlobalVar.teamr1wins) + " " + str(GlobalVar.teamr2wins) + " " + str(
-        GlobalVar.teamr3wins))
-    print("AP " + str(GlobalVar.teamr1ap) + " " +
-          str(GlobalVar.teamr2ap) + " " + str(GlobalVar.teamr3ap))
-    print("Ranking " + str(GlobalVar.teamr1ranking) + " " + str(GlobalVar.teamr2ranking) + " " + str(
-        GlobalVar.teamr3ranking))
-    print("Highest " + str(GlobalVar.teamr1highest) + " " + str(GlobalVar.teamr2highest) + " " + str(
-        GlobalVar.teamr3highest))
-    print("CCWM" + str(GlobalVar.teamr1ccwm))
-
-    GlobalVar.teamb1skillout = float(GlobalVar.teamb1skillout) / 10
-    GlobalVar.teamb2skillout = float(GlobalVar.teamb2skillout) / 10
-    GlobalVar.teamb3skillout = float(GlobalVar.teamb3skillout) / 10
-
-    GlobalVar.teamb1ap = round(float(GlobalVar.teamb1ap) / 5, 1)
-    GlobalVar.teamb2ap = round(float(GlobalVar.teamb2ap) / 5, 1)
-    GlobalVar.teamb3ap = round(float(GlobalVar.teamb3ap) / 5, 1)
-
-    # The Formula
-    GlobalVar.teamb1ranking = int(10 - int(GlobalVar.teamb1ranking))
-    GlobalVar.teamb2ranking = int(10 - int(GlobalVar.teamb2ranking))
-    GlobalVar.teamb3ranking = int(10 - int(GlobalVar.teamb3ranking))
-
-    # /17，缩小数值这样就能表现在图中了
-    GlobalVar.teamb1highest = round(
-        float(int(GlobalVar.teamb1highest) / 17), 1)
-    GlobalVar.teamb2highest = round(
-        float(int(GlobalVar.teamb2highest) / 17), 1)
-    GlobalVar.teamb3highest = round(
-        float(int(GlobalVar.teamb3highest) / 17), 1)
-
-    if int(GlobalVar.teamb1ranking) <= 0:
-        GlobalVar.teamb1ranking = 0
-    if int(GlobalVar.teamb2ranking) <= 0:
-        GlobalVar.teamb2ranking = 0
-    if int(GlobalVar.teamb3ranking) <= 0:
-        GlobalVar.teamb3ranking = 0
-
-    # Check
-    print("Skill " + str(GlobalVar.teamb1skillout) + " " + str(GlobalVar.teamb2skillout) + " " + str(
-        GlobalVar.teamb3skillout))
-    print("Season Wins " + str(GlobalVar.teamb1wins) + " " + str(GlobalVar.teamb2wins) + " " + str(
-        GlobalVar.teamb3wins))
-    print("AP " + str(GlobalVar.teamb1ap) + " " +
-          str(GlobalVar.teamb2ap) + " " + str(GlobalVar.teamb3ap))
-    print("Ranking " + str(GlobalVar.teamb1ranking) + " " + str(GlobalVar.teamb2ranking) + " " + str(
-        GlobalVar.teamb3ranking))
-    print("Highest " + str(GlobalVar.teamb1highest) + " " + str(GlobalVar.teamb2highest) + " " + str(
-        GlobalVar.teamb3highest))
-
-    if GlobalVar.teamr1ccwm < 0:
-        GlobalVar.teamr1ccwm = 0.1
-    if GlobalVar.teamr2ccwm < 0:
-        GlobalVar.teamr2ccwm = 0.1
-    if GlobalVar.teamr3ccwm < 0:
-        GlobalVar.teamr3ccwm = 0.1
-    if GlobalVar.teamb1ccwm < 0:
-        GlobalVar.teamb1ccwm = 0.1
-    if GlobalVar.teamb2ccwm < 0:
-        GlobalVar.teamb2ccwm = 0.1
-    if GlobalVar.teamb3ccwm < 0:
-        GlobalVar.teamb3ccwm = 0.1
-    '''因为ccwm是z轴（气泡大小），0就没有气泡了'''
-
-    # create data!
-
-    x = float(GlobalVar.teamr1skillout)
-    y = float(GlobalVar.teamr1ap)
-    # z = float(GlobalVar.teamr1wins)
-    z = float(GlobalVar.teamr1highest)
-    plt.text(x, y, str(GlobalVar.teamr1), ha='center',
-             va='center', fontweight='bold', color='red')
-    plt.scatter(x, y, s=z * 300, c="red", alpha=0.4, linewidth=6)
-
-    x = float(GlobalVar.teamr2skillout)
-    y = float(GlobalVar.teamr2ap)
-    # z = float(GlobalVar.teamr2wins)
-    z = float(GlobalVar.teamr2highest)
-    plt.text(x, y, str(GlobalVar.teamr2), ha='center',
-             va='center', fontweight='bold', color='red')
-    plt.scatter(x, y, s=z * 300, c="red", alpha=0.4, linewidth=6)
-
-    x = float(GlobalVar.teamr3skillout)
-    y = float(GlobalVar.teamr3ap)
-    # z = float(GlobalVar.teamr3wins)
-    z = float(GlobalVar.teamr3highest)
-    plt.text(x, y, str(GlobalVar.teamr3), ha='center',
-             va='center', fontweight='bold', color='red')
-    plt.scatter(x, y, s=z * 300, c="red", alpha=0.4, linewidth=6)
-
-    x = float(GlobalVar.teamr1dpr)
-    y = float(GlobalVar.teamr1opr)
-    # z = float(GlobalVar.teamr1wins)
-    z = float(GlobalVar.teamr1ccwm)
-    plt.text(x, y, str("[" + GlobalVar.teamr1 + "]"), ha='center',
-             fontweight='bold', va='center', color='darkred')
-    plt.scatter(x, y, s=z * 50, c="deeppink", alpha=0.4, linewidth=6)
-
-    x = float(GlobalVar.teamr2dpr)
-    y = float(GlobalVar.teamr2opr)
-    # z = float(GlobalVar.teamr2wins)
-    z = float(GlobalVar.teamr2ccwm)
-    plt.text(x, y, str("[" + GlobalVar.teamr2 + "]"), ha='center',
-             fontweight='bold', va='center', color='darkred')
-    plt.scatter(x, y, s=z * 50, c="deeppink", alpha=0.4, linewidth=6)
-
-    if GlobalVar.teamr3dpr != 0:
-        x = float(GlobalVar.teamr3dpr)
-        y = float(GlobalVar.teamr3opr)
-        # z = float(GlobalVar.teamr3wins)
-        z = float(GlobalVar.teamr3ccwm)
-        plt.text(x, y, str("[" + GlobalVar.teamr3 + "]"), ha='center',
-                 fontweight='bold', va='center', color='darkred')
-        plt.scatter(x, y, s=z * 50, c="deeppink", alpha=0.4, linewidth=6)
-
-    x = float(GlobalVar.teamb1skillout)
-    y = float(GlobalVar.teamb1ap)
-    # z = float(GlobalVar.teamb1wins)
-    z = float(GlobalVar.teamb1highest)
-    plt.text(x, y, str(GlobalVar.teamb1), ha='center',
-             va='center', fontweight='bold', color='royalblue')
-    plt.scatter(x, y, s=z * 300, c="royalblue", alpha=0.4, linewidth=6)
-
-    x = float(GlobalVar.teamb2skillout)
-    y = float(GlobalVar.teamb2ap)
-    # z = float(GlobalVar.teamb2wins)
-    z = float(GlobalVar.teamb2highest)
-    plt.text(x, y, str(GlobalVar.teamb2), ha='center',
-             va='center', fontweight='bold', color='royalblue')
-    plt.scatter(x, y, s=z * 300, c="royalblue", alpha=0.4, linewidth=6)
-
-    x = float(GlobalVar.teamb3skillout)
-    y = float(GlobalVar.teamb3ap)
-    # z = float(GlobalVar.teamb3wins)
-    z = float(GlobalVar.teamb3highest)
-    plt.text(x, y, str(GlobalVar.teamb3), ha='center',
-             va='center', fontweight='bold', color='royalblue')
-    plt.scatter(x, y, s=z * 300, c="royalblue", alpha=0.4, linewidth=6)
-
-    x = float(GlobalVar.teamb1dpr)
-    y = float(GlobalVar.teamb1opr)
-    # z = float(GlobalVar.teamb1wins)
-    z = float(GlobalVar.teamb1ccwm)
-    plt.text(x, y, str("[" + GlobalVar.teamb1 + "]"), ha='center',
-             va='bottom', fontweight='bold', color='dodgerblue')
-    plt.scatter(x, y, s=z * 50, c="dodgerblue", alpha=0.4, linewidth=6)
-
-    x = float(GlobalVar.teamb2dpr)
-    y = float(GlobalVar.teamb2opr)
-    # z = float(GlobalVar.teamb2wins)
-    z = float(GlobalVar.teamb2ccwm)
-    plt.text(x, y, str("[" + GlobalVar.teamb2 + "]"), ha='center',
-             va='bottom', fontweight='bold', color='dodgerblue')
-    plt.scatter(x, y, s=z * 50, c="dodgerblue", alpha=0.4, linewidth=6)
-
-    if GlobalVar.teamb3dpr != 0:
-        x = float(GlobalVar.teamb3dpr)
-        y = float(GlobalVar.teamb3opr)
-        # z = float(GlobalVar.teamb3wins)
-        z = float(GlobalVar.teamb3ccwm)
-        plt.text(x, y, str("[" + GlobalVar.teamb3 + "]"), ha='center', va='bottom', fontweight='bold',
-                 color='dodgerblue')
-        plt.scatter(x, y, s=z * 50, c="dodgerblue", alpha=0.4, linewidth=6)
-
-    xmin, xmax = plt.xlim()
-    ymin, ymax = plt.ylim()
-    xaxis = float(xmax)
-    xmiddle = (float(xaxis) / 2)
-    # Add titles (main and on axis)
-    try:  # TODO(YIFEI): It should raise error instead, remove without notice is BAD, also this try sucks
-        os.remove("graph/" + file_name + ".png")
-    except IOError:
-        pass
-    plt.xlabel("Skill / [Defensive]")
-    plt.ylabel("AP / [Offensive]")
-    plt.title(
-        "Red: " + GlobalVar.teamr1 + " " + GlobalVar.teamr2 + " " + GlobalVar.teamr3 +
-        " Blue: " + GlobalVar.teamb1 + " " + GlobalVar.teamb2 + " " + GlobalVar.teamb3, loc="left")
-    plt.text(xmiddle, -0.02,
-             "Team #, X: Skill, Y: AP, Z: Highest Score\n [Team #], X: Defensive Pts Y: Offensive Pts Z: Contribution",
-             ha='center', color='white', bbox=dict(facecolor='darkslateblue', alpha=0.5))
-    plt.text((xmin + 0.3), (ymax - 0.5), GlobalVar.teamr1 + " W: " + str(GlobalVar.teamr1currentwins) + " L: " + str(
-        GlobalVar.teamr1currentlosses) + " R: " + str(
-        GlobalVar.teamr1currentranking) + "\n" + GlobalVar.teamr2 + " W: " + str(
-        GlobalVar.teamr2currentwins) + " L: " + str(GlobalVar.teamr2currentlosses) + " R: " + str(
-        GlobalVar.teamr2currentranking) + "\n" + GlobalVar.teamr3 + " W: " + str(
-        GlobalVar.teamr3currentwins) + " L: " + str(GlobalVar.teamr3currentlosses) + " R: " + str(
-        GlobalVar.teamr3currentranking) + "\n" + GlobalVar.teamb1 + " W: " + str(
-        GlobalVar.teamb1currentwins) + " L: " + str(GlobalVar.teamb1currentlosses) + " R: " + str(
-        GlobalVar.teamb1currentranking) + "\n" + GlobalVar.teamb2 + " W: " + str(
-        GlobalVar.teamb2currentwins) + " L: " + str(GlobalVar.teamb2currentlosses) + " R: " + str(
-        GlobalVar.teamb2currentranking) + "\n" + GlobalVar.teamb3 + " W: " + str(
-        GlobalVar.teamb3currentwins) + " L: " + str(GlobalVar.teamb3currentlosses) + " R: " + str(
-        GlobalVar.teamb3currentranking), ha='left', va='top', color='white', fontsize='smaller',
-             bbox=dict(facecolor='darkgreen', alpha=0.5))
-    plt.savefig("graph/" + file_name + ".png")
-    print("Graph poped and saved.")
-    plt.show()
 
 
 def getteam(sku, country):
@@ -854,58 +186,7 @@ def getteam(sku, country):
 
 
 def main():
-    # team_list()
-
-    while True:
-        mode = int(input(
-            "Mode \n 1.Scan Team Matches \n 2.!Excel Functions \n 3.Search Team Season History \n 4.Graph \n 8.Get Important Info For a Team \n 9.Change Log\n 5.Config\n 6.Team List\n 0.Quit \n"))
-        if mode == 1:
-            print("Mode = Scan Team Matches")
-            print(matches_scan(input("team number:")))
-        elif mode == 2:
-            print("Mode = Excels")
-            print(
-                "1.Scan Teams \n2.Excel_Scan")
-            excel_mode = int(input())
-            if excel_mode == 1:
-                print("Mode = Scan Teams and Write to Excel")
-                # To Test
-                season = input('(I)n The Zone / (T)urning Point\n')
-                if season.lower() == 'i':
-                    season = 'In%20The%20Zone'
-                else:
-                    season = 'Turning%20Point'
-                sku = input('sku? blank = all in the [season]\n')
-                teams = ['224S', '224X', '363A', '1846C', '2495X', '6627A', '6627B', '6627C', '6627D', '6627X', '6671X',
-                         '7259A', '7259C', '7259D', '7582X', '7582Y', '9364A', '9364C', '9364D', '12014A', '12014B',
-                         '29027A', '35211C', '76607A', '98268A']
-                # TODO(YINGFENG):调用 get_teams
-                excel_scan(teams, season, sku)
-            elif excel_mode == 2:
-                print("Mode = Write Team Matches [Don't use this]")
-                input1 = team
-                input2 = season
-                pprint.pprint(excel_team_matches(input1, input2))
-        elif mode == 3:
-            print("Mode = Search Team History : Current Season")
-            input1 = team
-            input2 = season
-            pprint.pprint(search_team_current_season(input1, input2))
-        elif mode == 4:
-            print("Bubble!")
-            time_is_out()
-            answer()
-        elif mode == 8:
-            print("Mode = Get Important Data")
-            input1 = team
-            input2 = season
-            a = get_all_data(input1, input2)
-            pprint.pprint(a[0])
-            pprint.pprint(a[1])
-        elif mode == 6:
-            # getteam()
-            sku = input("Match sku")
-            print(getteam(sku))
+    write_workbook("./test.xlsx")
 
 
 if __name__ == '__main__':
