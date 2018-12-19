@@ -7,3 +7,4 @@ venv
 graph
 *.xls
 .DS_Store
+*.xlsx
