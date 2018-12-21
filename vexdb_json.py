@@ -2,7 +2,6 @@
 TODO: Reserved docstring space
 """
 import json
-import threading
 from urllib.error import URLError
 from urllib.request import urlopen
 
@@ -20,10 +19,24 @@ def get_info(api_type: str, api_parameters: dict, safe=True):
     :param safe: it go into get_json
     :return: It return a dictionary of lists or tuples, not sure, dictionary of something
     """
-    # TODO(Yifei): Multi thread,
 
+    json_dict = get_json(url_gen(api_type, api_parameters), safe)
+    if json_dict["status"] != 1:
+        raise TypeError("Unexpected Status")
+    else:
+        if json_dict["size"] == 5000:
+            raise OverflowError("The Data size exceed 5000 item limit")
+        return json_dict
+
+
+def url_gen(api_type: str, api_parameters: dict):
+    """
+    generate vexdb.io api url, nothing special
+    :param api_type: what is after get_ ?
+    :param api_parameters: the parameters, should be the key:value of what you want to search
+    :return:a string that contain a url
+    """
     _parameters = ""
-
     if api_type == "":
         raise ValueError("Missing value for API type")
 
@@ -37,22 +50,17 @@ def get_info(api_type: str, api_parameters: dict, safe=True):
                     _parameters += "&" + _keys[x] + "=" + _values[x]
     else:
         raise ValueError("missing required information")
-        exit(1)
-
-    if api_type != "":
-        json_dict = get_json("http://api.vexdb.io/v1/get_" + api_type + _parameters, safe)
-        if json_dict["status"] != 1:
-            raise TypeError("Unexpected Status")
-        else:
-            if json_dict["size"] == 5000:
-                raise OverflowError("The Data size exceed 5000 item limit")
-            return json_dict
-    else:
-        raise ValueError("missing required information")
-        exit(1)
+    return "http://api.vexdb.io/v1/get_" + api_type + _parameters
 
 
 def get_json(url: str, safe=True, fail_counter=0):
+    """
+
+    :param url:
+    :param safe:
+    :param fail_counter:
+    :return:
+    """
     if max_tries == -1:  # force to ignore safe
         return json.loads((urlopen(url)).read())
     try:
@@ -66,20 +74,29 @@ def get_json(url: str, safe=True, fail_counter=0):
         return out
 
 
-def filter_info(info: dict):
+def filter_info(info: dict, *args: str):
+    """
 
-    print("the return data thing")
+    :param info: this should be the json from get_info or same structure
+    :param args:the info key you want to contain, highly suggest only 1 arg
+    :return:It return a list that contains the item in info that have args as their key
+    """
+    out = []
+    for item in info["result"]:
+        for arg in args:
+            out.append(item[arg])
+    return out
 
 
 def check_info(api_type: str, info_type: str, api_parameter: str, safe=True):
     """
     Check if something is exit in vexdb.io. If you use it incorrectly it will return weird things for sure
+    If something is wrong, it will raise a ValueError
     :param api_type: for example: teams
     :param info_type: what kind of data the parameter is?
     :param api_parameter: The thing you want to check if exit
     :param safe: directly go into get_json
     :return: It return a boolean, True means it exit (returned more than 0 item), False means it doesn't exit.
-    :return: If something is wrong, it will raise a ValueError
     """
     json_dict = get_json("http://api.vexdb.io/v1/get_" + api_type + "?" + info_type + "=" + api_parameter, safe)
     try:

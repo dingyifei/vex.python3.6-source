@@ -1,0 +1,18 @@
+{
+  "status": 1,
+  "size": 1,
+  "result": [
+    {
+      "number": "2915A",
+      "program": "VRC",
+      "team_name": "Lynfield College A",
+      "robot_name": "Joey Clickaroo",
+      "organisation": "Lynfield College",
+      "city": "Auckland",
+      "region": "",
+      "country": "New Zealand",
+      "grade": "High School",
+      "is_registered": 0
+    }
+  ]
+}
