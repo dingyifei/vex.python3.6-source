@@ -12,8 +12,12 @@ def get_info(api_type: str, api_parameters: dict, return_data=None):
     It function accept a string "api_type" and a dictionary "api_parameters", the "api_type" should be
     one from _API_TYPE The dictionary's key are the _parameters from vexdb.io/the_data and the value should
     also follow it.
+    :param api_type: what is after get_ ?
+    :param api_parameters: the parameters, should be the key:value of what you want to search
+    :param return_data: it is a simple filter that make return data be a list of weird returns, not fully functional
+    :return: It return a dictionary or a list, depend on what you do TODO: Make sure it is a dictionary
     """
-    # TODO(Yifei): Multi thread, timeout retry, throw error correctly
+    # TODO(Yifei): Multi thread, timeout retry, what will happen when no interenet?
 
     if return_data is None:
         return_data = ["full"]
@@ -51,7 +55,22 @@ def get_info(api_type: str, api_parameters: dict, return_data=None):
                 return output
 
 
-def info_check(api_type: str, info_type: str, api_parameter: str):
+def get_info_safe():
+    # TODO: handle fail and an option to retry
+    print("Not working")
+
+
+def get_info_multi_thread():
+    # TODO: get info like a cool person with syncornized threads, should able to get more than 5000 values?
+    print("not working")
+
+
+def get_info_multi_thread_safe():
+    # TODO: Safe version of multi thread, otherwise it will just throw errors or something IDK
+    print("not working")
+
+
+def check_info(api_type: str, info_type: str, api_parameter: str):
     """
     Check if something is exit in vexdb.io. If you use it incorrectly it will return weird things for sure
     :param api_type: for example: teams
@@ -79,7 +98,7 @@ def main():
     """
     you should not use it directly
     """
-    print(info_check("teams", "team", "2915A"))
+    print(check_info("teams", "team", "2915A"))
 
 
 if __name__ == '__main__':

@@ -4,6 +4,7 @@ import openpyxl
 from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font, colors, Color, fonts
 import vexdb_json
 
+
 class WriteWorkbook():  # testing
 
     ranking_columns = "Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result"
@@ -30,7 +31,6 @@ class WriteWorkbook():  # testing
             self.book[self.sheet_names[1]].cell(row=1, column=x + 1).value = y
             self.book[self.sheet_names[1]].cell(row=1, column=x + 1).font = self.BOLD_BLACK_FONT
 
-
     # Initialize the workbook
     book = openpyxl.Workbook()
     sheet_names = ("#Cover", "#Rankings", "#Important Data", "#For World", "#Bugged Teams")
@@ -43,23 +43,21 @@ class WriteWorkbook():  # testing
     def save(self):
         self.book.save(self.save_location)
 
+
 #             "Because of there are no data for these teams: 1119S, 7386A, 8000X, 8000Z, 19771B, 30638A, 36632A, "
 #            "37073A, 60900A, 76921B, 99556A, 99691E, 99691H are not include in the sheet #Important Data")
 
 
-
-
 def team_list():  # For testing
 
-    #print(vexdb_json("teams", {"grade": "High%20School"}, ["number"]))
+    # print(vexdb_json("teams", {"grade": "High%20School"}, ["number"]))
     print(vexdb_json.get_info("matches", {"season": "Starstruck", "team": "8667A"}, ["sku"]))
 
 
-
 def getteam(sku, country):
-
     # TODO: fix after finish readconfig
-    _json_dict = vexdb_json.get_info("teams", {"sku": sku, "program": "VRC", "limit_number": "4999", "country": country})
+    _json_dict = vexdb_json.get_info("teams",
+                                     {"sku": sku, "program": "VRC", "limit_number": "4999", "country": country})
     output = []
     for r in _json_dict["result"]:
         line = '{}: '.format(r["number"])
@@ -72,9 +70,9 @@ def main():
     a.matches_excel()
     a.save()
 
+
 if __name__ == '__main__':
     main()
-
 
     #
     # def rankings_excel(self):
