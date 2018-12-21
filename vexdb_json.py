@@ -8,12 +8,30 @@ from urllib.request import urlopen
 max_tries = 5  # increase this value when fail rate is very high
 
 
-def get_info(api_type: str, api_parameters: dict, safe=True):
+def get_json(url: str, safe=True, fail_counter=0):
     """
-    It function accept a string "api_type" and a dictionary "api_parameters", the "api_type" should be
-    one from _API_TYPE The dictionary's key are the _parameters from vexdb.io/the_data and the value should
-    also follow it.
-    All ValueError are critical
+
+    :param url:
+    :param safe:
+    :param fail_counter:
+    :return:
+    """
+    if max_tries == -1:  # force to ignore safe
+        return json.loads((urlopen(url)).read())
+    try:
+        out = json.loads((urlopen(url)).read())
+    except URLError:
+        if fail_counter < max_tries:
+            get_json(url, safe, fail_counter + 1)
+        else:
+            raise ConnectionError("Multiple attempts to get data from vexdb.io failed, Abort")
+    else:
+        return out
+
+
+def get_json_safe(api_type: str, api_parameters: dict, safe=True):
+    """
+    it does additional data check on top of get_json, if you are okay with no data or exceed the max data then ignore it
     :param api_type: what is after get_ ?
     :param api_parameters: the parameters, should be the key:value of what you want to search
     :param safe: it go into get_json
@@ -26,6 +44,8 @@ def get_info(api_type: str, api_parameters: dict, safe=True):
     else:
         if json_dict["size"] == 5000:
             raise OverflowError("The Data size exceed 5000 item limit")
+        if json_dict["size"] == 0:
+            raise ValueError("doesn't contain any data")
         return json_dict
 
 
@@ -53,31 +73,10 @@ def url_gen(api_type: str, api_parameters: dict):
     return "http://api.vexdb.io/v1/get_" + api_type + _parameters
 
 
-def get_json(url: str, safe=True, fail_counter=0):
-    """
-
-    :param url:
-    :param safe:
-    :param fail_counter:
-    :return:
-    """
-    if max_tries == -1:  # force to ignore safe
-        return json.loads((urlopen(url)).read())
-    try:
-        out = json.loads((urlopen(url)).read())
-    except URLError:
-        if fail_counter < max_tries:
-            get_json(url, safe, fail_counter + 1)
-        else:
-            raise ConnectionError("Multiple attempts to get data from vexdb.io failed, Abort")
-    else:
-        return out
-
-
 def filter_info(info: dict, *args: str):
     """
-
-    :param info: this should be the json from get_info or same structure
+    filter the json from get_info or a similar structure dictionary and return a list
+    :param info: this should be the dictionary from get_info or same structure
     :param args:the info key you want to contain, highly suggest only 1 arg
     :return:It return a list that contains the item in info that have args as their key
     """

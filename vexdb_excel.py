@@ -53,13 +53,13 @@ class WriteWorkbook():  # testing
 def team_list():  # For testing
 
     # print(vexdb_json("teams", {"grade": "High%20School"}, ["number"]))
-    print(vexdb_json.get_info("matches", {"season": "Starstruck", "team": "8667A"}, ["sku"]))
+    print(vexdb_json.get_json_safe("matches", {"season": "Starstruck", "team": "8667A"}, ["sku"]))
 
 
 def getteam(sku, country):
     # TODO: fix after finish readconfig
-    _json_dict = vexdb_json.get_info("teams",
-                                     {"sku": sku, "program": "VRC", "limit_number": "4999", "country": country})
+    _json_dict = vexdb_json.get_json_safe("teams",
+                                          {"sku": sku, "program": "VRC", "limit_number": "4999", "country": country})
     output = []
     for r in _json_dict["result"]:
         line = '{}: '.format(r["number"])
