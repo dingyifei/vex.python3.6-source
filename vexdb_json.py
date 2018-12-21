@@ -1,13 +1,19 @@
+"""
+TODO: Reserved docstring space
+"""
 import json
 from urllib.request import urlopen
 
-def vexdb_json(api_type: str, api_parameters: dict, return_data=None):
+log_output = print
+
+
+def get_info(api_type: str, api_parameters: dict, return_data=None):
     """
     It function accept a string "api_type" and a dictionary "api_parameters", the "api_type" should be
     one from _API_TYPE The dictionary's key are the _parameters from vexdb.io/the_data and the value should
     also follow it.
     """
-    # TODO(Yifei): Multi thread, timeout retry,throw error correctly
+    # TODO(Yifei): Multi thread, timeout retry, throw error correctly
 
     if return_data is None:
         return_data = ["full"]
@@ -30,10 +36,10 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data=None):
         if _parameters != "" or _parameters is not None:
             json_dict = json.loads((urlopen("http://api.vexdb.io/v1/get_" + api_type + _parameters)).read())
             if json_dict["status"] == 0:
-                raise (IOError)  # TODO: a exception
+                raise TypeError("Unexpected Status")
             else:
                 if json_dict["size"] == 5000:
-                    raise (IOError)  # TODO: Another exception or use some trick to prevent 5000 limit
+                    raise OverflowError("The Data size exceed 5000 item limit")
                 else:
                     if return_data[0] == "full":
                         output: dict = json_dict
@@ -45,8 +51,35 @@ def vexdb_json(api_type: str, api_parameters: dict, return_data=None):
                 return output
 
 
+def info_check(api_type: str, info_type: str, api_parameter: str):
+    """
+    Check if something is exit in vexdb.io. If you use it incorrectly it will return weird things for sure
+    :param api_type: for example: teams
+    :param info_type: what kind of data the parameter is?
+    :param api_parameter: The thing you want to check if exit
+    :return: It return a boolean, True means it exit (returned more than 0 item), False means it doesn't exit.
+    :return: If something is wrong, it will raise a ValueError
+
+    """
+    json_dict = json.loads(
+        (urlopen("http://api.vexdb.io/v1/get_" + api_type + "?" + info_type + "=" + api_parameter)).read())
+    try:
+        if json_dict["size"] > 0:
+            return True
+        else:
+            return False
+    except KeyError:
+        try:
+            raise ValueError(json_dict["error_text"])
+        except KeyError:
+            raise ValueError("Unexpected Error")
+
+
 def main():
-    print("Helloworld")
+    """
+    you should not use it directly
+    """
+    print(info_check("teams", "team", "2915A"))
 
 
 if __name__ == '__main__':
