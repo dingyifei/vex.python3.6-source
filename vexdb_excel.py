@@ -7,18 +7,28 @@ import vexdb_json
 
 class WriteWorkbook():  # testing
 
-    ranking_columns = "Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result"
-    save_location = "./output.xlsx"
-    matches_columns = "Sku", "Match", "Red1", "Red2", "Red3", "RedSit", "Blue1", "Blue2", "Blue3", "BlueSit", "RedSco", "BlueSco"
-    RED_FILL = PatternFill(patternType="solid", fgColor=colors.RED)
-    BLUE_FILL = PatternFill(patternType="solid", fgColor=colors.BLUE)
-    GREEN_FILL = PatternFill(patternType="solid", fgColor=colors.GREEN)  # replace Light Red
-    YELLOW_FILL = PatternFill(patternType="solid", fgColor=colors.YELLOW)  # replace Light_Blue
-    BLACK_FILL = PatternFill(patternType="solid", fgColor=colors.BLACK)
-    BOLD_RED_FONT = Font("Calibri", size=11, color=colors.RED, bold=True)
-    BOLD_BLUE_FONT = Font("Calibri", size=11, color=colors.BLUE, bold=True)
-    BOLD_BLACK_FONT = Font("Calibri", size=11, color=colors.BLACK, bold=True)
-    BOLD_WHITE_FONT = Font("Calibri", size=11, color=colors.WHITE, bold=True)
+
+
+    def __init__(self):
+        self.ranking_columns = "Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result"
+        self.save_location = "./output.xlsx"
+        self.matches_columns = "Sku", "Match", "Red1", "Red2", "Red3", "RedSit", "Blue1", "Blue2", "Blue3", "BlueSit", "RedSco", "BlueSco"
+        self.RED_FILL = PatternFill(patternType="solid", fgColor=colors.RED)
+        self.BLUE_FILL = PatternFill(patternType="solid", fgColor=colors.BLUE)
+        self.GREEN_FILL = PatternFill(patternType="solid", fgColor=colors.GREEN)  # replace Light Red
+        self.YELLOW_FILL = PatternFill(patternType="solid", fgColor=colors.YELLOW)  # replace Light_Blue
+        self.BLACK_FILL = PatternFill(patternType="solid", fgColor=colors.BLACK)
+        self.BOLD_RED_FONT = Font("Calibri", size=11, color=colors.RED, bold=True)
+        self.BOLD_BLUE_FONT = Font("Calibri", size=11, color=colors.BLUE, bold=True)
+        self.BOLD_BLACK_FONT = Font("Calibri", size=11, color=colors.BLACK, bold=True)
+        self.BOLD_WHITE_FONT = Font("Calibri", size=11, color=colors.WHITE, bold=True)
+        self.book = openpyxl.Workbook()
+        self.sheet_names = ("#Cover", "#Rankings", "#Important Data", "#For World", "#Bugged Teams")
+
+        for x in self.sheet_names:
+            self.book.create_sheet(x)
+        del self.book["Sheet"]  # I don't know how to solve this myth, it automatically generate sheets
+        self.book[self.sheet_names[0]].cell(row=1, column=1).value = "Last Change:" + str(time.localtime())
 
     def rankings_excel(self):
         for x, y in enumerate(self.ranking_columns):  # Initialize Matches
@@ -31,14 +41,6 @@ class WriteWorkbook():  # testing
             self.book[self.sheet_names[1]].cell(row=1, column=x + 1).value = y
             self.book[self.sheet_names[1]].cell(row=1, column=x + 1).font = self.BOLD_BLACK_FONT
 
-    # Initialize the workbook
-    book = openpyxl.Workbook()
-    sheet_names = ("#Cover", "#Rankings", "#Important Data", "#For World", "#Bugged Teams")
-
-    for x in sheet_names:
-        book.create_sheet(x)
-    del book["Sheet"]  # I don't know how to solve this myth, it automatically generate sheets
-    book[sheet_names[0]].cell(row=1, column=1).value = "Last Change:" + str(time.localtime())
 
     def save(self):
         self.book.save(self.save_location)
