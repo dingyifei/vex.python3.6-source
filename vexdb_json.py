@@ -15,6 +15,7 @@ def get_json_url(url: str, safe=True, fail_counter=0):
     """
     This function get json directly from a url
     Change of max_tries will affect this function
+    If max_tries is -1 the safe option is ignored
     :param url: The json url, should be http or https
     :param safe: if the safe option is off then it will not handle multiple tries
     :param fail_counter: you don't need to change this, it increase by 1 when a try failed
@@ -22,7 +23,7 @@ def get_json_url(url: str, safe=True, fail_counter=0):
     """
     if safe is False:
         return json.loads((urlopen(url)).read())
-    if max_tries == -1:  # force to ignore safe
+    if max_tries == -1:
         return json.loads((urlopen(url)).read())
     try:
         json_dict = json.loads((urlopen(url)).read())
