@@ -14,10 +14,8 @@ class WriteWorkbook:  # testing
     """
     if you see this, you better check each function's docstring because I don't know how to explain this
     """
-    def __init__(self):
 
-        # self.ranking_columns = "Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result"
-        # self.matches_columns = "Sku", "Match", "Red1", "Red2", "Red3", "RedSit", "Blue1", "Blue2", "Blue3", "BlueSit", "RedSco", "BlueSco"
+    def __init__(self):
 
         self.save_location = "./output.xlsx"
         self.RED_FILL = PatternFill(patternType="solid", fgColor=colors.RED)
@@ -25,6 +23,7 @@ class WriteWorkbook:  # testing
         self.GREEN_FILL = PatternFill(patternType="solid", fgColor=colors.GREEN)  # replace Light Red
         self.YELLOW_FILL = PatternFill(patternType="solid", fgColor=colors.YELLOW)  # replace Light_Blue
         self.BLACK_FILL = PatternFill(patternType="solid", fgColor=colors.BLACK)
+        self.WHITE_FILL = PatternFill(patternType="solid", fgColor=colors.WHITE)
         self.BOLD_RED_FONT = Font("Calibri", size=11, color=colors.RED, bold=True)
         self.BOLD_BLUE_FONT = Font("Calibri", size=11, color=colors.BLUE, bold=True)
         self.BOLD_BLACK_FONT = Font("Calibri", size=11, color=colors.BLACK, bold=True)
@@ -40,20 +39,18 @@ class WriteWorkbook:  # testing
         it check the 2d list is the correct format
         :param values: the 2d list, it will make sure the 2d list is correct format
         """
-        try:
-            for x in values:
-                if type(x) is tuple:
-                    if len(x) == 2:
-                        if type(x[0]) != PatternFill:
-                            raise ValueError("The first value in tuple should be PatternFill")
-                        if type(x[1]) != Font:
-                            raise ValueError("The second value in tuple should be Font")
-                    else:
-                        raise ValueError("invalid tuple length")
-                else:
-                    raise TypeError("The value should be tuple contain two value")
-        except:
-            raise ValueError("Something big about the value is wrong")
+        if type(values) is list:
+            if len(values) == 3:
+                if type(values[0]) != str:
+                    raise ValueError("The first value in list should be string")
+                if type(values[1]) != PatternFill:
+                    raise ValueError("The second value in list should be PatternFill")
+                if type(values[2]) != Font:
+                    raise ValueError("The third value in list should be Font")
+            else:
+                raise ValueError("invalid tuple length")
+        else:
+            raise ValueError("The value should be tuple contain two value")
 
     def write_chart(self, sheet: str, text: list, start_row=1, start_column=1):
         """
@@ -63,16 +60,21 @@ class WriteWorkbook:  # testing
         :param start_row: the start row, should be the top row
         :param start_column: the start column, should be the left column
         """
-        # TODO: The CODE INSIDE IS NOT WORKING
         if sheet not in self.book.sheetnames:
             self.book.create_sheet(sheet)
         active_sheet = self.book[sheet]
         for row, a in enumerate(text):
             for column, b in enumerate(a):
-                self.value_check(b.values())
-                active_sheet.cell(row=start_row + row, column=start_column + column).value = list(b.keys())[0]
-                active_sheet.cell(row=start_row + row, column=start_column + column).fill = list(b.values())[0][0]
-                active_sheet.cell(row=start_row + row, column=start_column + column).font = list(b.values())[0][1]
+                self.value_check(b)
+                active_sheet.cell(row=start_row + row, column=start_column + column).value = b[0]
+                active_sheet.cell(row=start_row + row, column=start_column + column).fill = b[1]
+                active_sheet.cell(row=start_row + row, column=start_column + column).font = b[2]
+
+    def list_formater(self, text: list,
+                      font=Font("Calibri", size=11, color=colors.BLACK, bold=True),
+                      fill=PatternFill(patternType="solid", fgColor=colors.BLACK)
+                      ):
+        print("I need some idea")
 
     def save(self):
         """
@@ -90,7 +92,7 @@ def main():
     usually this main doesn't do anything
     """
     a = WriteWorkbook()
-    a.write_chart("test", [[{"test": (a.YELLOW_FILL, a.BOLD_BLUE_FONT)}]])
+    a.write_chart("test", [[["testing", a.YELLOW_FILL, a.BOLD_BLUE_FONT]]])
     a.save()
 
 

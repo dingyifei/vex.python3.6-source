@@ -19,7 +19,8 @@ def main():
 
 if __name__ == '__main__':
     main()
-
+    # self.ranking_columns = "Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result"
+    # self.matches_columns = "Sku", "Match", "Red1", "Red2", "Red3", "RedSit", "Blue1", "Blue2", "Blue3", "BlueSit", "RedSco", "BlueSco"
     #
     # def rankings_excel(self):
     #     rankings_columns = ("Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result")
