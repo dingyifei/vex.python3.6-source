@@ -7,6 +7,7 @@ import vexdb_json
 class WriteWorkbook:  # testing
 
     def __init__(self):
+
         # self.ranking_columns = "Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result"
         self.save_location = "./output.xlsx"
         # self.matches_columns = "Sku", "Match", "Red1", "Red2", "Red3", "RedSit", "Blue1", "Blue2", "Blue3", "BlueSit", "RedSco", "BlueSco"
@@ -21,7 +22,6 @@ class WriteWorkbook:  # testing
         self.BOLD_BLACK_FONT = Font("Calibri", size=11, color=colors.BLACK, bold=True)
         self.BOLD_WHITE_FONT = Font("Calibri", size=11, color=colors.WHITE, bold=True)
         self.book = openpyxl.Workbook()
-
         self.book.create_sheet("Cover")
         del self.book["Sheet"]  # I don't know how to solve this myth, it automatically generate sheets
         self.book["Cover"].cell(row=1, column=1).value = "Last Change:" + str(time.localtime())
@@ -29,10 +29,32 @@ class WriteWorkbook:  # testing
     '''
     list of text - dictionary [key=the text, value=(font, fill)]
     '''
+    @staticmethod
+    def value_check(values: list):
+        for x in values:
+            if type(x) is tuple:
+                if len(x) == 2:
+                    if type(x[0]) != PatternFill:
+                        raise ValueError("The first value in tuple should be PatternFill")
+                    if type(x[1]) != Font:
+                        raise ValueError("The second value in tuple should be Font")
+                else:
+                    raise ValueError("invalid tuple length")
+            else:
+                raise TypeError("The value should be tuple contain two value")
 
-    def write_chart(self, sheet_name: str, start_row: int, start_column: int,
-                    value: list):  # TODO: The CODE INSIDE IS NOT WORKING
-        print("Something here")
+    def write_chart(self, sheet_name: str, start_row: int, start_column: int,text: dict):
+        # TODO: The CODE INSIDE IS NOT WORKING
+        if sheet_name not in self.book.get_sheet_names:
+            self.book.create_sheet(sheet_name)
+        active_sheet = self.book[sheet_name]
+        keys: list = text.keys()
+        values: list = text.values()
+        self.value_check(values)
+        
+
+
+
 
     # for x, y in enumerate(self.ranking_columns):  # Initialize Matches
     #     self.book[self.sheet_names[1]].cell(row=1, column=x + 1).value = y
