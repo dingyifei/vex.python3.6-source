@@ -17,7 +17,7 @@ class WriteWorkbook:  # testing
         # self.ranking_columns = "Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result"
         # self.matches_columns = "Sku", "Match", "Red1", "Red2", "Red3", "RedSit", "Blue1", "Blue2", "Blue3", "BlueSit", "RedSco", "BlueSco"
         # self.sheet_names = "#Cover", "#Rankings", "#Important Data", "#For World", "#Bugged Teams"
-        
+
         self.save_location = "./output.xlsx"
         self.RED_FILL = PatternFill(patternType="solid", fgColor=colors.RED)
         self.BLUE_FILL = PatternFill(patternType="solid", fgColor=colors.BLUE)
@@ -53,15 +53,15 @@ class WriteWorkbook:  # testing
 
     def write_chart(self, sheet_name: str, text: list, start_row=1, start_column=1):
         # TODO: The CODE INSIDE IS NOT WORKING
-        if sheet_name not in self.book.get_sheet_names:
+        if sheet_name not in self.book.sheetnames:
             self.book.create_sheet(sheet_name)
         active_sheet = self.book[sheet_name]
         for row, a in enumerate(text):
             for column, b in enumerate(a):
-                self.value_check(b.values())
-                active_sheet.cell(row=start_row + row, column=start_column + column).value = b.keys()[0]
-                active_sheet.cell(row=start_row + row, column=start_column + column).fill = b.values()[0]
-                active_sheet.cell(row=start_row + row, column=start_column + column).font = b.values()[1]
+                #self.value_check(b.values()) something is wrong with this
+                active_sheet.cell(row=start_row + row, column=start_column + column).value = list(b.keys())[0]
+                active_sheet.cell(row=start_row + row, column=start_column + column).fill = list(b.values())[0][0]
+                active_sheet.cell(row=start_row + row, column=start_column + column).font = list(b.values())[0][1]
 
 
     # for x, y in enumerate(self.ranking_columns):  # Initialize Matches
@@ -95,6 +95,7 @@ def getteam(sku, country):
 
 def main():
     a = WriteWorkbook()
+    a.write_chart("test", [[{"test": (a.YELLOW_FILL, a.BOLD_BLUE_FONT)}]])
     a.save()
 
 
