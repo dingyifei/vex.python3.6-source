@@ -23,3 +23,9 @@ class IntegerArithmeticTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+    def team_list():  # For testing
+
+        # print(vexdb_json("teams", {"grade": "High%20School"}, ["number"]))
+        print(vexdb_json.get_json_direct("matches", {"season": "Starstruck", "team": "8667A"}, ["sku"]))
