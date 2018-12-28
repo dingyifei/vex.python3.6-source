@@ -1,3 +1,9 @@
+"""
+This is a rewrite of the vexdb excel visualizer module, it don't need internet connection if you use offline data
+Credit:Haorui Zhou (oraginal code), Yifei Ding(Rewrite)
+license: CC By-NC-SA
+contact: yifeiding@protonmail.com
+"""
 import time
 import openpyxl
 from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font, colors, Color, fonts
@@ -29,8 +35,10 @@ class WriteWorkbook:  # testing
     '''
     list of text - dictionary [key=the text, value=(font, fill)]
     '''
+
     @staticmethod
     def value_check(values: list):
+
         for x in values:
             if type(x) is tuple:
                 if len(x) == 2:
@@ -43,7 +51,7 @@ class WriteWorkbook:  # testing
             else:
                 raise TypeError("The value should be tuple contain two value")
 
-    def write_chart(self, sheet_name: str, start_row: int, start_column: int,text: dict):
+    def write_chart(self, sheet_name: str, text: dict, start_row=1, start_column=1):
         # TODO: The CODE INSIDE IS NOT WORKING
         if sheet_name not in self.book.get_sheet_names:
             self.book.create_sheet(sheet_name)
@@ -51,10 +59,6 @@ class WriteWorkbook:  # testing
         keys: list = text.keys()
         values: list = text.values()
         self.value_check(values)
-        
-
-
-
 
     # for x, y in enumerate(self.ranking_columns):  # Initialize Matches
     #     self.book[self.sheet_names[1]].cell(row=1, column=x + 1).value = y
@@ -71,13 +75,13 @@ class WriteWorkbook:  # testing
 def team_list():  # For testing
 
     # print(vexdb_json("teams", {"grade": "High%20School"}, ["number"]))
-    print(vexdb_json.get_json_safe("matches", {"season": "Starstruck", "team": "8667A"}, ["sku"]))
+    print(vexdb_json.get_json_direct("matches", {"season": "Starstruck", "team": "8667A"}, ["sku"]))
 
 
 def getteam(sku, country):
     # TODO: fix after finish readconfig
-    _json_dict = vexdb_json.get_json_safe("teams",
-                                          {"sku": sku, "program": "VRC", "limit_number": "4999", "country": country})
+    _json_dict = vexdb_json.get_json_direct("teams",
+                                            {"sku": sku, "program": "VRC", "limit_number": "4999", "country": country})
     output = []
     for r in _json_dict["result"]:
         line = '{}: '.format(r["number"])

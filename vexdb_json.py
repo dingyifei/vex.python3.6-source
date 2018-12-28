@@ -2,6 +2,7 @@
 This is a rewrite of the old vexdb.io api reader, it read/ get json from vex.io and do something with them
 Credit:Haorui Zhou (oraginal code), Yifei Ding(Rewrite)
 license: CC By-NC-SA
+contact: yifeiding@protonmail.com
 """
 import json
 from urllib.error import URLError
@@ -10,45 +11,48 @@ from urllib.request import urlopen
 max_tries = 5  # increase this value when fail rate is very high
 
 
-def get_json(url: str, safe=True, fail_counter=0):
+def get_json_url(url: str, safe=True, fail_counter=0):
     """
-
-    :param url:
-    :param safe:
-    :param fail_counter:
-    :return:
+    This function get json directly from a url
+    Change of max_tries will affect this function
+    :param url: The json url, should be http or https
+    :param safe: if the safe option is off then it will not handle multiple tries
+    :param fail_counter: you don't need to change this, it increase by 1 when a try failed
+    :return: It return a dictionary of lists or tuples, not sure, dictionary of something, maybe json object??
     """
+    if safe is False:
+        return json.loads((urlopen(url)).read())
     if max_tries == -1:  # force to ignore safe
         return json.loads((urlopen(url)).read())
     try:
-        out = json.loads((urlopen(url)).read())
+        json_dict = json.loads((urlopen(url)).read())
     except URLError:
         if fail_counter < max_tries:
-            get_json(url, safe, fail_counter + 1)
+            get_json_url(url, safe, fail_counter + 1)
         else:
             raise ConnectionError("Multiple attempts to get data from vexdb.io failed, Abort")
     else:
-        return out
+        if json_dict["status"] != 1:
+            raise TypeError("Unexpected Status")
+        else:
+            if json_dict["size"] == 5000:
+                raise OverflowError("The Data size exceed 5000 item limit")
+            if json_dict["size"] == 0:
+                raise ValueError("doesn't contain any data")
+            return json_dict
 
 
-def get_json_safe(api_type: str, api_parameters: dict, safe=True):
+def get_json_direct(api_type: str, api_parameters: dict, safe=True):
     """
     it does additional data check on top of get_json, if you are okay with no data or exceed the max data then ignore it
+    Change of max_tries will affect this function
     :param api_type: what is after get_ ?
     :param api_parameters: the parameters, should be the key:value of what you want to search
     :param safe: it go into get_json
-    :return: It return a dictionary of lists or tuples, not sure, dictionary of something
+    :return: It return a dictionary of lists or tuples, not sure, dictionary of something, maybe json object??
     """
 
-    json_dict = get_json(url_gen(api_type, api_parameters), safe)
-    if json_dict["status"] != 1:
-        raise TypeError("Unexpected Status")
-    else:
-        if json_dict["size"] == 5000:
-            raise OverflowError("The Data size exceed 5000 item limit")
-        if json_dict["size"] == 0:
-            raise ValueError("doesn't contain any data")
-        return json_dict
+    return get_json_url(url_gen(api_type, api_parameters), safe)
 
 
 def url_gen(api_type: str, api_parameters: dict):
@@ -60,7 +64,7 @@ def url_gen(api_type: str, api_parameters: dict):
     """
     _parameters = ""
     if api_type == "":
-        raise ValueError("Missing value for API type")
+        raise GeneratorExit("Missing value for API type")
 
     if api_parameters:
         _keys = list(api_parameters.keys())
@@ -69,9 +73,11 @@ def url_gen(api_type: str, api_parameters: dict):
             _parameters += "?" + _keys[0] + "=" + _values[0]
             if len(_keys) > 1:
                 for x in range(1, len(_keys)):
+                    if _values[x] == "":
+                        raise GeneratorExit("The api_parameters must have non empty values")
                     _parameters += "&" + _keys[x] + "=" + _values[x]
     else:
-        raise ValueError("missing required information")
+        raise GeneratorExit("missing required information")
     return "http://api.vexdb.io/v1/get_" + api_type + _parameters
 
 
@@ -99,7 +105,7 @@ def check_info(api_type: str, info_type: str, api_parameter: str, safe=True):
     :param safe: directly go into get_json
     :return: It return a boolean, True means it exit (returned more than 0 item), False means it doesn't exit.
     """
-    json_dict = get_json("http://api.vexdb.io/v1/get_" + api_type + "?" + info_type + "=" + api_parameter, safe)
+    json_dict = get_json_url("http://api.vexdb.io/v1/get_" + api_type + "?" + info_type + "=" + api_parameter, safe)
     try:
         if json_dict["size"] > 0:
             return True
