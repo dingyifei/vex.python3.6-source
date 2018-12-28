@@ -1,18 +1,16 @@
-import os
 import time
 import openpyxl
 from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font, colors, Color, fonts
 import vexdb_json
 
 
-class WriteWorkbook():  # testing
-
-
+class WriteWorkbook:  # testing
 
     def __init__(self):
-        self.ranking_columns = "Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result"
+        # self.ranking_columns = "Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result"
         self.save_location = "./output.xlsx"
-        self.matches_columns = "Sku", "Match", "Red1", "Red2", "Red3", "RedSit", "Blue1", "Blue2", "Blue3", "BlueSit", "RedSco", "BlueSco"
+        # self.matches_columns = "Sku", "Match", "Red1", "Red2", "Red3", "RedSit", "Blue1", "Blue2", "Blue3", "BlueSit", "RedSco", "BlueSco"
+        # self.sheet_names = "#Cover", "#Rankings", "#Important Data", "#For World", "#Bugged Teams"
         self.RED_FILL = PatternFill(patternType="solid", fgColor=colors.RED)
         self.BLUE_FILL = PatternFill(patternType="solid", fgColor=colors.BLUE)
         self.GREEN_FILL = PatternFill(patternType="solid", fgColor=colors.GREEN)  # replace Light Red
@@ -23,31 +21,29 @@ class WriteWorkbook():  # testing
         self.BOLD_BLACK_FONT = Font("Calibri", size=11, color=colors.BLACK, bold=True)
         self.BOLD_WHITE_FONT = Font("Calibri", size=11, color=colors.WHITE, bold=True)
         self.book = openpyxl.Workbook()
-        self.sheet_names = ("#Cover", "#Rankings", "#Important Data", "#For World", "#Bugged Teams")
 
-        for x in self.sheet_names:
-            self.book.create_sheet(x)
+        self.book.create_sheet("Cover")
         del self.book["Sheet"]  # I don't know how to solve this myth, it automatically generate sheets
-        self.book[self.sheet_names[0]].cell(row=1, column=1).value = "Last Change:" + str(time.localtime())
+        self.book["Cover"].cell(row=1, column=1).value = "Last Change:" + str(time.localtime())
 
-    def rankings_excel(self):
-        for x, y in enumerate(self.ranking_columns):  # Initialize Matches
-            self.book[self.sheet_names[1]].cell(row=1, column=x + 1).value = y
-            self.book[self.sheet_names[1]].cell(row=1, column=x + 1).font = self.BOLD_BLACK_FONT
+    '''
+    list of text - dictionary [key=the text, value=(font, fill)]
+    '''
 
-    def matches_excel(self):
+    def write_chart(self, sheet_name: str, start_row: int, start_column: int,
+                    value: list):  # TODO: The CODE INSIDE IS NOT WORKING
+        print("Something here")
 
-        for x, y in enumerate(self.matches_columns):  # Initialize Matches
-            self.book[self.sheet_names[1]].cell(row=1, column=x + 1).value = y
-            self.book[self.sheet_names[1]].cell(row=1, column=x + 1).font = self.BOLD_BLACK_FONT
-
+    # for x, y in enumerate(self.ranking_columns):  # Initialize Matches
+    #     self.book[self.sheet_names[1]].cell(row=1, column=x + 1).value = y
+    #     self.book[self.sheet_names[1]].cell(row=1, column=x + 1).font = self.BOLD_BLACK_FONT
 
     def save(self):
         self.book.save(self.save_location)
 
 
-#             "Because of there are no data for these teams: 1119S, 7386A, 8000X, 8000Z, 19771B, 30638A, 36632A, "
-#            "37073A, 60900A, 76921B, 99556A, 99691E, 99691H are not include in the sheet #Important Data")
+#  "Because of there are no data for these teams: 1119S, 7386A, 8000X, 8000Z, 19771B, 30638A, 36632A, "
+#  "37073A, 60900A, 76921B, 99556A, 99691E, 99691H are not include in the sheet #Important Data")
 
 
 def team_list():  # For testing
@@ -69,7 +65,6 @@ def getteam(sku, country):
 
 def main():
     a = WriteWorkbook()
-    a.matches_excel()
     a.save()
 
 

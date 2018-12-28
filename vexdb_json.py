@@ -1,5 +1,7 @@
 """
-TODO: Reserved docstring space
+This is a rewrite of the old vexdb.io api reader, it read/ get json from vex.io and do something with them
+Credit:Haorui Zhou (oraginal code), Yifei Ding(Rewrite)
+license: CC By-NC-SA
 """
 import json
 from urllib.error import URLError
