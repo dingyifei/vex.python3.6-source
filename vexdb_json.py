@@ -87,13 +87,21 @@ def filter_info(info: dict, *args: str):
     filter the json from get_info or a similar structure dictionary and return a list
     :param info: this should be the dictionary from get_info or same structure
     :param args:the info key you want to contain, highly suggest only 1 arg
-    :return:It return a list that contains the item in info that have args as their key
+    :return:It return a list or 2d list that contains the value from info, all value in list are string
     """
     out = []
-    for item in info["result"]:
-        for arg in args:
-            out.append(item[arg])
-    return out
+    if len(args) == 1:
+        for item in info["result"]:
+            for arg in args:
+                out.append(item[arg])
+        return out
+    if len(args) > 1:
+        for item in info["result"]:
+            items = []
+            for arg in args:
+                items.append(str(item[arg]))
+            out.append(items)
+        return out
 
 
 def check_info(api_type: str, info_type: str, api_parameter: str, safe=True):
@@ -117,7 +125,6 @@ def check_info(api_type: str, info_type: str, api_parameter: str, safe=True):
             raise ValueError(json_dict["error_text"])
         except KeyError:
             raise ValueError("Unexpected Error")
-
 
 def main():
     """

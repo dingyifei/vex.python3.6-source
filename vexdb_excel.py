@@ -98,6 +98,8 @@ def main():
     usually this main doesn't do anything
     """
     a = WriteWorkbook()
+    print(a.list_formater([["testing"]]))
+    print(a.BOLD_BLACK_FONT)
     a.write_chart("test", [[["testing", a.YELLOW_FILL, a.BOLD_BLUE_FONT]]])
     a.save()
 
