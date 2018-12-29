@@ -10,7 +10,7 @@ import openpyxl
 from openpyxl.styles import PatternFill, Font, colors
 
 
-class WriteWorkbook:  # testing
+class WriteWorkbook:
     """
     if you see this, you better check each function's docstring because I don't know how to explain this
     """
@@ -74,7 +74,13 @@ class WriteWorkbook:  # testing
                       font=Font("Calibri", size=11, color=colors.BLACK, bold=True),
                       fill=PatternFill(patternType="solid", fgColor=colors.BLACK)
                       ):
-        print("I need some idea")
+        out = []
+        for row, a in enumerate(text):
+            add = []
+            for column, b in enumerate(a):
+                add.append([b, fill, font])
+            out.append(add)
+        return out
 
     def save(self):
         """
@@ -83,8 +89,8 @@ class WriteWorkbook:  # testing
         self.book.save(self.save_location)
 
 
-#  "Because of there are no data for these teams: 1119S, 7386A, 8000X, 8000Z, 19771B, 30638A, 36632A, "
-#  "37073A, 60900A, 76921B, 99556A, 99691E, 99691H are not include in the sheet #Important Data")
+#  there are no data for these teams:
+#  1119S, 7386A, 8000X, 8000Z, 19771B, 30638A, 36632A 37073A, 60900A, 76921B, 99556A, 99691E, 99691H for some reason
 
 
 def main():

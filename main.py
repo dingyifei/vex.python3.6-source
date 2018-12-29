@@ -1,4 +1,5 @@
-import vexdb_json, vexdb_excel
+import vexdb_json
+import vexdb_excel
 
 
 def getteam(sku, country):
