@@ -3,23 +3,23 @@ import vexdb_excel
 
 
 def getteam(sku, country):
-    _json_dict = vexdb_json.get_json_direct("teams",
-                                            {"sku": sku, "program": "VRC", "limit_number": "4999", "country": country})
-    output = []
-    for r in _json_dict["result"]:
-        line = '{}: '.format(r["number"])
-        output.append(line)
-    return output
+    return vexdb_json.filter_info(vexdb_json.get_json_direct(
+        "teams",
+        {
+            "sku": sku,
+            "program": "VRC",
+            "country": country}),
+        "number")
+
 
 
 def main():
-    a = vexdb_excel.WriteWorkbook()
-    a.write_chart("test", [[{"test": (a.YELLOW_FILL, a.BOLD_BLUE_FONT)}]])
-    a.save()
+    print("helloworld")
 
 
 if __name__ == '__main__':
     main()
+
     # self.ranking_columns = "Team", "Wins", "Losses", "AP", "Ranking", "Highest", "Result"
     # self.matches_columns = "Sku", "Match", "Red1", "Red2", "Red3", "RedSit", "Blue1", "Blue2", "Blue3", "BlueSit", "RedSco", "BlueSco"
     #
