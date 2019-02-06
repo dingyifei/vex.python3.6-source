@@ -8,3 +8,5 @@ graph
 *.xls
 .DS_Store
 *.xlsx
+__pycache__/vexdb_excel.cpython-37.pyc
+__pycache__/vexdb_json.cpython-37.pyc
